@@ -50,19 +50,19 @@ export const Navbar = ({ posts }: Props) => {
               </button>
             ) : (
               <>
-                <Link
-                  href='https://linktr.ee/rozmluv.se'
+              <Link
+                  href='https://eshop.rozmluv.se/p/prvn-3-d-ly-kurzu-zdarma-pendler-tina-pro-nov-ky-rozmluv-se-n-mecky-rowm9qp1m'
                   target='_blank'
                   className='font-stabil'
                 >
-                  Aktuality
+                  ZDARMA
                 </Link>
                 <Link
                   href='https://linktr.ee/rozmluv.se'
                   target='_blank'
                   className='font-stabil'
                 >
-                  Shop
+                  Aktuality
                 </Link>
               </>
             )}
