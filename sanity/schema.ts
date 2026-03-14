@@ -11,6 +11,7 @@ import company from './schemas/company'
 import review from './schemas/review'
 import payment from './schemas/payment'
 import pricelist from './schemas/pricelist'
+import redirect from './schemas/redirect'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -25,5 +26,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     payment,
     pricelist,
     blockContent,
+    redirect,
   ],
 }

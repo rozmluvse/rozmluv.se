@@ -80,3 +80,11 @@ export const PricelistQuery = groq`
         ...,
     } | order(order asc)
 `
+
+export const RedirectsQuery = groq`
+    *[_type=='redirect'] {
+        source,
+        destination,
+        permanent
+    }
+`
