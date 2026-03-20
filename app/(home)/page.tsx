@@ -2,6 +2,7 @@ import { About } from '@/containers/about'
 import { Companies } from '@/containers/companies'
 import { Contact } from '@/containers/contact'
 import { Hero } from '@/containers/hero'
+import { HowItWorks } from '@/containers/how-it-works'
 import { Languages } from '@/containers/languages'
 import { Pricelist } from '@/containers/pricelist'
 import { Reviews } from '@/containers/reviews'
@@ -26,6 +27,7 @@ export default async function Page() {
       <Hero />
       <Languages languages={languages} />
       <Pricelist data={pricelist} />
+      <HowItWorks />
       <Reviews reviews={reviews} />
       <About lectors={lectors} />
       <Companies companies={companies} />
