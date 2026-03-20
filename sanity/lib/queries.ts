@@ -21,6 +21,12 @@ export const LectorQuery = groq`
 export const LookingForQuery = groq`
     *[_type=='lookingFor'] {
         ...,
+    } | order(order asc)
+`
+
+export const ForLectorsPageQuery = groq`
+    *[_type=='forLectorsPage'][0]{
+        ...
     }
 `
 

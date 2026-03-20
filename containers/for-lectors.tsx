@@ -1,72 +1,158 @@
 'use client'
 
+import { Cols } from '@/components/cols'
 import { Container } from '@/components/container'
+import { SectionTitle } from '@/components/section-title'
 import { useLanguage } from '@/store/use-language'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
-export const ForLectors = ({ lookingFor }: { lookingFor: any }) => {
+export const ForLectors = ({
+  page,
+  lookingFor,
+}: {
+  page: any
+  lookingFor: any[]
+}) => {
   const { language } = useLanguage()
 
-  return (
-    <Container className='font-stabil text-lg lg:text-3xl'>
-      <h2 className='font-labil text-2xl font-black mb-8 lg:text-5xl'>
-        {language === 'cz' && 'Rozmluv spolu s námi další studenty!'}
-        {language === 'en' && 'Get other students talk and fluent with us!'}
-        {language === 'de' && 'Motiviere mit uns neue Studenten zum Sprechen!'}
-        {language === 'ua' && 'Розговори разом з нами студентів!'}
-      </h2>
-      <h3 className='mb-2'>
-        {language === 'cz' && 'Než si plácnem, napiš nám:'}
-        {language === 'en' && 'Before we shake hands, write to us:'}
-        {language === 'de' && 'Bevor wir ins Geschäft kommen, schreib uns:'}
-        {language === 'ua' && 'Перш ніж домовимось, напиши нам:'}
-      </h3>
-      <ul className='list-disc mb-6 lg:mb-12 space-y-2 list-inside'>
-        <li>
-          {language === 'cz' && 'kdo jsi a co umíš'}
-          {language === 'en' && 'who you are and what you can do'}
-          {language === 'de' && 'wer du bist und was du kannst'}
-          {language === 'ua' && 'Хто ти і які твої вміння?'}
-        </li>
-        <li>
-          {language === 'cz' && 'proč chceš učit zrovna u nás'}
-          {language === 'en' &&
-            'why do you want to become one of the lecturers at our studio'}
-          {language === 'de' &&
-            'warum du ausgerechnet bei uns mitmachen möchtest'}
-          {language === 'ua' && 'Чому хочеш викладати саме у нас?'}
-        </li>
-        <li>
-          {language === 'cz' && 'jestli bylo dřív vejce, nebo slepice'}
-          {language === 'en' && 'which came first: the chicken or the egg'}
-          {language === 'de' && 'was war zuerst, die Henne oder das Ei'}
-          {language === 'ua' && 'Що було раніше, яйце чи курка?'}
-        </li>
-      </ul>
-      <a
-        href='mailto:ciao@rozmluv.se'
-        className='font-labil font-black ffs-12-hover'
-      >
-        ciao@rozmluv.se
-      </a>
+  const title =
+    (language === 'cz' && page?.titleCz) ||
+    (language === 'en' && page?.titleEn) ||
+    (language === 'de' && page?.titleDe) ||
+    (language === 'ua' && page?.titleUa)
 
-      <h3 className='uppercase mt-12 lg:mt-28 font-labil text-xl lg:text-4xl mb-2'>
-        {language === 'cz' && 'právě hledáme:'}
-        {language === 'en' && 'current job vacancies:'}
-        {language === 'de' && 'wir suchen gerade:'}
-        {language === 'ua' && 'ми шукаємо: '}
-      </h3>
-      {lookingFor.map((item: any) => (
-        <ul key={item.textCz} className='list-disc list-inside space-y-2'>
-          {item.textCz && item.textEn && item.textDe && item.textUa && (
-            <li>
-              {language === 'cz' && item.textCz}
-              {language === 'en' && item.textEn}
-              {language === 'de' && item.textDe}
-              {language === 'ua' && item.textUa}
-            </li>
-          )}
-        </ul>
-      ))}
-    </Container>
+  const subtitle =
+    (language === 'cz' && page?.subtitleCz) ||
+    (language === 'en' && page?.subtitleEn) ||
+    (language === 'de' && page?.subtitleDe) ||
+    (language === 'ua' && page?.subtitleUa)
+
+  const whyDescription =
+    (language === 'cz' && page?.whyDescriptionCz) ||
+    (language === 'en' && page?.whyDescriptionEn) ||
+    (language === 'de' && page?.whyDescriptionDe) ||
+    (language === 'ua' && page?.whyDescriptionUa)
+
+  const whyCards = page?.whyCards || []
+
+  return (
+    <>
+      <section className='scroll-mt-44'>
+        <Container>
+          <Cols>
+            <div />
+            <div>
+              <h1 className='text-3xl font-black sm:text-4xl md:text-5xl lg:text-6xl'>
+                {title}
+              </h1>
+              {subtitle && (
+                <p className='mt-6 max-w-3xl font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          </Cols>
+        </Container>
+      </section>
+
+      {whyCards.length > 0 && (
+        <section className='scroll-mt-28 mt-16 xl:mt-24'>
+          <Container>
+            <Cols>
+              <SectionTitle
+                titleCz='Proč u nás?'
+                titleEn='Why with us?'
+                titleDe='Warum bei uns?'
+                titleUa='Чому у нас?'
+              />
+
+              <div>
+                {whyDescription && (
+                  <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
+                    {whyDescription}
+                  </p>
+                )}
+              </div>
+            </Cols>
+
+            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:grid-cols-3 xl:gap-6'>
+              {whyCards.map((card: any, index: number) => (
+                <div
+                  key={`${card.titleCz || index}-${index}`}
+                  style={{ backgroundColor: `#${card.color || 'F6E5A0'}` }}
+                  className='h-full rounded-2xl'
+                >
+                  <div className='flex h-full min-h-52 flex-col px-6 py-8'>
+                    <div className='font-labil text-sm font-bold uppercase tracking-[0.16em]'>
+                      {index + 1 < 10 ? `0${index + 1}` : index + 1}
+                    </div>
+
+                    <h3 className='mt-5 text-left text-2xl font-black'>
+                      {language === 'cz' && card.titleCz}
+                      {language === 'en' && card.titleEn}
+                      {language === 'de' && card.titleDe}
+                      {language === 'ua' && card.titleUa}
+                    </h3>
+
+                    <p className='pt-4 font-stabil text-sm'>
+                      {language === 'cz' && card.descriptionCz}
+                      {language === 'en' && card.descriptionEn}
+                      {language === 'de' && card.descriptionDe}
+                      {language === 'ua' && card.descriptionUa}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <section className='scroll-mt-28 mt-16 xl:mt-24'>
+        <Container>
+          <Cols>
+            <SectionTitle
+              titleCz='Otevřené pozice'
+              titleEn='Open positions'
+              titleDe='Offene Positionen'
+              titleUa='Відкриті позиції'
+            />
+
+            <div>
+              <Accordion type='multiple' className='flex flex-col gap-4 xl:gap-6'>
+                {lookingFor.map((item: any, index: number) => (
+                  <AccordionItem
+                    key={item.titleCz + item.textCz + index}
+                    value={item.titleCz || item.textCz || `${index}`}
+                    style={{ backgroundColor: `#${item.color || 'F6E5A0'}` }}
+                    className='rounded-2xl'
+                  >
+                    <AccordionTrigger>
+                      <span className='line-clamp-1 text-left'>
+                        {language === 'cz' && item.titleCz}
+                        {language === 'en' && item.titleEn}
+                        {language === 'de' && item.titleDe}
+                        {language === 'ua' && item.titleUa}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      {language === 'cz' && item.textCz}
+                      {language === 'en' && item.textEn}
+                      {language === 'de' && item.textDe}
+                      {language === 'ua' && item.textUa}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </Cols>
+        </Container>
+      </section>
+    </>
   )
 }
