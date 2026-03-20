@@ -20,7 +20,7 @@ export const Companies = ({ companies }: Props) => {
     <div
       key={company.link}
       style={{ backgroundColor: `#${company.color}` }}
-      className='h-full rounded-2xl'
+      className='group h-full rounded-2xl'
     >
       <div className='flex h-full min-h-52 flex-col px-6 py-8'>
         <p className='font-stabil text-lg'>
@@ -31,10 +31,12 @@ export const Companies = ({ companies }: Props) => {
         </p>
 
         <div className='mt-auto flex flex-col gap-2 pt-6 sm:flex-row sm:items-end sm:justify-between'>
-          <h3 className='text-left text-2xl font-black'>{company.title}</h3>
+          <h3 className="text-left text-2xl font-black [font-feature-settings:'normal'] group-hover:[font-feature-settings:'ss01','ss02']">
+            {company.title}
+          </h3>
           <Link
             href={company.link}
-            className='font-stabil text-sm underline underline-offset-2'
+            className="font-stabil text-sm underline underline-offset-2 [font-feature-settings:'normal'] group-hover:[font-feature-settings:'ss01','ss02']"
           >
             {company.linkPreview}
           </Link>
