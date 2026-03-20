@@ -6,32 +6,14 @@ import { SectionTitle } from '@/components/section-title'
 import { useLanguage } from '@/store/use-language'
 import Link from 'next/link'
 
-const STEPS = [
-  {
-    color: 'F6E5A0',
-    titleCz: 'Registrace',
-    titleEn: 'Registration',
-    titleDe: 'Registrierung',
-    titleUa: 'Реєстрація',
-  },
-  {
-    color: 'C8E6C9',
-    titleCz: 'Konzultace',
-    titleEn: 'Consultation',
-    titleDe: 'Beratung',
-    titleUa: 'Консультація',
-  },
-  {
-    color: 'FD828C',
-    titleCz: 'První lekce',
-    titleEn: 'First lesson',
-    titleDe: 'Erste Stunde',
-    titleUa: 'Перше заняття',
-  },
-]
+interface Props {
+  data: any
+}
 
-export const HowItWorks = () => {
+export const HowItWorks = ({ data }: Props) => {
   const { language } = useLanguage()
+
+  const steps = [data?.card1, data?.card2, data?.card3].filter(Boolean)
 
   return (
     <section id='how-it-works' className='scroll-mt-28'>
@@ -46,16 +28,16 @@ export const HowItWorks = () => {
 
           <div>
             <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
-              {language === 'cz' && '3 důležité kroky k první lekci'}
-              {language === 'en' && '3 important steps before your first lesson'}
-              {language === 'de' && '3 wichtige Schritte bis zu deiner ersten Stunde'}
-              {language === 'ua' && '3 важливі кроки до першого заняття'}
+              {language === 'cz' && data?.descriptionCz}
+              {language === 'en' && data?.descriptionEn}
+              {language === 'de' && data?.descriptionDe}
+              {language === 'ua' && data?.descriptionUa}
             </p>
 
             <div className='mt-14 grid gap-[23px] md:grid-cols-2 xl:grid-cols-3'>
-              {STEPS.map((step, index) => (
+              {steps.map((step, index) => (
                 <div
-                  key={step.titleCz}
+                  key={step.titleCz + index}
                   style={{ backgroundColor: `#${step.color}` }}
                   className='h-full rounded-2xl'
                 >
@@ -72,14 +54,10 @@ export const HowItWorks = () => {
                     </h3>
 
                     <p className='pt-4 font-stabil text-sm'>
-                      {language === 'cz' &&
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit a první lekce bude hned o kus blíž.'}
-                      {language === 'en' &&
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit and your first lesson will feel much closer.'}
-                      {language === 'de' &&
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit und deine erste Stunde ist gleich viel näher.'}
-                      {language === 'ua' &&
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit і твоє перше заняття стане значно ближчим.'}
+                      {language === 'cz' && step.descriptionCz}
+                      {language === 'en' && step.descriptionEn}
+                      {language === 'de' && step.descriptionDe}
+                      {language === 'ua' && step.descriptionUa}
                     </p>
                   </div>
                 </div>

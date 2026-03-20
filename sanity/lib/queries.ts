@@ -93,6 +93,12 @@ export const PricelistQuery = groq`
     } | order(order asc)
 `
 
+export const HowItWorksQuery = groq`
+    *[_type=='howItWorks'][0]{
+        ...
+    }
+`
+
 export const RedirectsQuery = groq`
     *[_type=='redirect'] {
         source,
