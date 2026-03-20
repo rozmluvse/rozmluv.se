@@ -12,6 +12,8 @@ interface Props {
 
 export const Pricelist = ({ data }: Props) => {
   const { language } = useLanguage()
+  const ctaClassName =
+    'mt-6 inline-flex h-11 w-48 items-center justify-center rounded-xl border-2 border-black bg-white font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
 
   const renderCard = (item: any, compact = false) => (
     <div
@@ -82,7 +84,7 @@ export const Pricelist = ({ data }: Props) => {
 
               <Link
                 href='/payment'
-                className='mt-6 inline-flex h-[43px] w-[195px] items-center justify-center rounded-[11px] border-2 border-black bg-white font-labil text-[20px] font-bold leading-[26px] text-black transition-colors hover:bg-black hover:text-white'
+                className={ctaClassName}
               >
                 {language === 'cz' && 'Jak to funguje?'}
                 {language === 'en' && 'How does it work?'}

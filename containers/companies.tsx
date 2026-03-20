@@ -13,6 +13,8 @@ interface Props {
 
 export const Companies = ({ companies }: Props) => {
   const { language } = useLanguage()
+  const ctaClassName =
+    'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
 
   const renderCard = (company: any) => (
     <div
@@ -20,7 +22,7 @@ export const Companies = ({ companies }: Props) => {
       style={{ backgroundColor: `#${company.color}` }}
       className='h-full rounded-2xl'
     >
-      <div className='flex h-full min-h-[205px] flex-col px-6 py-8'>
+      <div className='flex h-full min-h-52 flex-col px-6 py-8'>
         <p className='font-stabil text-lg'>
           {language === 'cz' && company.textCz}
           {language === 'en' && company.textEn}
@@ -60,13 +62,13 @@ export const Companies = ({ companies }: Props) => {
               textUa='Ми вміємо залучати до корпоративної роботи. Міжнародних працівників навчимо німецької, іноземців чеської та будь-кого англійської або китайської. Ми можемо зустрітись у класі Klatovy, у вашій компанії або онлайн з будь-якої точки світу.'
             />
 
-            <div className='mt-14 hidden gap-[23px] md:auto-rows-fr md:grid-cols-2 xl:grid xl:grid-cols-3'>
+            <div className='mt-14 hidden gap-6 md:auto-rows-fr md:grid-cols-2 xl:grid xl:grid-cols-3'>
               {companies.map((company) => renderCard(company))}
             </div>
 
             <Link
               href='/#contact'
-              className='mt-8 hidden h-[43px] items-center justify-center rounded-[11px] border-2 border-black bg-white px-6 font-labil text-[20px] font-bold leading-[26px] text-black transition-colors hover:bg-black hover:text-white xl:inline-flex'
+              className={`${ctaClassName} hidden xl:inline-flex`}
             >
               {language === 'cz' && 'Chci zapojit firmu →'}
               {language === 'en' && 'I want to involve my company →'}
@@ -76,13 +78,13 @@ export const Companies = ({ companies }: Props) => {
           </div>
         </Cols>
 
-        <div className='mt-14 grid gap-[23px] sm:auto-rows-fr sm:grid-cols-2 xl:hidden'>
+        <div className='mt-14 grid gap-6 sm:auto-rows-fr sm:grid-cols-2 xl:hidden'>
           {companies.map((company) => renderCard(company))}
         </div>
 
         <Link
           href='/#contact'
-          className='mt-8 inline-flex h-[43px] items-center justify-center rounded-[11px] border-2 border-black bg-white px-6 font-labil text-[20px] font-bold leading-[26px] text-black transition-colors hover:bg-black hover:text-white xl:hidden'
+          className={`${ctaClassName} xl:hidden`}
         >
           {language === 'cz' && 'Chci zapojit firmu →'}
           {language === 'en' && 'I want to involve my company →'}

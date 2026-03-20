@@ -12,7 +12,8 @@ interface Props {
 
 export const HowItWorks = ({ data }: Props) => {
   const { language } = useLanguage()
-
+  const ctaClassName =
+    'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
   const steps = [data?.card1, data?.card2, data?.card3].filter(Boolean)
 
   return (
@@ -34,14 +35,14 @@ export const HowItWorks = ({ data }: Props) => {
               {language === 'ua' && data?.descriptionUa}
             </p>
 
-            <div className='mt-14 grid gap-[23px] md:grid-cols-2 xl:grid-cols-3'>
+            <div className='mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
               {steps.map((step, index) => (
                 <div
                   key={step.titleCz + index}
                   style={{ backgroundColor: `#${step.color}` }}
                   className='h-full rounded-2xl'
                 >
-                  <div className='flex h-full min-h-[205px] flex-col px-6 py-8'>
+                  <div className='flex h-full min-h-52 flex-col px-6 py-8'>
                     <div className='font-labil text-sm font-bold uppercase tracking-[0.16em]'>
                       {index + 1 < 10 ? `0${index + 1}` : index + 1}
                     </div>
@@ -66,7 +67,7 @@ export const HowItWorks = ({ data }: Props) => {
 
             <Link
               href='/#contact'
-              className='mt-8 inline-flex h-[43px] items-center justify-center rounded-[11px] border-2 border-black bg-white px-6 font-labil text-[20px] font-bold leading-[26px] text-black transition-colors hover:bg-black hover:text-white'
+              className={ctaClassName}
             >
               {language === 'cz' && 'Chci se rozmluvit →'}
               {language === 'en' && 'I want to start speaking →'}

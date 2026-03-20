@@ -51,7 +51,7 @@ export const About = ({ lectors }: { lectors: any }) => {
                   className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
                 />
                 <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
-                  <div className='rounded-[11px] border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
+                  <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
                     {language === 'cz' && 'Poznej lektora*ku'}
                     {language === 'en' && 'Meet the lecturer'}
                     {language === 'de' && 'Lerne den*die Lektor*in kennen'}

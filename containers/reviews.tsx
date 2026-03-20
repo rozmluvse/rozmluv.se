@@ -4,6 +4,7 @@ import { Container } from '@/components/container'
 import { InfoText } from '@/components/info-text'
 import { useLanguage } from '@/store/use-language'
 import { Cols } from '@/components/cols'
+import Image from 'next/image'
 import {
   Accordion,
   AccordionContent,
@@ -58,10 +59,12 @@ export const Reviews = ({ reviews }: Props) => {
                   >
                     <AccordionTrigger>
                       <div className='flex items-center gap-2 truncate'>
-                        <img
+                        <Image
                           src={urlForImage(review.image)}
                           alt={review.nameCz}
-                          className='h-10 w-10 rounded-full'
+                          width={40}
+                          height={40}
+                          className='h-10 w-10 rounded-full object-cover'
                         />
                         <span className='line-clamp-1 text-left'>
                           {language === 'cz' && review.nameCz}
@@ -90,10 +93,12 @@ export const Reviews = ({ reviews }: Props) => {
                   >
                     <AccordionTrigger>
                       <div className='flex items-center gap-2'>
-                        <img
+                        <Image
                           src={urlForImage(review.image)}
                           alt={review.nameCz}
-                          className='h-10 w-10 rounded-full'
+                          width={40}
+                          height={40}
+                          className='h-10 w-10 rounded-full object-cover'
                         />
                         <span className='line-clamp-1 text-left'>
                           {language === 'cz' && review.nameCz}
@@ -127,10 +132,12 @@ export const Reviews = ({ reviews }: Props) => {
               >
                 <AccordionTrigger>
                   <div className='flex items-center gap-2'>
-                    <img
+                    <Image
                       src={urlForImage(review.image)}
                       alt={review.nameCz}
-                      className='h-10 w-10 rounded-full'
+                      width={40}
+                      height={40}
+                      className='h-10 w-10 rounded-full object-cover'
                     />
                     <span className='line-clamp-1 text-left'>
                       {language === 'cz' && review.nameCz}
@@ -159,10 +166,12 @@ export const Reviews = ({ reviews }: Props) => {
               >
                 <AccordionTrigger>
                   <div className='flex items-center gap-2'>
-                    <img
+                    <Image
                       src={urlForImage(review.image)}
                       alt={review.nameCz}
-                      className='h-10 w-10 rounded-full'
+                      width={40}
+                      height={40}
+                      className='h-10 w-10 rounded-full object-cover'
                     />
                     <span className='line-clamp-1 text-left'>
                       {language === 'cz' && review.nameCz}

@@ -21,6 +21,8 @@ const WHY_CARDS = [
 
 export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const { language } = useLanguage()
+  const ctaClassName =
+    'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
 
   const title =
     (language === 'cz' && languageItem.titleCz) ||
@@ -80,14 +82,14 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                 {whyTitle}
               </p>
 
-              <div className='mt-14 grid gap-[23px] sm:grid-cols-2 xl:grid-cols-4'>
+              <div className='mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-4'>
                 {WHY_CARDS.map((cardText, index) => (
                   <div
                     key={`${languageItem.titleCz}-${index}`}
                     style={{ backgroundColor: `#${languageItem.color || 'F6E5A0'}` }}
                     className='h-full rounded-2xl'
                   >
-                    <div className='flex h-full min-h-[205px] flex-col px-6 py-8'>
+                    <div className='flex h-full min-h-52 flex-col px-6 py-8'>
                       <div className='font-labil text-sm font-bold uppercase tracking-[0.16em]'>
                         {index + 1 < 10 ? `0${index + 1}` : index + 1}
                       </div>
@@ -104,7 +106,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
               <Link
                 href='/#contact'
-                className='mt-8 inline-flex h-[43px] items-center justify-center rounded-[11px] border-2 border-black bg-white px-6 font-labil text-[20px] font-bold leading-[26px] text-black transition-colors hover:bg-black hover:text-white'
+                className={ctaClassName}
               >
                 {language === 'cz' && 'Chci se rozmluvit →'}
                 {language === 'en' && 'I want to start speaking →'}
