@@ -2,6 +2,7 @@
 
 import { Container } from '@/components/container'
 import { useLanguage } from '@/store/use-language'
+import Image from 'next/image'
 import { useEffect } from 'react'
 
 export default function Page() {
@@ -23,7 +24,13 @@ export default function Page() {
   return (
     <main className='font-stabil mt-28 md:mt-32 text-lg lg:text-2xl mb-8'>
       <Container className='grid gap-4 lg:gap-10 lg:grid-cols-2'>
-        <img src='/story/barbora.webp' alt='barbora' className='rounded-3xl' />
+        <Image
+          src='/story/barbora.webp'
+          alt='barbora'
+          width={800}
+          height={960}
+          className='w-full rounded-3xl'
+        />
         <div>
           <h2 className='text-2xl lg:text-4xl font-labil mb-3'>
             {language === 'cz' && 'Příběh rozmluv se'}
