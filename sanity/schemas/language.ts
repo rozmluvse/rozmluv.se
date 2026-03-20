@@ -99,5 +99,73 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'whyCards',
+      title: 'Proč tento jazyk - karty',
+      type: 'array',
+      of: [
+        defineField({
+          name: 'item',
+          title: 'Karta',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'titleCz',
+              title: 'Nadpis 🇨🇿',
+              type: 'string',
+            }),
+            defineField({
+              name: 'titleEn',
+              title: 'Nadpis 🇬🇧',
+              type: 'string',
+            }),
+            defineField({
+              name: 'titleDe',
+              title: 'Nadpis 🇩🇪',
+              type: 'string',
+            }),
+            defineField({
+              name: 'titleUa',
+              title: 'Nadpis 🇺🇦',
+              type: 'string',
+            }),
+            defineField({
+              name: 'descriptionCz',
+              title: 'Popis 🇨🇿',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'descriptionEn',
+              title: 'Popis 🇬🇧',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'descriptionDe',
+              title: 'Popis 🇩🇪',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'descriptionUa',
+              title: 'Popis 🇺🇦',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'color',
+              title: 'Barva',
+              type: 'string',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'titleCz',
+            },
+          },
+        }),
+      ],
+    }),
   ],
 })

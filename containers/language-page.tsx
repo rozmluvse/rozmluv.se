@@ -14,13 +14,6 @@ interface Props {
   pricelist: any[]
 }
 
-const WHY_CARDS = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-]
-
 export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const { language } = useLanguage()
   const ctaClassName =
@@ -52,6 +45,8 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const lectors = (languageItem.lectors || [])
     .map((item: any) => item.lector)
     .filter(Boolean)
+
+  const whyCards = languageItem.whyCards || []
 
   return (
     <main className='mb-8 mt-32 space-y-16 xl:mt-24 xl:space-y-24'>
@@ -89,10 +84,10 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </p>
 
               <div className='mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-4'>
-                {WHY_CARDS.map((cardText, index) => (
+                {whyCards.map((card: any, index: number) => (
                   <div
-                    key={`${languageItem.titleCz}-${index}`}
-                    style={{ backgroundColor: `#${languageItem.color || 'F6E5A0'}` }}
+                    key={`${languageItem.titleCz}-${card.titleCz || index}`}
+                    style={{ backgroundColor: `#${card.color || languageItem.color || 'F6E5A0'}` }}
                     className='h-full rounded-2xl'
                   >
                     <div className='flex h-full min-h-52 flex-col px-6 py-8'>
@@ -101,10 +96,18 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                       </div>
 
                       <h3 className='mt-5 text-left text-2xl font-black'>
-                        {whyTitle}
+                        {language === 'cz' && card.titleCz}
+                        {language === 'en' && card.titleEn}
+                        {language === 'de' && card.titleDe}
+                        {language === 'ua' && card.titleUa}
                       </h3>
 
-                      <p className='pt-4 font-stabil text-sm'>{cardText}</p>
+                      <p className='pt-4 font-stabil text-sm'>
+                        {language === 'cz' && card.descriptionCz}
+                        {language === 'en' && card.descriptionEn}
+                        {language === 'de' && card.descriptionDe}
+                        {language === 'ua' && card.descriptionUa}
+                      </p>
                     </div>
                   </div>
                 ))}
