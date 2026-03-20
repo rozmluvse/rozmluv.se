@@ -57,6 +57,18 @@ export const LanguagesQuery = groq`
     } | order(order asc)
 `
 
+export const LanguagesPathsQuery = groq`
+    *[_type == "language" && defined(slug.current)][]{
+        "slug": slug.current
+    }
+`
+
+export const LanguageQuery = groq`
+    *[_type == "language" && slug.current == $slug][0]{
+        ...
+    }
+`
+
 export const CompaniesQuery = groq`
     *[_type=='company'] {
         ...,

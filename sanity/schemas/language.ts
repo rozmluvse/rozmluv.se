@@ -26,6 +26,39 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'titleCz',
+        maxLength: 96,
+      },
+    }),
+    defineField({
+      name: 'subtitleCz',
+      title: 'Podtitulek 🇨🇿',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'subtitleEn',
+      title: 'Podtitulek 🇬🇧',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'subtitleDe',
+      title: 'Podtitulek 🇩🇪',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'subtitleUa',
+      title: 'Podtitulek 🇺🇦',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
       name: 'order',
       title: 'Pořadí',
       type: 'number',

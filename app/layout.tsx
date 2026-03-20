@@ -1,8 +1,6 @@
 import './globals.css'
 import localFont from 'next/font/local'
 import { cn } from '@/lib/utils'
-import { Footer } from '@/components/footer'
-import { Navbar } from '@/components/nav/navbar'
 import { Newsletter } from '@/components/newsletter'
 import { RemoveOneLetterWords } from '@/providers/remove-one-letter-words'
 import { Cookies } from '@/components/cookies'
@@ -11,6 +9,7 @@ import { PostsQuery } from '@/sanity/lib/queries'
 import { GoogleAnalyticsProvider } from '@/providers/google-analytics-provider'
 import { Metadata } from 'next'
 import { FacebookProvider } from '@/providers/facebook-provider'
+import { LayoutShell } from '@/components/layout-shell'
 
 export const revalidate = 60
 
@@ -45,9 +44,7 @@ export default async function Layout({
       <FacebookProvider />
 
       <body className={cn('font-labil', stabil.variable, labil.variable)}>
-        <Navbar posts={posts} />
-        {children}
-        <Footer />
+        <LayoutShell posts={posts}>{children}</LayoutShell>
 
         <Newsletter />
         <Cookies />
