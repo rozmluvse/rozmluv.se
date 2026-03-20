@@ -3,6 +3,7 @@
 import { Container } from '@/components/container'
 import { InfoText } from '@/components/info-text'
 import Link from 'next/link'
+import Image from 'next/image'
 import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
 import { Cols } from '@/components/cols'
@@ -39,13 +40,25 @@ export const About = ({ lectors }: { lectors: any }) => {
             <Link
               key={lector.name}
               href={`/lectors/${lector.slug.current}`}
-              className='rounded-2xl'
+              className='group rounded-2xl'
             >
-              <img
-                src={urlForImage(lector.image)}
-                alt={lector.name}
-                className='mb-4 w-full rounded-3xl'
-              />
+              <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl'>
+                <Image
+                  src={urlForImage(lector.image)}
+                  alt={lector.name}
+                  fill
+                  sizes='(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw'
+                  className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
+                />
+                <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+                  <div className='rounded-[11px] border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
+                    {language === 'cz' && 'Poznej lektora*ku'}
+                    {language === 'en' && 'Meet the lecturer'}
+                    {language === 'de' && 'Lerne den*die Lektor*in kennen'}
+                    {language === 'ua' && 'Познайомся з викладачем*кою'}
+                  </div>
+                </div>
+              </div>
               <h3 className='font-stabil'>{lector.name}</h3>
               <p className='font-stabil'>
                 {language === 'cz' && lector.roleCz}
