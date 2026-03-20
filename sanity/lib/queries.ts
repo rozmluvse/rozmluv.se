@@ -65,7 +65,10 @@ export const LanguagesPathsQuery = groq`
 
 export const LanguageQuery = groq`
     *[_type == "language" && slug.current == $slug][0]{
-        ...
+        ...,
+        lectors[]{
+            lector->
+        }
     }
 `
 

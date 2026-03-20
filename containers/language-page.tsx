@@ -4,7 +4,9 @@ import { Cols } from '@/components/cols'
 import { Container } from '@/components/container'
 import { Pricelist } from '@/containers/pricelist'
 import { SectionTitle } from '@/components/section-title'
+import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
@@ -46,6 +48,10 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
         : language === 'de'
           ? `Warum ${languageItem.titleDe}`
           : `Чому ${languageItem.titleUa}`
+
+  const lectors = (languageItem.lectors || [])
+    .map((item: any) => item.lector)
+    .filter(Boolean)
 
   return (
     <main className='mb-8 mt-32 space-y-16 xl:mt-24 xl:space-y-24'>
@@ -117,6 +123,74 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           </Cols>
         </Container>
       </section>
+
+      {lectors.length > 0 && (
+        <section className='scroll-mt-28'>
+          <Container>
+            <Cols>
+              <SectionTitle
+                titleCz='Lektoři'
+                titleEn='Lectors'
+                titleDe='Lektor*innen'
+                titleUa='Викладачі'
+              />
+
+              <div>
+                <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
+                  {language === 'cz' && `Kdo tě provede jazykem ${languageItem.titleCz}`}
+                  {language === 'en' &&
+                    `Who will guide you through ${languageItem.titleEn}`}
+                  {language === 'de' &&
+                    `Wer dich durch ${languageItem.titleDe} begleitet`}
+                  {language === 'ua' &&
+                    `Хто допоможе тобі з ${languageItem.titleUa}`}
+                </p>
+
+                <div className='mt-14 grid gap-8 sm:grid-cols-2 xl:grid-cols-4'>
+                  {lectors.map((lector: any) => (
+                    <Link
+                      key={lector.slug?.current || lector.name}
+                      href={
+                        lector.slug?.current
+                          ? `/lectors/${lector.slug.current}`
+                          : '#'
+                      }
+                      className='group rounded-2xl'
+                    >
+                      <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl'>
+                        <Image
+                          src={urlForImage(lector.image)}
+                          alt={lector.name}
+                          fill
+                          sizes='(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw'
+                          className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
+                        />
+                        <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+                          <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
+                            {language === 'cz' && 'Poznej lektora*ku'}
+                            {language === 'en' && 'Meet the lecturer'}
+                            {language === 'de' &&
+                              'Lerne den*die Lektor*in kennen'}
+                            {language === 'ua' &&
+                              'Познайомся з викладачем*кою'}
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className='font-stabil'>{lector.name}</h3>
+                      <p className='font-stabil'>
+                        {language === 'cz' && lector.roleCz}
+                        {language === 'en' && lector.roleEn}
+                        {language === 'de' && lector.roleDe}
+                        {language === 'ua' && lector.roleUa}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </Cols>
+          </Container>
+        </section>
+      )}
 
       <Pricelist data={pricelist} />
     </main>

@@ -73,5 +73,31 @@ export default defineType({
       title: 'Barva',
       type: 'string',
     }),
+    defineField({
+      name: 'lectors',
+      title: 'Lektoři',
+      type: 'array',
+      of: [
+        defineField({
+          name: 'item',
+          title: 'Lektor',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'lector',
+              title: 'Lektor*ka',
+              type: 'reference',
+              to: [{ type: 'lector' }],
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'lector.name',
+              media: 'lector.image',
+            },
+          },
+        }),
+      ],
+    }),
   ],
 })
