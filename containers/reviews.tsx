@@ -72,10 +72,10 @@ export const Reviews = ({ reviews }: Props) => {
                       </div>
                     </AccordionTrigger>
                     <AccordionContent>
-                      "{language === 'cz' && review.textCz}
+                      {language === 'cz' && review.textCz}
                       {language === 'en' && review.textEn}
                       {language === 'de' && review.textDe}
-                      {language === 'ua' && review.textUa}"
+                      {language === 'ua' && review.textUa}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -104,10 +104,10 @@ export const Reviews = ({ reviews }: Props) => {
                       </div>
                     </AccordionTrigger>
                     <AccordionContent>
-                      "{language === 'cz' && review.textCz}
+                      {language === 'cz' && review.textCz}
                       {language === 'en' && review.textEn}
                       {language === 'de' && review.textDe}
-                      {language === 'ua' && review.textUa}"
+                      {language === 'ua' && review.textUa}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -141,10 +141,10 @@ export const Reviews = ({ reviews }: Props) => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  "{language === 'cz' && review.textCz}
+                  {language === 'cz' && review.textCz}
                   {language === 'en' && review.textEn}
                   {language === 'de' && review.textDe}
-                  {language === 'ua' && review.textUa}"
+                  {language === 'ua' && review.textUa}
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -173,10 +173,10 @@ export const Reviews = ({ reviews }: Props) => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  "{language === 'cz' && review.textCz}
+                  {language === 'cz' && review.textCz}
                   {language === 'en' && review.textEn}
                   {language === 'de' && review.textDe}
-                  {language === 'ua' && review.textUa}"
+                  {language === 'ua' && review.textUa}
                 </AccordionContent>
               </AccordionItem>
             ))}
