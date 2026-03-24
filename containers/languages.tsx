@@ -25,40 +25,46 @@ export const Languages = ({ languages }: Props) => {
             titleDe='Sprache wählen'
             titleUa='вибір мови'
           />
-          <InfoText
-            textCz='Užij si svoje hodiny individuálně, ve dvojici nebo v malé skupince
-              s max. 4 dalšími studenty. Nemusíš se nám upisovat na celé
-              pololetí, rezervuj si klidně jenom 10 lekcí. Na osobní schůzce,
-              online callu nebo telefonátu před zahájením kurzu spolu doladíme
-              detaily. Všechny naše skupinové kurzy s volným místem pro tebe
-              máme přehledně vypsané'
-            textEn="Enjoy your classes either individually, in pairs or in small
-              groups of no more than 5 students. You don't have to sign up for
-              the whole semester immediately, but to start off you may book just
-              10 lessons. We work out the details at a face-to-face meeting or
-              during an online call or a phone call before the course begins. We
-              have all our available group courses for you listed"
-            textDe='Gestalte dir deine Stunden entweder individuell, zu zweit oder
-              auch in der Kleingruppe mit nicht mehr als vier Lernenden. Du
-              musst dich bei uns nicht gleich für ein ganzes Semester
-              einschreiben, buche ruhig erst einmal nur zehn Lektionen. Die
-              Details können wir persönlich vor Kursbeginn besprechen, gerne
-              auch per Videoanruf oder telefonisch. Alle unsere Gruppenkurse, in
-              denen noch ein freier Platz für dich ist, haben wir hier
-              übersichtlich'
-            textUa='Насолоджуйся своїми уроками індивідуально, в парах або в невеликій
-              групі, котра складається з максимально з 4 учасників. Тобі не
-              потрібно записуватись до нас на весь семестр, просто забронюй 10
-              уроків. Ми разом узгодимо деталі під час особистої зустрічі,
-              онлайн-дзвінка або телефонного дзвінка перед початком курсу. Усі
-              наші групові курси з вільним місцем чітко перераховані'
-            href='https://linktr.ee/rozmluv.se'
-            external
-            linkCz='tady ←'
-            linkEn='here ←'
-            linkDe='aufgelistet ←'
-            linkUa='тут ←'
-          />
+          <div>
+            <div>
+              <InfoText
+                textCz='Užij si svoje hodiny individuálně, ve dvojici nebo v malé skupince
+                  s max. 4 dalšími studenty. Nemusíš se nám upisovat na celé
+                  pololetí, rezervuj si klidně jenom 10 lekcí. Na osobní schůzce,
+                  online callu nebo telefonátu před zahájením kurzu spolu doladíme
+                  detaily.'
+                textEn="Enjoy your classes either individually, in pairs or in small
+                  groups of no more than 5 students. You don't have to sign up for
+                  the whole semester immediately, but to start off you may book just
+                  10 lessons. We work out the details at a face-to-face meeting or
+                  during an online call or a phone call before the course begins."
+                textDe='Gestalte dir deine Stunden entweder individuell, zu zweit oder
+                  auch in der Kleingruppe mit nicht mehr als vier Lernenden. Du
+                  musst dich bei uns nicht gleich für ein ganzes Semester
+                  einschreiben, buche ruhig erst einmal nur zehn Lektionen. Die
+                  Details können wir persönlich vor Kursbeginn besprechen, gerne
+                  auch per Videoanruf oder telefonisch.'
+                textUa='Насолоджуйся своїми уроками індивідуально, в парах або в невеликій
+                  групі, котра складається з максимально з 4 учасників. Тобі не
+                  потрібно записуватись до нас на весь семестр, просто забронюй 10
+                  уроків. Ми разом узгодимо деталі під час особистої зустрічі,
+                  онлайн-дзвінка або телефонного дзвінка перед початком курсу.'
+              />
+            </div>
+
+            <div className='mt-8'>
+              <Link
+                href='https://linktr.ee/rozmluv.se'
+                target='_blank'
+                className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+              >
+                {language === 'cz' && 'Skupinové kurzy'}
+                {language === 'en' && 'Group courses'}
+                {language === 'de' && 'Gruppenkurse'}
+                {language === 'ua' && 'Групові курси'}
+              </Link>
+            </div>
+          </div>
         </Cols>
 
         <div className='grid sm:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-8 mt-14'>
