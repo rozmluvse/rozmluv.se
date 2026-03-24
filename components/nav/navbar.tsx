@@ -50,7 +50,7 @@ export const Navbar = ({ posts }: Props) => {
               </button>
             ) : (
               <>
-              <Link
+                <Link
                   href='https://eshop.rozmluv.se/p/prvn-3-d-ly-kurzu-zdarma-pendler-tina-pro-nov-ky-rozmluv-se-n-mecky-rowm9qp1m'
                   target='_blank'
                   className='font-stabil'
@@ -64,6 +64,29 @@ export const Navbar = ({ posts }: Props) => {
                 >
                   Aktuality
                 </Link>
+                <div className='hidden items-center gap-3 lg:flex xl:gap-4'>
+                  <Link href='/#languages' className='font-stabil'>
+                    {language === 'cz' && 'Jazyky'}
+                    {language === 'en' && 'Languages'}
+                    {language === 'de' && 'Sprachen'}
+                    {language === 'ua' && 'Мови'}
+                  </Link>
+                  <Link href='/#pricelist' className='font-stabil'>
+                    {language === 'cz' && 'Ceník'}
+                    {language === 'en' && 'Pricelist'}
+                    {language === 'de' && 'Preisliste'}
+                    {language === 'ua' && 'Прайслист'}
+                  </Link>
+                  <Link href='/#contact' className='font-stabil'>
+                    {language === 'cz' && 'Kontakt'}
+                    {language === 'en' && 'Contact'}
+                    {language === 'de' && 'Kontakt'}
+                    {language === 'ua' && 'Контакт'}
+                  </Link>
+                  <Link href='/blog' className='hidden font-stabil xl:inline-flex'>
+                    Blog
+                  </Link>
+                </div>
               </>
             )}
             <LanguageSelector color='black' />

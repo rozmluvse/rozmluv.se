@@ -6,6 +6,7 @@ import { Pricelist } from '@/containers/pricelist'
 import { SectionTitle } from '@/components/section-title'
 import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
+import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -116,7 +117,16 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
       <section className='scroll-mt-44'>
         <Container>
           <Cols>
-            <div />
+            <Link
+              href='/#languages'
+              className='flex items-center gap-1 self-start font-stabil text-lg'
+            >
+              <ArrowLeft size={18} />
+              {language === 'cz' && 'Zpět'}
+              {language === 'en' && 'Back'}
+              {language === 'de' && 'Zurück'}
+              {language === 'ua' && 'Назад'}
+            </Link>
             <div>
               <h1 className='text-3xl font-black sm:text-4xl md:text-5xl lg:text-6xl'>
                 {title}
