@@ -80,6 +80,41 @@ export default defineType({
       title: 'Bio 🇺🇦',
       type: 'string',
     }),
+    defineField({
+      name: 'featuredOnAbout',
+      title: 'Zvýraznit v sekci O nás',
+      type: 'boolean',
+    }),
+    defineField({
+      name: 'aboutFeaturedOrder',
+      title: 'Pořadí ve featured kartách',
+      type: 'number',
+    }),
+    defineField({
+      name: 'aboutOrder',
+      title: 'Pořadí v gridu O nás',
+      type: 'number',
+    }),
+    defineField({
+      name: 'aboutBadgeCz',
+      title: 'Badge O nás 🇨🇿',
+      type: 'string',
+    }),
+    defineField({
+      name: 'aboutBadgeEn',
+      title: 'Badge O nás 🇬🇧',
+      type: 'string',
+    }),
+    defineField({
+      name: 'aboutBadgeDe',
+      title: 'Badge O nás 🇩🇪',
+      type: 'string',
+    }),
+    defineField({
+      name: 'aboutBadgeUa',
+      title: 'Badge O nás 🇺🇦',
+      type: 'string',
+    }),
   ],
   preview: {
     select: {
