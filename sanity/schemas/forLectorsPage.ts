@@ -142,6 +142,30 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'positionsDescriptionCz',
+      title: 'Otevřené pozice - popis 🇨🇿',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'positionsDescriptionEn',
+      title: 'Otevřené pozice - popis 🇬🇧',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'positionsDescriptionDe',
+      title: 'Otevřené pozice - popis 🇩🇪',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'positionsDescriptionUa',
+      title: 'Otevřené pozice - popis 🇺🇦',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
       name: 'extraSectionTitleCz',
       title: 'Spodní sekce - nadpis 🇨🇿',
       type: 'string',

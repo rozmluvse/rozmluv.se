@@ -42,6 +42,19 @@ export const ForLectors = ({
 
   const whyCards = page?.whyCards || []
 
+  const positionsDescription =
+    (language === 'cz' && page?.positionsDescriptionCz) ||
+    (language === 'en' && page?.positionsDescriptionEn) ||
+    (language === 'de' && page?.positionsDescriptionDe) ||
+    (language === 'ua' && page?.positionsDescriptionUa) ||
+    (language === 'cz'
+      ? 'Seznam volných pozic v naší jazykové škole.'
+      : language === 'en'
+        ? 'A list of open positions in our language school.'
+        : language === 'de'
+          ? 'Eine Liste offener Stellen in unserer Sprachschule.'
+          : 'Список відкритих позицій у нашій мовній школі.')
+
   const extraSectionTitle =
     (language === 'cz' && page?.extraSectionTitleCz) ||
     (language === 'en' && page?.extraSectionTitleEn) ||
@@ -130,10 +143,16 @@ export const ForLectors = ({
                     {whyDescription}
                   </p>
                 )}
+
+                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-3 xl:gap-6'>
+                  {whyCards.map((card: any, index: number) =>
+                    renderCard(card, index)
+                  )}
+                </div>
               </div>
             </Cols>
 
-            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:grid-cols-3 xl:gap-6'>
+            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:hidden'>
               {whyCards.map((card: any, index: number) =>
                 renderCard(card, index)
               )}
@@ -153,33 +172,67 @@ export const ForLectors = ({
             />
 
             <div>
-              <Accordion type='multiple' className='flex flex-col gap-4 xl:gap-6'>
-                {lookingFor.map((item: any, index: number) => (
-                  <AccordionItem
-                    key={item.titleCz + item.textCz + index}
-                    value={item.titleCz || item.textCz || `${index}`}
-                    style={{ backgroundColor: `#${item.color || 'F6E5A0'}` }}
-                    className='rounded-2xl'
-                  >
-                    <AccordionTrigger>
-                      <span className='line-clamp-1 text-left'>
-                        {language === 'cz' && item.titleCz}
-                        {language === 'en' && item.titleEn}
-                        {language === 'de' && item.titleDe}
-                        {language === 'ua' && item.titleUa}
-                      </span>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      {language === 'cz' && item.textCz}
-                      {language === 'en' && item.textEn}
-                      {language === 'de' && item.textDe}
-                      {language === 'ua' && item.textUa}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
+                {positionsDescription}
+              </p>
+
+              <div className='mt-14 hidden xl:block'>
+                <Accordion type='multiple' className='flex flex-col gap-4 xl:gap-6'>
+                  {lookingFor.map((item: any, index: number) => (
+                    <AccordionItem
+                      key={`${item._id || item.titleCz || item.textCz || index}`}
+                      value={item._id || item.titleCz || item.textCz || `${index}`}
+                      style={{ backgroundColor: `#${item.color || 'F6E5A0'}` }}
+                      className='overflow-hidden rounded-2xl'
+                    >
+                      <AccordionTrigger className='px-5 py-6 text-xl sm:px-6 sm:text-2xl'>
+                        <span className='pr-4 text-left leading-tight'>
+                          {language === 'cz' && item.titleCz}
+                          {language === 'en' && item.titleEn}
+                          {language === 'de' && item.titleDe}
+                          {language === 'ua' && item.titleUa}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent className='px-5 pb-6 text-base leading-7 sm:px-6 sm:text-lg'>
+                        {language === 'cz' && item.textCz}
+                        {language === 'en' && item.textEn}
+                        {language === 'de' && item.textDe}
+                        {language === 'ua' && item.textUa}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
             </div>
           </Cols>
+
+          <div className='mt-14 xl:hidden'>
+            <Accordion type='multiple' className='flex flex-col gap-4'>
+              {lookingFor.map((item: any, index: number) => (
+                <AccordionItem
+                  key={`${item._id || item.titleCz || item.textCz || index}-mobile`}
+                  value={`${item._id || item.titleCz || item.textCz || `${index}`}-mobile`}
+                  style={{ backgroundColor: `#${item.color || 'F6E5A0'}` }}
+                  className='overflow-hidden rounded-2xl'
+                >
+                  <AccordionTrigger className='px-5 py-6 text-xl sm:px-6 sm:text-2xl'>
+                    <span className='pr-4 text-left leading-tight'>
+                      {language === 'cz' && item.titleCz}
+                      {language === 'en' && item.titleEn}
+                      {language === 'de' && item.titleDe}
+                      {language === 'ua' && item.titleUa}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className='px-5 pb-6 text-base leading-7 sm:px-6 sm:text-lg'>
+                    {language === 'cz' && item.textCz}
+                    {language === 'en' && item.textEn}
+                    {language === 'de' && item.textDe}
+                    {language === 'ua' && item.textUa}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </Container>
       </section>
 
@@ -200,10 +253,16 @@ export const ForLectors = ({
                     {extraSectionDescription}
                   </p>
                 )}
+
+                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-3 xl:gap-6'>
+                  {extraCards.map((card: any, index: number) =>
+                    renderCard(card, index, 'C8E6C9')
+                  )}
+                </div>
               </div>
             </Cols>
 
-            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:grid-cols-3 xl:gap-6'>
+            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:hidden'>
               {extraCards.map((card: any, index: number) =>
                 renderCard(card, index, 'C8E6C9')
               )}
