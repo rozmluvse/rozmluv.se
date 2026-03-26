@@ -6,6 +6,7 @@ import { InfoText } from '@/components/info-text'
 import { SectionTitle } from '@/components/section-title'
 import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -13,27 +14,33 @@ import { useEffect, useState } from 'react'
 export const About = ({ lectors }: { lectors: any[] }) => {
   const { language } = useLanguage()
   const [showAllTeam, setShowAllTeam] = useState(false)
+  const [isDesktopCarousel, setIsDesktopCarousel] = useState(false)
   const [initialTeamCount, setInitialTeamCount] = useState(8)
+  const [desktopTeamPage, setDesktopTeamPage] = useState(0)
+  const desktopTeamPageSize = 4
 
   useEffect(() => {
-    const updateInitialTeamCount = () => {
+    const updateTeamLayout = () => {
       if (window.innerWidth >= 1280) {
+        setIsDesktopCarousel(true)
         setInitialTeamCount(8)
         return
       }
 
+      setIsDesktopCarousel(false)
+
       if (window.innerWidth >= 640) {
-        setInitialTeamCount(6)
+        setInitialTeamCount(8)
         return
       }
 
       setInitialTeamCount(4)
     }
 
-    updateInitialTeamCount()
-    window.addEventListener('resize', updateInitialTeamCount)
+    updateTeamLayout()
+    window.addEventListener('resize', updateTeamLayout)
 
-    return () => window.removeEventListener('resize', updateInitialTeamCount)
+    return () => window.removeEventListener('resize', updateTeamLayout)
   }, [])
 
   const featuredLectors = [...lectors]
@@ -52,6 +59,25 @@ export const About = ({ lectors }: { lectors: any[] }) => {
   const visibleTeamLectors = showAllTeam
     ? teamLectors
     : teamLectors.slice(0, initialTeamCount)
+  const desktopTeamPagesCount = Math.ceil(teamLectors.length / desktopTeamPageSize)
+  const desktopTeamPages = Array.from(
+    { length: desktopTeamPagesCount },
+    (_, pageIndex) =>
+      teamLectors.slice(
+        pageIndex * desktopTeamPageSize,
+        (pageIndex + 1) * desktopTeamPageSize
+      )
+  )
+
+  useEffect(() => {
+    setDesktopTeamPage(0)
+  }, [teamLectors.length])
+
+  useEffect(() => {
+    if (desktopTeamPagesCount === 0) return
+
+    setDesktopTeamPage((page) => Math.min(page, desktopTeamPagesCount - 1))
+  }, [desktopTeamPagesCount])
 
   const getBadge = (lector: any) =>
     (language === 'cz' && lector.aboutBadgeCz) ||
@@ -101,14 +127,14 @@ export const About = ({ lectors }: { lectors: any[] }) => {
         </Cols>
 
         {featuredLectors.length > 0 && (
-          <div className='mt-14 grid gap-6 lg:grid-cols-2'>
+          <div className='mt-14 grid grid-cols-2 gap-4 sm:gap-6'>
             {featuredLectors.map((lector) => (
               <Link
                 key={lector.slug?.current || lector.name}
                 href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
-                className='group rounded-3xl bg-[#F6F0F8] p-5'
+                className='group rounded-3xl bg-[#F6F0F8] p-4 sm:p-5'
               >
-                <div className='grid gap-5 sm:grid-cols-[220px_1fr] sm:items-start'>
+                <div className='grid gap-4 sm:gap-5 xl:grid-cols-[220px_1fr] xl:items-start'>
                   <div className='relative aspect-[0.9] overflow-hidden rounded-[28px] bg-white/60'>
                     <Image
                       src={urlForImage(lector.image)}
@@ -122,20 +148,20 @@ export const About = ({ lectors }: { lectors: any[] }) => {
                   <div className='flex h-full flex-col justify-between'>
                     <div>
                       {getBadge(lector) && (
-                        <div className='mb-4 inline-flex rounded-full bg-[#F7CC46] px-4 py-1 font-stabil text-sm font-bold'>
+                        <div className='mb-3 inline-flex rounded-full bg-[#F7CC46] px-3 py-1 font-stabil text-xs font-bold sm:mb-4 sm:px-4 sm:text-sm'>
                           {getBadge(lector)}
                         </div>
                       )}
-                      <h3 className='text-3xl font-black leading-none'>
+                      <h3 className='text-xl font-black leading-none sm:text-2xl xl:text-3xl'>
                         {lector.name}
                       </h3>
-                      <p className='mt-3 font-stabil text-xl leading-tight'>
+                      <p className='mt-2 font-stabil text-sm leading-tight sm:mt-3 sm:text-base xl:text-xl'>
                         {getRole(lector)}
                       </p>
                     </div>
 
-                    <div className='mt-8'>
-                      <div className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-5 font-labil text-base font-bold text-black transition-colors hover:bg-black hover:text-white'>
+                    <div className='mt-5 sm:mt-8'>
+                      <div className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'>
                         {language === 'cz' && 'napsat'}
                         {language === 'en' && 'write'}
                         {language === 'de' && 'schreiben'}
@@ -157,64 +183,167 @@ export const About = ({ lectors }: { lectors: any[] }) => {
             {language === 'ua' && 'Наша команда викладачів'}
           </h3>
 
-          <div className='mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 xl:grid-cols-4'>
-            {visibleTeamLectors.map((lector) => (
-              <Link
-                key={lector.slug?.current || lector.name}
-                href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
-                className='group rounded-2xl'
-              >
-                <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl bg-[#F6F0F8]'>
-                  <Image
-                    src={urlForImage(lector.image)}
-                    alt={lector.name}
-                    fill
-                    sizes='(min-width: 1280px) 25vw, (min-width: 640px) 33vw, 50vw'
-                    className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
-                  />
-                  <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
-                    <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
-                      {language === 'cz' && 'Poznej lektora*ku'}
-                      {language === 'en' && 'Meet the lecturer'}
-                      {language === 'de' && 'Lerne den*die Lektor*in kennen'}
-                      {language === 'ua' && 'Познайомся з викладачем*кою'}
+          {!isDesktopCarousel && (
+            <>
+              <div className='mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4'>
+                {visibleTeamLectors.map((lector) => (
+                  <Link
+                    key={lector.slug?.current || lector.name}
+                    href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
+                    className='group rounded-2xl'
+                  >
+                    <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl bg-[#F6F0F8]'>
+                      <Image
+                        src={urlForImage(lector.image)}
+                        alt={lector.name}
+                        fill
+                        sizes='(min-width: 640px) 25vw, 50vw'
+                        className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
+                      />
+                      <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+                        <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
+                          {language === 'cz' && 'Poznej lektora*ku'}
+                          {language === 'en' && 'Meet the lecturer'}
+                          {language === 'de' && 'Lerne den*die Lektor*in kennen'}
+                          {language === 'ua' && 'Познайомся з викладачем*кою'}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <h3 className='font-stabil text-xl font-bold leading-tight'>
-                  {lector.name}
-                </h3>
-                <p className='font-stabil text-base leading-tight text-black/75'>
-                  {getRole(lector)}
-                </p>
-              </Link>
-            ))}
-          </div>
+                    <h3 className='font-stabil text-xl font-bold leading-tight'>
+                      {lector.name}
+                    </h3>
+                    <p className='font-stabil text-base leading-tight text-black/75'>
+                      {getRole(lector)}
+                    </p>
+                  </Link>
+                ))}
+              </div>
 
-          {teamLectors.length > initialTeamCount && (
-            <div className='mt-8'>
-              <button
-                type='button'
-                onClick={() => setShowAllTeam((value) => !value)}
-                className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
-              >
-                {showAllTeam
-                  ? language === 'cz'
-                    ? 'Skrýt tým'
-                    : language === 'en'
-                      ? 'Hide the team'
-                      : language === 'de'
-                        ? 'Team ausblenden'
-                        : 'Сховати команду'
-                  : language === 'cz'
-                    ? 'Poznat celý tým'
-                    : language === 'en'
-                      ? 'Meet the whole team'
-                      : language === 'de'
-                        ? 'Das ganze Team kennenlernen'
-                        : 'Познайомитися з усією командою'}
-              </button>
-            </div>
+              {teamLectors.length > initialTeamCount && (
+                <div className='mt-8'>
+                  <button
+                    type='button'
+                    onClick={() => setShowAllTeam((value) => !value)}
+                    className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+                  >
+                    {showAllTeam
+                      ? language === 'cz'
+                        ? 'Skrýt tým'
+                        : language === 'en'
+                          ? 'Hide the team'
+                          : language === 'de'
+                            ? 'Team ausblenden'
+                            : 'Сховати команду'
+                      : language === 'cz'
+                        ? 'Poznat celý tým'
+                        : language === 'en'
+                          ? 'Meet the whole team'
+                          : language === 'de'
+                            ? 'Das ganze Team kennenlernen'
+                            : 'Познайомитися з усією командою'}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          {isDesktopCarousel && (
+            <>
+              <div className='mt-8 overflow-hidden'>
+                <div
+                  className='flex transition-transform duration-300 ease-out'
+                  style={{
+                    width: `${desktopTeamPagesCount * 100}%`,
+                    transform: `translateX(-${desktopTeamPage * (100 / desktopTeamPagesCount)}%)`,
+                  }}
+                >
+                  {desktopTeamPages.map((pageLectors, pageIndex) => (
+                    <div
+                      key={`desktop-team-page-${pageIndex}`}
+                      className='grid w-full shrink-0 grid-cols-4 gap-6'
+                      style={{ width: `${100 / desktopTeamPagesCount}%` }}
+                    >
+                      {pageLectors.map((lector) => (
+                        <Link
+                          key={lector.slug?.current || lector.name}
+                          href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
+                          className='group rounded-2xl'
+                        >
+                          <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl bg-[#F6F0F8]'>
+                            <Image
+                              src={urlForImage(lector.image)}
+                              alt={lector.name}
+                              fill
+                              sizes='25vw'
+                              className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
+                            />
+                            <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+                              <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
+                                {language === 'cz' && 'Poznej lektora*ku'}
+                                {language === 'en' && 'Meet the lecturer'}
+                                {language === 'de' && 'Lerne den*die Lektor*in kennen'}
+                                {language === 'ua' && 'Познайомся з викладачем*кою'}
+                              </div>
+                            </div>
+                          </div>
+                          <h3 className='font-stabil text-xl font-bold leading-tight'>
+                            {lector.name}
+                          </h3>
+                          <p className='font-stabil text-base leading-tight text-black/75'>
+                            {getRole(lector)}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {desktopTeamPagesCount > 1 && (
+                <div className='mt-8 flex items-center gap-2'>
+                  <button
+                    type='button'
+                    onClick={() =>
+                      setDesktopTeamPage((page) => Math.max(page - 1, 0))
+                    }
+                    className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
+                    aria-label={
+                      language === 'cz'
+                        ? 'Předchozí lektoři'
+                        : language === 'en'
+                          ? 'Previous lectors'
+                          : language === 'de'
+                            ? 'Vorherige Lektor*innen'
+                            : 'Попередні викладачі'
+                    }
+                    disabled={desktopTeamPage === 0}
+                  >
+                    <ArrowLeft size={18} />
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() =>
+                      setDesktopTeamPage((page) =>
+                        Math.min(page + 1, desktopTeamPagesCount - 1)
+                      )
+                    }
+                    className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
+                    aria-label={
+                      language === 'cz'
+                        ? 'Další lektoři'
+                        : language === 'en'
+                          ? 'Next lectors'
+                          : language === 'de'
+                            ? 'Nächste Lektor*innen'
+                            : 'Наступні викладачі'
+                    }
+                    disabled={desktopTeamPage === desktopTeamPagesCount - 1}
+                  >
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
 
