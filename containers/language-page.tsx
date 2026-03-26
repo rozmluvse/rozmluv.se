@@ -6,9 +6,10 @@ import { Pricelist } from '@/containers/pricelist'
 import { SectionTitle } from '@/components/section-title'
 import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 interface Props {
   languageItem: any
@@ -17,6 +18,8 @@ interface Props {
 
 export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const { language } = useLanguage()
+  const [lectorsPerPage, setLectorsPerPage] = useState(4)
+  const [lectorsPage, setLectorsPage] = useState(0)
   const ctaClassName =
     'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
 
@@ -48,6 +51,42 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
     .filter(Boolean)
 
   const whyCards = languageItem.whyCards || []
+  const lectorsPagesCount = Math.ceil(lectors.length / lectorsPerPage)
+  const visibleLectors = lectors.slice(
+    lectorsPage * lectorsPerPage,
+    (lectorsPage + 1) * lectorsPerPage
+  )
+
+  useEffect(() => {
+    const updateLectorsPerPage = () => {
+      if (window.innerWidth >= 1280) {
+        setLectorsPerPage(4)
+        return
+      }
+
+      if (window.innerWidth >= 640) {
+        setLectorsPerPage(3)
+        return
+      }
+
+      setLectorsPerPage(2)
+    }
+
+    updateLectorsPerPage()
+    window.addEventListener('resize', updateLectorsPerPage)
+
+    return () => window.removeEventListener('resize', updateLectorsPerPage)
+  }, [])
+
+  useEffect(() => {
+    setLectorsPage(0)
+  }, [lectorsPerPage, languageItem.slug?.current])
+
+  useEffect(() => {
+    if (lectorsPagesCount === 0) return
+
+    setLectorsPage((page) => Math.min(page, lectorsPagesCount - 1))
+  }, [lectorsPagesCount])
 
   const renderWhyCard = (card: any, index: number, keySuffix = '') => (
     <div
@@ -200,14 +239,62 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                   {language === 'ua' &&
                     `Хто допоможе тобі з ${languageItem.titleUa}`}
                 </p>
-
               </div>
             </Cols>
 
             <Cols>
               <div />
-              <div className='mt-14 grid grid-cols-2 gap-8 sm:grid-cols-4'>
-                {lectors.map((lector: any) => renderLectorCard(lector))}
+              <div className='mt-14'>
+                <div className='grid grid-cols-2 gap-8 sm:grid-cols-3 xl:grid-cols-4'>
+                  {visibleLectors.map((lector: any) =>
+                    renderLectorCard(lector, '-carousel')
+                  )}
+                </div>
+
+                {lectorsPagesCount > 1 && (
+                  <div className='mt-6 flex items-center gap-2'>
+                    <button
+                      type='button'
+                      onClick={() =>
+                        setLectorsPage((page) => Math.max(page - 1, 0))
+                      }
+                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white'
+                      aria-label={
+                        language === 'cz'
+                          ? 'Předchozí lektoři'
+                          : language === 'en'
+                            ? 'Previous lectors'
+                            : language === 'de'
+                              ? 'Vorherige Lektor*innen'
+                              : 'Попередні викладачі'
+                      }
+                      disabled={lectorsPage === 0}
+                    >
+                      <ArrowLeft size={18} />
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() =>
+                        setLectorsPage((page) =>
+                          Math.min(page + 1, lectorsPagesCount - 1)
+                        )
+                      }
+                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white'
+                      aria-label={
+                        language === 'cz'
+                          ? 'Další lektoři'
+                          : language === 'en'
+                            ? 'Next lectors'
+                            : language === 'de'
+                              ? 'Nächste Lektor*innen'
+                              : 'Наступні викладачі'
+                      }
+                      disabled={lectorsPage === lectorsPagesCount - 1}
+                    >
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
+                )}
               </div>
             </Cols>
           </Container>
