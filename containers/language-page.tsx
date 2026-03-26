@@ -158,18 +158,23 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
             </div>
           </Cols>
 
-          <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:grid-cols-4'>
-            {whyCards.map((card: any, index: number) =>
-              renderWhyCard(card, index)
-            )}
-          </div>
+          <Cols>
+            <div />
+            <div>
+              <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:grid-cols-4'>
+                {whyCards.map((card: any, index: number) =>
+                  renderWhyCard(card, index)
+                )}
+              </div>
 
-          <Link href='/#contact' className={ctaClassName}>
-            {language === 'cz' && 'Chci se rozmluvit →'}
-            {language === 'en' && 'I want to start speaking →'}
-            {language === 'de' && 'Ich will sprechen lernen →'}
-            {language === 'ua' && 'Хочу почати говорити →'}
-          </Link>
+              <Link href='/#contact' className={ctaClassName}>
+                {language === 'cz' && 'Chci se rozmluvit →'}
+                {language === 'en' && 'I want to start speaking →'}
+                {language === 'de' && 'Ich will sprechen lernen →'}
+                {language === 'ua' && 'Хочу почати говорити →'}
+              </Link>
+            </div>
+          </Cols>
         </Container>
       </section>
 
@@ -199,9 +204,12 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </div>
             </Cols>
 
-            <div className='mt-14 grid grid-cols-2 gap-8 sm:grid-cols-4'>
-              {lectors.map((lector: any) => renderLectorCard(lector))}
-            </div>
+            <Cols>
+              <div />
+              <div className='mt-14 grid grid-cols-2 gap-8 sm:grid-cols-4'>
+                {lectors.map((lector: any) => renderLectorCard(lector))}
+              </div>
+            </Cols>
           </Container>
         </section>
       )}
