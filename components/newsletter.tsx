@@ -67,7 +67,7 @@ export const Newsletter = () => {
 
               <form
                 method='post'
-                action={process.env.NEXT_PUBLIC_ECOMAIL || ''}
+                action={process.env.ECOMAIL_API_KEY || ''}
                 onSubmit={(e) => {
                   e.preventDefault()
 
