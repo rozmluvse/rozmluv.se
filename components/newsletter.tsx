@@ -22,6 +22,8 @@ export const Newsletter = () => {
   } = useNewsletter()
 
   const [lang, setLang] = useState('cz')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const studio = pathname.includes('/studio')
 
@@ -58,39 +60,67 @@ export const Newsletter = () => {
               className='relative mx-4 aspect-square max-h-[500px] max-w-[333px] rounded-3xl bg-[#9F6ACD] p-4 sm:max-w-[500px]'
             >
               <Button
-                onClick={() => closeNewsletter()}
+                onClick={() => closeNewsletterPermanently()}
                 variant='ghost'
                 className='absolute right-4 top-4 m-0 h-min w-min p-0 hover:bg-transparent'
               >
                 <X className='text-zinc-200' />
               </Button>
 
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault()
+              {isSuccess ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className='mx-auto mt-24 flex w-[85%] flex-col items-start justify-center gap-6 sm:w-[85%]'
+                >
+                  <h2 className='text-left font-labil text-5xl text-white'>
+                    {language === 'cz' && 'Díky za přihlášení!'}
+                    {language === 'en' && 'Thanks for subscribing!'}
+                    {language === 'de' && 'Danke für das Abonnieren!'}
+                    {language === 'ua' && 'Дякуємо за підписку!'}
+                  </h2>
+                  <p className='text-left font-stabil text-2xl text-zinc-100'>
+                    {language === 'cz' && 'Brzy se ozveme s novinkami.'}
+                    {language === 'en' && "We'll be in touch soon with news."}
+                    {language === 'de' && 'Wir melden uns bald mit Neuigkeiten.'}
+                    {language === 'ua' && 'Ми скоро зв’яжемося з новинами.'}
+                  </p>
+                </motion.div>
+              ) : (
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault()
+                    if (isSubmitting) return
 
-                  const form = e.target as HTMLFormElement
-                  const formData = new FormData(form)
+                    setIsSubmitting(true)
 
-                  const email = formData.get('email')
-                  const name = formData.get('name')
-                  const language = formData.get('lang')
+                    const form = e.target as HTMLFormElement
+                    const formData = new FormData(form)
 
-                  try {
-                    await fetch('/api/newsletter', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({ email, name, language }),
-                    })
-                    closeNewsletterPermanently()
-                  } catch (error) {
-                    console.error('Newsletter Error:', error)
-                  }
-                }}
-                className='mx-auto mt-12 w-[85%] sm:w-[65%]'
-              >
+                    const email = formData.get('email')
+                    const name = formData.get('name')
+                    const language = formData.get('lang')
+
+                    try {
+                      await fetch('/api/newsletter', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, name, language }),
+                      })
+                      setIsSuccess(true)
+                      setTimeout(() => {
+                        closeNewsletterPermanently()
+                      }, 3000)
+                    } catch (error) {
+                      console.error('Newsletter Error:', error)
+                    } finally {
+                      setIsSubmitting(false)
+                    }
+                  }}
+                  className='mx-auto mt-12 w-[85%] sm:w-[65%]'
+                >
                 <h2 className='text-center text-3xl text-white'>
                   {language === 'cz' &&
                     'Novinky ve výuce, tipy na učení i pohled do zákulisí ti pošleme v newsletteru na'}
@@ -156,15 +186,23 @@ export const Newsletter = () => {
                 <div className='flex flex-col gap-4'>
                   <Button
                     type='submit'
-                    className='ffs-12-hover rounded-full bg-white py-5 font-labil text-xl font-black text-black hover:bg-zinc-50'
+                    disabled={isSubmitting}
+                    className='ffs-12-hover rounded-full bg-white py-5 font-labil text-xl font-black text-black hover:bg-zinc-50 disabled:opacity-50'
                   >
-                    {language === 'cz' && 'odebírej'}
-                    {language === 'en' && 'subscribe'}
-                    {language === 'de' && 'abonnieren'}
-                    {language === 'ua' && 'слідкуй'}
+                    {isSubmitting ? (
+                      <span className='animate-pulse'>...</span>
+                    ) : (
+                      <>
+                        {language === 'cz' && 'odebírej'}
+                        {language === 'en' && 'subscribe'}
+                        {language === 'de' && 'abonnieren'}
+                        {language === 'ua' && 'слідкуй'}
+                      </>
+                    )}
                   </Button>
                 </div>
               </form>
+              )}
             </motion.div>
           </motion.div>
         )}
