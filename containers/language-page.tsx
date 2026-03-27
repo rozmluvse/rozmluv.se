@@ -18,10 +18,13 @@ interface Props {
 
 export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const { language } = useLanguage()
-  const [lectorsPerPage, setLectorsPerPage] = useState(4)
+  const [isDesktopCarousel, setIsDesktopCarousel] = useState(false)
   const [lectorsPage, setLectorsPage] = useState(0)
+  const [showAllLectors, setShowAllLectors] = useState(false)
+  const lectorsPerPage = 4
   const ctaClassName =
     'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+  const languageSlug = languageItem.slug?.current
 
   const title =
     (language === 'cz' && languageItem.titleCz) ||
@@ -52,35 +55,34 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
   const whyCards = languageItem.whyCards || []
   const lectorsPagesCount = Math.ceil(lectors.length / lectorsPerPage)
-  const visibleLectors = lectors.slice(
-    lectorsPage * lectorsPerPage,
-    (lectorsPage + 1) * lectorsPerPage
+  const lectorsPages = Array.from(
+    { length: lectorsPagesCount },
+    (_, pageIndex) =>
+      lectors.slice(
+        pageIndex * lectorsPerPage,
+        (pageIndex + 1) * lectorsPerPage,
+      ),
   )
+  const visibleMobileLectors = showAllLectors ? lectors : lectors.slice(0, 4)
 
   useEffect(() => {
-    const updateLectorsPerPage = () => {
-      if (window.innerWidth >= 1280) {
-        setLectorsPerPage(4)
-        return
-      }
-
-      if (window.innerWidth >= 640) {
-        setLectorsPerPage(3)
-        return
-      }
-
-      setLectorsPerPage(2)
+    const updateLectorsLayout = () => {
+      setIsDesktopCarousel(window.innerWidth >= 768)
     }
 
-    updateLectorsPerPage()
-    window.addEventListener('resize', updateLectorsPerPage)
+    updateLectorsLayout()
+    window.addEventListener('resize', updateLectorsLayout)
 
-    return () => window.removeEventListener('resize', updateLectorsPerPage)
+    return () => window.removeEventListener('resize', updateLectorsLayout)
   }, [])
 
   useEffect(() => {
     setLectorsPage(0)
-  }, [lectorsPerPage, languageItem.slug?.current])
+  }, [languageSlug, isDesktopCarousel])
+
+  useEffect(() => {
+    setShowAllLectors(false)
+  }, [languageSlug, isDesktopCarousel])
 
   useEffect(() => {
     if (lectorsPagesCount === 0) return
@@ -96,12 +98,8 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
       }}
       className='h-full rounded-2xl'
     >
-      <div className='flex h-full min-h-52 flex-col px-6 py-8'>
-        <div className='font-labil text-sm font-bold uppercase tracking-[0.16em]'>
-          {index + 1 < 10 ? `0${index + 1}` : index + 1}
-        </div>
-
-        <h3 className='mt-5 text-left text-2xl font-black'>
+      <div className='flex h-full min-h-44 flex-col px-6 py-6 sm:min-h-52 sm:py-8'>
+        <h3 className='text-left text-2xl font-black'>
           {language === 'cz' && card.titleCz}
           {language === 'en' && card.titleEn}
           {language === 'de' && card.titleDe}
@@ -124,12 +122,12 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
       href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
       className='group rounded-2xl'
     >
-      <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl'>
+      <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl bg-[#F6F0F8]'>
         <Image
           src={urlForImage(lector.image)}
           alt={lector.name}
           fill
-          sizes='(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw'
+          sizes='(min-width: 1280px) 25vw, (min-width: 640px) 25vw, 50vw'
           className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
         />
         <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
@@ -141,8 +139,10 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           </div>
         </div>
       </div>
-      <h3 className='font-stabil'>{lector.name}</h3>
-      <p className='font-stabil'>
+      <h3 className='font-stabil text-xl font-bold leading-tight'>
+        {lector.name}
+      </h3>
+      <p className='font-stabil text-base leading-tight text-black/75'>
         {language === 'cz' && lector.roleCz}
         {language === 'en' && lector.roleEn}
         {language === 'de' && lector.roleDe}
@@ -200,13 +200,16 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           <Cols>
             <div />
             <div>
-              <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:grid-cols-4'>
+              <div className='mt-14 hidden auto-rows-fr grid-cols-4 gap-2 lg:grid'>
                 {whyCards.map((card: any, index: number) =>
-                  renderWhyCard(card, index)
+                  renderWhyCard(card, index, '-desktop'),
                 )}
               </div>
 
-              <Link href='/#contact' className={ctaClassName}>
+              <Link
+                href='/#contact'
+                className={`${ctaClassName} hidden lg:inline-flex`}
+              >
                 {language === 'cz' && 'Chci se rozmluvit →'}
                 {language === 'en' && 'I want to start speaking →'}
                 {language === 'de' && 'Ich will sprechen lernen →'}
@@ -214,6 +217,19 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </Link>
             </div>
           </Cols>
+
+          <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 lg:hidden'>
+            {whyCards.map((card: any, index: number) =>
+              renderWhyCard(card, index),
+            )}
+          </div>
+
+          <Link href='/#contact' className={`${ctaClassName} lg:hidden`}>
+            {language === 'cz' && 'Chci se rozmluvit →'}
+            {language === 'en' && 'I want to start speaking →'}
+            {language === 'de' && 'Ich will sprechen lernen →'}
+            {language === 'ua' && 'Хочу почати говорити →'}
+          </Link>
         </Container>
       </section>
 
@@ -242,23 +258,74 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </div>
             </Cols>
 
-            <Cols>
-              <div />
-              <div className='mt-14'>
-                <div className='grid grid-cols-2 gap-8 sm:grid-cols-3 xl:grid-cols-4'>
-                  {visibleLectors.map((lector: any) =>
-                    renderLectorCard(lector, '-carousel')
+            {!isDesktopCarousel && (
+              <>
+                <div className='mt-14 grid grid-cols-2 gap-6'>
+                  {visibleMobileLectors.map((lector: any) =>
+                    renderLectorCard(lector, '-grid'),
                   )}
                 </div>
 
+                {lectors.length > 4 && (
+                  <div className='mt-8'>
+                    <button
+                      type='button'
+                      onClick={() => setShowAllLectors((value) => !value)}
+                      className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+                    >
+                      {showAllLectors
+                        ? language === 'cz'
+                          ? 'Skrýt lektory'
+                          : language === 'en'
+                            ? 'Hide lectors'
+                            : language === 'de'
+                              ? 'Lektor*innen ausblenden'
+                              : 'Сховати викладачів'
+                        : language === 'cz'
+                          ? 'Poznat všechny lektory'
+                          : language === 'en'
+                            ? 'Meet all lectors'
+                            : language === 'de'
+                              ? 'Alle Lektor*innen kennenlernen'
+                              : 'Познайомитися з усіма викладачами'}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {isDesktopCarousel && (
+              <div className='mt-14'>
+                <div className='overflow-hidden'>
+                  <div
+                    className='flex transition-transform duration-300 ease-out'
+                    style={{
+                      width: `${lectorsPagesCount * 100}%`,
+                      transform: `translateX(-${lectorsPage * (100 / lectorsPagesCount)}%)`,
+                    }}
+                  >
+                    {lectorsPages.map((pageLectors, pageIndex) => (
+                      <div
+                        key={`language-lectors-page-${pageIndex}`}
+                        className='grid w-full shrink-0 grid-cols-4 gap-6'
+                        style={{ width: `${100 / lectorsPagesCount}%` }}
+                      >
+                        {pageLectors.map((lector: any) =>
+                          renderLectorCard(lector, `-page-${pageIndex}`),
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {lectorsPagesCount > 1 && (
-                  <div className='mt-6 flex items-center gap-2'>
+                  <div className='mt-8 flex items-center gap-2'>
                     <button
                       type='button'
                       onClick={() =>
                         setLectorsPage((page) => Math.max(page - 1, 0))
                       }
-                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white'
+                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
                       aria-label={
                         language === 'cz'
                           ? 'Předchozí lektoři'
@@ -276,10 +343,10 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                       type='button'
                       onClick={() =>
                         setLectorsPage((page) =>
-                          Math.min(page + 1, lectorsPagesCount - 1)
+                          Math.min(page + 1, lectorsPagesCount - 1),
                         )
                       }
-                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white'
+                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
                       aria-label={
                         language === 'cz'
                           ? 'Další lektoři'
@@ -296,7 +363,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                   </div>
                 )}
               </div>
-            </Cols>
+            )}
           </Container>
         </section>
       )}
