@@ -66,21 +66,28 @@ export const Newsletter = () => {
               </Button>
 
               <form
-                method='post'
-                action={process.env.ECOMAIL_API_KEY || ''}
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault()
 
-                  closeNewsletterPermanently()
-
                   const form = e.target as HTMLFormElement
+                  const formData = new FormData(form)
 
-                  console.log('Form action:', form.action)
-                  console.log('Form data:', new FormData(form))
+                  const email = formData.get('email')
+                  const name = formData.get('name')
+                  const language = formData.get('lang')
 
-                  form.submit()
-
-                  console.log('after submit')
+                  try {
+                    await fetch('/api/newsletter', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ email, name, language }),
+                    })
+                    closeNewsletterPermanently()
+                  } catch (error) {
+                    console.error('Newsletter Error:', error)
+                  }
                 }}
                 className='mx-auto mt-12 w-[85%] sm:w-[65%]'
               >
