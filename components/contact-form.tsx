@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useMemo, useRef, useState } from 'react'
 import { useLanguage } from '@/store/use-language'
+import { isValidPhoneNumber } from '@/lib/contact-validation'
+import { Turnstile, TurnstileRef } from '@/components/turnstile'
 
 type FormValues = {
   firstName: string
@@ -31,10 +33,12 @@ export const ContactForm = () => {
   const [values, setValues] = useState<FormValues>(initialValues)
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState('')
   const [submitState, setSubmitState] = useState<{
     type: 'success' | 'error' | null
     message: string
   }>({ type: null, message: '' })
+  const turnstileRef = useRef<TurnstileRef>(null)
 
   const copy = useMemo(
     () => ({
@@ -110,6 +114,30 @@ export const ContactForm = () => {
             : language === 'de'
               ? 'Nachricht senden'
               : 'Надіслати повідомлення',
+      turnstileRequired:
+        language === 'cz'
+          ? 'Dokonči prosím ověření Turnstile.'
+          : language === 'en'
+            ? 'Please complete the Turnstile verification.'
+            : language === 'de'
+              ? 'Bitte schliesse die Turnstile-Verifizierung ab.'
+              : 'Будь ласка, заверши перевірку Turnstile.',
+      turnstileError:
+        language === 'cz'
+          ? 'Ověření Turnstile selhalo. Zkus to prosím znovu.'
+          : language === 'en'
+            ? 'Turnstile verification failed. Please try again.'
+            : language === 'de'
+              ? 'Die Turnstile-Verifizierung ist fehlgeschlagen. Bitte versuche es erneut.'
+              : 'Перевірка Turnstile не вдалася. Спробуй ще раз.',
+      turnstileHint:
+        language === 'cz'
+          ? 'Turnstile se zobrazí po odsouhlasení zpracování osobních údajů.'
+          : language === 'en'
+            ? 'Turnstile will appear after you agree to the processing of personal data.'
+            : language === 'de'
+              ? 'Turnstile wird angezeigt, nachdem du der Verarbeitung personenbezogener Daten zugestimmt hast.'
+              : 'Turnstile зʼявиться після згоди на обробку персональних даних.',
       placeholders: {
         firstName:
           language === 'cz'
@@ -178,6 +206,14 @@ export const ContactForm = () => {
               : language === 'de'
                 ? 'Gib eine gueltige E-Mail ein.'
                 : 'Введи коректний e-mail.',
+        phoneInvalid:
+          language === 'cz'
+            ? 'Zadej platné telefonní číslo.'
+            : language === 'en'
+              ? 'Enter a valid phone number.'
+              : language === 'de'
+                ? 'Gib eine gueltige Telefonnummer ein.'
+                : 'Введи коректний номер телефону.',
         message:
           language === 'cz'
             ? 'Zpráva je povinná.'
@@ -236,6 +272,9 @@ export const ContactForm = () => {
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
       nextErrors.email = copy.errors.emailInvalid
     }
+    if (values.phone.trim() && !isValidPhoneNumber(values.phone)) {
+      nextErrors.phone = copy.errors.phoneInvalid
+    }
     if (!values.message.trim()) nextErrors.message = copy.errors.message
     if (!values.gdprConsent) nextErrors.gdprConsent = copy.errors.gdpr
 
@@ -251,6 +290,14 @@ export const ContactForm = () => {
 
     if (Object.keys(nextErrors).length > 0) return
 
+    if (!turnstileToken) {
+      setSubmitState({
+        type: 'error',
+        message: copy.turnstileRequired,
+      })
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -259,7 +306,10 @@ export const ContactForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          turnstileToken,
+        }),
       })
 
       const result = await response.json()
@@ -273,12 +323,16 @@ export const ContactForm = () => {
         message: result.message || copy.success,
       })
       setValues(initialValues)
+      setTurnstileToken('')
+      turnstileRef.current?.reset()
       setErrors({})
     } catch (error) {
       setSubmitState({
         type: 'error',
         message: error instanceof Error ? error.message : copy.error,
       })
+      setTurnstileToken('')
+      turnstileRef.current?.reset()
     } finally {
       setIsSubmitting(false)
     }
@@ -402,10 +456,17 @@ export const ContactForm = () => {
             type='checkbox'
             checked={values.gdprConsent}
             onChange={(event) =>
-              setValues((current) => ({
-                ...current,
-                gdprConsent: event.target.checked,
-              }))
+              setValues((current) => {
+                if (!event.target.checked) {
+                  setTurnstileToken('')
+                  turnstileRef.current?.reset()
+                }
+
+                return {
+                  ...current,
+                  gdprConsent: event.target.checked,
+                }
+              })
             }
             className='mt-0.5 h-4 w-4 rounded border-black'
           />
@@ -432,6 +493,31 @@ export const ContactForm = () => {
         >
           {submitState.message}
         </div>
+      )}
+
+      {values.gdprConsent ? (
+        <Turnstile
+          ref={turnstileRef}
+          onSuccess={(token) => {
+            setTurnstileToken(token)
+            setSubmitState((current) =>
+              current.message === copy.turnstileRequired ||
+              current.message === copy.turnstileError
+                ? { type: null, message: '' }
+                : current,
+            )
+          }}
+          onError={() => {
+            setTurnstileToken('')
+            setSubmitState({
+              type: 'error',
+              message: copy.turnstileError,
+            })
+          }}
+          onExpire={() => setTurnstileToken('')}
+        />
+      ) : (
+        <p className='font-stabil text-sm text-black/45'>{copy.turnstileHint}</p>
       )}
 
       <button
