@@ -73,6 +73,7 @@ export const Contact = () => {
                   {language === 'de' && 'Newsletter abonnieren →'}
                   {language === 'ua' && 'Слідкувати за новинами →'}
                 </button>
+
               </div>
 
               <div className='font-stabil text-lg xl:text-2xl'>
@@ -110,6 +111,7 @@ export const Contact = () => {
                   <p>DIČ: CZ19647964</p>
                 </div>
               </div>
+
             </div>
 
             <div className='mt-10 grid grid-cols-2 gap-8'>
@@ -171,6 +173,7 @@ export const Contact = () => {
                   {language === 'de' && 'Newsletter abonnieren →'}
                   {language === 'ua' && 'Слідкувати за новинами →'}
                 </button>
+
               </div>
 
               <div>
@@ -208,6 +211,7 @@ export const Contact = () => {
                   <p>DIČ: CZ19647964</p>
                 </div>
               </div>
+
             </div>
           </div>
         </Cols>
