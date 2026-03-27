@@ -22,7 +22,7 @@ export const Contact = () => {
           />
 
           <div className='hidden xl:block'>
-            <div className='grid grid-cols-[1fr_1.8fr] gap-x-24 gap-y-10 font-stabil text-lg xl:text-2xl'>
+            <div className='grid grid-cols-[1.2fr_1.8fr] gap-x-24 gap-y-10 font-stabil text-lg xl:text-2xl'>
               <div className='grid'>
                 <p>Pavlíkova 7, Klatovy</p>
                 <p>Křížová 162, Klatovy</p>
@@ -31,10 +31,7 @@ export const Contact = () => {
                 <br />
                 <p>Adriana Černá</p>
                 <a href='tel:+420733557502'>+420 733 557 502</a>
-                <br />
-                
-                <p>Kateřina Hulecová</p>
-                <a href='tel:+420734675810'>+420 734 675 810</a>
+              
                 <button
                   className='ffs-12-hover inline-flex place-self-start font-labil font-black'
                   onClick={() => openNewsletter()}
