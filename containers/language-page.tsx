@@ -184,10 +184,34 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
         <Container>
           <Cols>
             <SectionTitle
-              titleCz='Proč tento jazyk?'
-              titleEn='Why this language?'
-              titleDe='Warum diese Sprache?'
-              titleUa='Чому ця мова?'
+              titleCz={
+                <>
+                  Proč tento
+                  <br />
+                  jazyk?
+                </>
+              }
+              titleEn={
+                <>
+                  Why this
+                  <br />
+                  language?
+                </>
+              }
+              titleDe={
+                <>
+                  Warum diese
+                  <br />
+                  Sprache?
+                </>
+              }
+              titleUa={
+                <>
+                  Чому ця
+                  <br />
+                  мова?
+                </>
+              }
             />
 
             <div>
@@ -207,7 +231,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </div>
 
               <Link
-                href='/#contact'
+                href='/lesson'
                 className={`${ctaClassName} hidden lg:inline-flex`}
               >
                 {language === 'cz' && 'Chci se rozmluvit →'}
@@ -224,7 +248,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
             )}
           </div>
 
-          <Link href='/#contact' className={`${ctaClassName} lg:hidden`}>
+          <Link href='/lesson' className={`${ctaClassName} lg:hidden`}>
             {language === 'cz' && 'Chci se rozmluvit →'}
             {language === 'en' && 'I want to start speaking →'}
             {language === 'de' && 'Ich will sprechen lernen →'}

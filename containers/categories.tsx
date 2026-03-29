@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Props {
   categories: any
@@ -15,11 +16,11 @@ export const Categories = ({ categories }: Props) => {
   const { language } = useLanguage()
 
   return (
-    <section className='scroll-mt-28 min-h-[75vh]'>
+    <section className='min-h-[75vh] scroll-mt-28'>
       <Container>
         <Cols>
           <div />
-          <h1 className='text-3xl sm:text-4xl md:text-5xl font-black lg:text-6xl py-2'>
+          <h1 className='py-2 text-3xl font-black sm:text-4xl md:text-5xl lg:text-6xl'>
             {language === 'cz' && (
               <>
                 Blog, kde občas <br />
@@ -47,19 +48,19 @@ export const Categories = ({ categories }: Props) => {
           </h1>
         </Cols>
 
-        <div className='grid sm:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-8 mt-14'>
+        <div className='mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 xl:gap-8'>
           {categories.map((item: any) => (
             <Link
               key={item.title}
               href={`/blog/posts?category=${item.title}`}
               style={{ background: `#${item.color}` }}
               className={cn(
-                'flex justify-between items-center text-2xl rounded-2xl py-6 px-9 font-black',
+                'flex items-center justify-between rounded-2xl px-9 py-6 text-2xl font-black',
                 item.disabled && 'pointer-events-none',
-                !item.disabled && 'ffs-12-hover'
+                !item.disabled && 'ffs-12-hover',
               )}
             >
-              <img
+              <Image
                 src={urlForImage(item.image)}
                 alt={item.title}
                 className='size-10'

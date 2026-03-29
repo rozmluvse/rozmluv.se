@@ -5,7 +5,6 @@ import { Container } from '@/components/container'
 import { SectionTitle } from '@/components/section-title'
 import { useNewsletter } from '@/store/use-newsletter'
 import { useLanguage } from '@/store/use-language'
-import { Mail, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
 
 export const Contact = () => {
@@ -136,7 +135,6 @@ export const Contact = () => {
             <div className='grid gap-y-10 font-stabil text-lg'>
               <div className='space-y-8'>
                 <div className='flex items-start gap-4'>
-                  <MapPin className='mt-1 h-6 w-6 shrink-0 text-[#FFC900]' />
                   <div>
                     <p>Pavlíkova 7, Klatovy</p>
                     <p>Křížová 162, Klatovy</p>
@@ -144,12 +142,10 @@ export const Contact = () => {
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  <Mail className='mt-1 h-6 w-6 shrink-0 text-[#00A8CC]' />
                   <a href='mailto:ciao@rozmluv.se'>ciao@rozmluv.se</a>
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  <Phone className='mt-1 h-6 w-6 shrink-0 text-[#ED8996]' />
                   <div className='space-y-3'>
                     <div>
                       <p>Adriana Černá</p>
@@ -193,12 +189,12 @@ export const Contact = () => {
                 </p>
 
                 <div className='mt-8 border-t border-black/20 pt-5 text-base uppercase tracking-[0.08em] text-black/45'>
-                  <p>
+                  {/*<p>
                     {language === 'cz' && 'Fakturační údaje:'}
                     {language === 'en' && 'Billing details:'}
                     {language === 'de' && 'Rechnungsdaten:'}
                     {language === 'ua' && 'Платіжні дані:'}
-                  </p>
+                  </p>*/}
                 </div>
 
                 <div className='mt-4 font-stabil text-lg'>

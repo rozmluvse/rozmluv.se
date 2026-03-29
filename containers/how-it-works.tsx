@@ -63,7 +63,7 @@ export const HowItWorks = ({ data }: Props) => {
             </p>
 
             <Link
-              href='/#contact'
+              href='/lesson'
               className={ctaClassName}
             >
               {language === 'cz' && 'Chci se rozmluvit →'}
