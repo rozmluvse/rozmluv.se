@@ -9,36 +9,80 @@ import { useLanguage } from '@/store/use-language'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
   languageItem: any
   pricelist: any[]
 }
 
+const getLocalizedValue = (
+  language: string,
+  values: Record<string, string | undefined>,
+  fallback = '',
+) => values[language] || values.cz || fallback
+
+const getLectorCtaLabel = (language: string) =>
+  getLocalizedValue(language, {
+    cz: 'Poznej lektora*ku',
+    en: 'Meet the lecturer',
+    de: 'Lerne den*die Lektor*in kennen',
+    ua: 'Познайомся з викладачем*кою',
+  })
+
+const getCarouselAriaLabel = (language: string, direction: 'prev' | 'next') =>
+  direction === 'prev'
+    ? getLocalizedValue(language, {
+        cz: 'Předchozí lektoři',
+        en: 'Previous lectors',
+        de: 'Vorherige Lektor*innen',
+        ua: 'Попередні викладачі',
+      })
+    : getLocalizedValue(language, {
+        cz: 'Další lektoři',
+        en: 'Next lectors',
+        de: 'Nächste Lektor*innen',
+        ua: 'Наступні викладачі',
+      })
+
+const getLessonCtaLabel = (language: string) =>
+  getLocalizedValue(language, {
+    cz: 'Chci se rozmluvit →',
+    en: 'I want to start speaking →',
+    de: 'Ich will sprechen lernen →',
+    ua: 'Хочу почати говорити →',
+  })
+
+const getReserveCtaLabel = (language: string) =>
+  getLocalizedValue(language, {
+    cz: 'Rezervovat',
+    en: 'Book now',
+    de: 'Reservieren',
+    ua: 'Забронювати',
+  })
+
 export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const { language } = useLanguage()
-  const [isDesktopCarousel, setIsDesktopCarousel] = useState(false)
+  const [viewportWidth, setViewportWidth] = useState(0)
   const [lectorsPage, setLectorsPage] = useState(0)
-  const [showAllLectors, setShowAllLectors] = useState(false)
-  const lectorsPerPage = 4
-  const ctaClassName =
-    'mt-8 inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
+  const ctaBaseClassName =
+    'inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
+  const ctaClassName = `mt-8 ${ctaBaseClassName}`
   const languageSlug = languageItem.slug?.current
 
-  const title =
-    (language === 'cz' && languageItem.titleCz) ||
-    (language === 'en' && languageItem.titleEn) ||
-    (language === 'de' && languageItem.titleDe) ||
-    (language === 'ua' && languageItem.titleUa) ||
-    languageItem.titleCz
+  const title = getLocalizedValue(language, {
+    cz: languageItem.titleCz,
+    en: languageItem.titleEn,
+    de: languageItem.titleDe,
+    ua: languageItem.titleUa,
+  })
 
-  const subtitle =
-    (language === 'cz' && languageItem.subtitleCz) ||
-    (language === 'en' && languageItem.subtitleEn) ||
-    (language === 'de' && languageItem.subtitleDe) ||
-    (language === 'ua' && languageItem.subtitleUa) ||
-    languageItem.subtitleCz
+  const subtitle = getLocalizedValue(language, {
+    cz: languageItem.subtitleCz,
+    en: languageItem.subtitleEn,
+    de: languageItem.subtitleDe,
+    ua: languageItem.subtitleUa,
+  })
 
   const whyTitle =
     language === 'cz'
@@ -49,25 +93,34 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           ? `Warum ${languageItem.titleDe}`
           : `Чому ${languageItem.titleUa}`
 
-  const lectors = (languageItem.lectors || [])
-    .map((item: any) => item.lector)
-    .filter(Boolean)
+  const lectors = useMemo(
+    () =>
+      (languageItem.lectors || [])
+        .map((item: any) => item.lector)
+        .filter(Boolean),
+    [languageItem.lectors],
+  )
 
   const whyCards = languageItem.whyCards || []
-  const lectorsPagesCount = Math.ceil(lectors.length / lectorsPerPage)
-  const lectorsPages = Array.from(
-    { length: lectorsPagesCount },
-    (_, pageIndex) =>
-      lectors.slice(
-        pageIndex * lectorsPerPage,
-        (pageIndex + 1) * lectorsPerPage,
+  const languageDetailHref = languageSlug ? `/languages/${languageSlug}` : '/#languages'
+  const lectorsPerPage = viewportWidth >= 1280 ? 4 : 2
+  const lectorsPages = useMemo(
+    () =>
+      Array.from(
+        { length: Math.ceil(lectors.length / lectorsPerPage) },
+        (_, pageIndex) =>
+          lectors.slice(
+            pageIndex * lectorsPerPage,
+            (pageIndex + 1) * lectorsPerPage,
+          ),
       ),
+    [lectors, lectorsPerPage],
   )
-  const visibleMobileLectors = showAllLectors ? lectors : lectors.slice(0, 4)
+  const lectorsPagesCount = lectorsPages.length
 
   useEffect(() => {
     const updateLectorsLayout = () => {
-      setIsDesktopCarousel(window.innerWidth >= 768)
+      setViewportWidth(window.innerWidth)
     }
 
     updateLectorsLayout()
@@ -78,11 +131,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
   useEffect(() => {
     setLectorsPage(0)
-  }, [languageSlug, isDesktopCarousel])
-
-  useEffect(() => {
-    setShowAllLectors(false)
-  }, [languageSlug, isDesktopCarousel])
+  }, [languageSlug, lectorsPerPage])
 
   useEffect(() => {
     if (lectorsPagesCount === 0) return
@@ -100,26 +149,38 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
     >
       <div className='flex h-full min-h-44 flex-col px-6 py-6 sm:min-h-52 sm:py-8'>
         <h3 className='text-left text-2xl font-black'>
-          {language === 'cz' && card.titleCz}
-          {language === 'en' && card.titleEn}
-          {language === 'de' && card.titleDe}
-          {language === 'ua' && card.titleUa}
+          {getLocalizedValue(language, {
+            cz: card.titleCz,
+            en: card.titleEn,
+            de: card.titleDe,
+            ua: card.titleUa,
+          })}
         </h3>
 
         <p className='pt-4 font-stabil text-sm'>
-          {language === 'cz' && card.descriptionCz}
-          {language === 'en' && card.descriptionEn}
-          {language === 'de' && card.descriptionDe}
-          {language === 'ua' && card.descriptionUa}
+          {getLocalizedValue(language, {
+            cz: card.descriptionCz,
+            en: card.descriptionEn,
+            de: card.descriptionDe,
+            ua: card.descriptionUa,
+          })}
         </p>
       </div>
     </div>
   )
 
-  const renderLectorCard = (lector: any, keySuffix = '') => (
+  const renderLectorCard = (
+    lector: any,
+    keySuffix = '',
+    imageSizes = '(min-width: 1280px) 25vw, (min-width: 640px) 25vw, 50vw',
+  ) => (
     <Link
       key={`${lector.slug?.current || lector.name}${keySuffix}`}
-      href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
+      href={
+        lector.slug?.current
+          ? `/lectors/${lector.slug.current}?from=${encodeURIComponent(languageDetailHref)}`
+          : '#'
+      }
       className='group rounded-2xl'
     >
       <div className='relative mb-4 aspect-[9/13.55] overflow-hidden rounded-3xl bg-[#F6F0F8]'>
@@ -127,15 +188,12 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           src={urlForImage(lector.image)}
           alt={lector.name}
           fill
-          sizes='(min-width: 1280px) 25vw, (min-width: 640px) 25vw, 50vw'
+          sizes={imageSizes}
           className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
         />
         <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
           <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
-            {language === 'cz' && 'Poznej lektora*ku'}
-            {language === 'en' && 'Meet the lecturer'}
-            {language === 'de' && 'Lerne den*die Lektor*in kennen'}
-            {language === 'ua' && 'Познайомся з викладачем*кою'}
+            {getLectorCtaLabel(language)}
           </div>
         </div>
       </div>
@@ -143,12 +201,69 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
         {lector.name}
       </h3>
       <p className='font-stabil text-base leading-tight text-black/75'>
-        {language === 'cz' && lector.roleCz}
-        {language === 'en' && lector.roleEn}
-        {language === 'de' && lector.roleDe}
-        {language === 'ua' && lector.roleUa}
+        {getLocalizedValue(language, {
+          cz: lector.roleCz,
+          en: lector.roleEn,
+          de: lector.roleDe,
+          ua: lector.roleUa,
+        })}
       </p>
     </Link>
+  )
+
+  const renderLectorsCarousel = () => (
+    <div className='overflow-hidden'>
+      <div
+        className='flex transition-transform duration-300 ease-out'
+        style={{
+          width: `${lectorsPagesCount * 100}%`,
+          transform: `translateX(-${lectorsPage * (100 / lectorsPagesCount)}%)`,
+        }}
+      >
+        {lectorsPages.map((pageLectors, pageIndex) => (
+          <div
+            key={`language-lectors-page-${pageIndex}`}
+            className='mx-auto grid w-full max-w-3xl shrink-0 grid-cols-2 gap-4 xl:max-w-none xl:gap-2 xl:grid-cols-4'
+            style={{ width: `${100 / lectorsPagesCount}%` }}
+          >
+            {pageLectors.map((lector: any) =>
+              renderLectorCard(lector, `-page-${pageIndex}`),
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className='mt-8 flex items-center justify-between gap-4'>
+        <Link href='/lesson' className={ctaBaseClassName}>
+          {getReserveCtaLabel(language)}
+        </Link>
+
+        {lectorsPagesCount > 1 && (
+          <div className='flex items-center justify-end gap-2'>
+            <button
+              type='button'
+              onClick={() => setLectorsPage((page) => Math.max(page - 1, 0))}
+              className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
+              aria-label={getCarouselAriaLabel(language, 'prev')}
+              disabled={lectorsPage === 0}
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <button
+              type='button'
+              onClick={() =>
+                setLectorsPage((page) => Math.min(page + 1, lectorsPagesCount - 1))
+              }
+              className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
+              aria-label={getCarouselAriaLabel(language, 'next')}
+              disabled={lectorsPage === lectorsPagesCount - 1}
+            >
+              <ArrowRight size={18} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   )
 
   return (
@@ -167,7 +282,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               {language === 'ua' && 'Назад'}
             </Link>
             <div>
-              <h1 className='text-3xl font-black sm:text-4xl md:text-5xl lg:text-6xl'>
+              <h1 className='text-4xl font-black sm:text-4xl md:text-5xl lg:text-6xl'>
                 {title}
               </h1>
               {subtitle && (
@@ -234,10 +349,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                 href='/lesson'
                 className={`${ctaClassName} hidden lg:inline-flex`}
               >
-                {language === 'cz' && 'Chci se rozmluvit →'}
-                {language === 'en' && 'I want to start speaking →'}
-                {language === 'de' && 'Ich will sprechen lernen →'}
-                {language === 'ua' && 'Хочу почати говорити →'}
+                {getLessonCtaLabel(language)}
               </Link>
             </div>
           </Cols>
@@ -249,10 +361,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           </div>
 
           <Link href='/lesson' className={`${ctaClassName} lg:hidden`}>
-            {language === 'cz' && 'Chci se rozmluvit →'}
-            {language === 'en' && 'I want to start speaking →'}
-            {language === 'de' && 'Ich will sprechen lernen →'}
-            {language === 'ua' && 'Хочу почати говорити →'}
+            {getLessonCtaLabel(language)}
           </Link>
         </Container>
       </section>
@@ -282,112 +391,12 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </div>
             </Cols>
 
-            {!isDesktopCarousel && (
-              <>
-                <div className='mt-14 grid grid-cols-2 gap-6'>
-                  {visibleMobileLectors.map((lector: any) =>
-                    renderLectorCard(lector, '-grid'),
-                  )}
-                </div>
+            <div className='mt-14 hidden gap-4 xl:grid xl:grid-cols-[1fr_4.1fr]'>
+              <div />
+              <div>{renderLectorsCarousel()}</div>
+            </div>
 
-                {lectors.length > 4 && (
-                  <div className='mt-8'>
-                    <button
-                      type='button'
-                      onClick={() => setShowAllLectors((value) => !value)}
-                      className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
-                    >
-                      {showAllLectors
-                        ? language === 'cz'
-                          ? 'Skrýt lektory'
-                          : language === 'en'
-                            ? 'Hide lectors'
-                            : language === 'de'
-                              ? 'Lektor*innen ausblenden'
-                              : 'Сховати викладачів'
-                        : language === 'cz'
-                          ? 'Poznat všechny lektory'
-                          : language === 'en'
-                            ? 'Meet all lectors'
-                            : language === 'de'
-                              ? 'Alle Lektor*innen kennenlernen'
-                              : 'Познайомитися з усіма викладачами'}
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-
-            {isDesktopCarousel && (
-              <div className='mt-14'>
-                <div className='overflow-hidden'>
-                  <div
-                    className='flex transition-transform duration-300 ease-out'
-                    style={{
-                      width: `${lectorsPagesCount * 100}%`,
-                      transform: `translateX(-${lectorsPage * (100 / lectorsPagesCount)}%)`,
-                    }}
-                  >
-                    {lectorsPages.map((pageLectors, pageIndex) => (
-                      <div
-                        key={`language-lectors-page-${pageIndex}`}
-                        className='grid w-full shrink-0 grid-cols-4 gap-6'
-                        style={{ width: `${100 / lectorsPagesCount}%` }}
-                      >
-                        {pageLectors.map((lector: any) =>
-                          renderLectorCard(lector, `-page-${pageIndex}`),
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {lectorsPagesCount > 1 && (
-                  <div className='mt-8 flex items-center gap-2'>
-                    <button
-                      type='button'
-                      onClick={() =>
-                        setLectorsPage((page) => Math.max(page - 1, 0))
-                      }
-                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
-                      aria-label={
-                        language === 'cz'
-                          ? 'Předchozí lektoři'
-                          : language === 'en'
-                            ? 'Previous lectors'
-                            : language === 'de'
-                              ? 'Vorherige Lektor*innen'
-                              : 'Попередні викладачі'
-                      }
-                      disabled={lectorsPage === 0}
-                    >
-                      <ArrowLeft size={18} />
-                    </button>
-                    <button
-                      type='button'
-                      onClick={() =>
-                        setLectorsPage((page) =>
-                          Math.min(page + 1, lectorsPagesCount - 1),
-                        )
-                      }
-                      className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
-                      aria-label={
-                        language === 'cz'
-                          ? 'Další lektoři'
-                          : language === 'en'
-                            ? 'Next lectors'
-                            : language === 'de'
-                              ? 'Nächste Lektor*innen'
-                              : 'Наступні викладачі'
-                      }
-                      disabled={lectorsPage === lectorsPagesCount - 1}
-                    >
-                      <ArrowRight size={18} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+            <div className='mt-14 xl:hidden'>{renderLectorsCarousel()}</div>
           </Container>
         </section>
       )}

@@ -9,7 +9,7 @@ import { useLanguage } from '@/store/use-language'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const getMobileTeamVisibility = (index: number, showAllTeam: boolean) => {
   if (showAllTeam) return ''
@@ -17,13 +17,14 @@ const getMobileTeamVisibility = (index: number, showAllTeam: boolean) => {
   return 'hidden'
 }
 
-export const About = ({ lectors }: { lectors: any[] }) => {
-  const { language } = useLanguage()
-  const [showAllTeam, setShowAllTeam] = useState(false)
-  const [desktopTeamPage, setDesktopTeamPage] = useState(0)
-  const desktopTeamPageSize = 4
+const getLocalizedValue = (
+  language: string,
+  values: Record<string, string | undefined>,
+  fallback = '',
+) => values[language] || values.cz || fallback
 
-  const featuredLectors = [...lectors]
+const selectFeaturedLectors = (lectors: any[]) =>
+  [...lectors]
     .filter((lector) => lector.featuredOnAbout)
     .sort(
       (a, b) =>
@@ -32,13 +33,28 @@ export const About = ({ lectors }: { lectors: any[] }) => {
     )
     .slice(0, 2)
 
-  const teamLectors = [...lectors]
+const selectTeamLectors = (lectors: any[]) =>
+  [...lectors]
     .filter((lector) => !lector.featuredOnAbout)
     .sort(
       (a, b) =>
         (a.aboutOrder ?? a.order ?? Number.MAX_SAFE_INTEGER) -
         (b.aboutOrder ?? b.order ?? Number.MAX_SAFE_INTEGER),
     )
+
+const paginate = (items: any[], pageSize: number) =>
+  Array.from({ length: Math.ceil(items.length / pageSize) }, (_, pageIndex) =>
+    items.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
+  )
+
+export const About = ({ lectors }: { lectors: any[] }) => {
+  const { language } = useLanguage()
+  const [showAllTeam, setShowAllTeam] = useState(false)
+  const [desktopTeamPage, setDesktopTeamPage] = useState(0)
+  const desktopTeamPageSize = 4
+
+  const featuredLectors = useMemo(() => selectFeaturedLectors(lectors), [lectors])
+  const teamLectors = useMemo(() => selectTeamLectors(lectors), [lectors])
 
   const desktopTeamPagesCount = Math.ceil(
     teamLectors.length / desktopTeamPageSize,
@@ -48,26 +64,40 @@ export const About = ({ lectors }: { lectors: any[] }) => {
     desktopTeamPage,
     Math.max(desktopTeamPagesCount - 1, 0),
   )
-  const desktopTeamPages = Array.from(
-    { length: desktopTeamPagesCount },
-    (_, pageIndex) =>
-      teamLectors.slice(
-        pageIndex * desktopTeamPageSize,
-        (pageIndex + 1) * desktopTeamPageSize,
-      ),
+  const desktopTeamPages = useMemo(
+    () => paginate(teamLectors, desktopTeamPageSize),
+    [teamLectors, desktopTeamPageSize],
   )
 
   const getBadge = (lector: any) =>
-    (language === 'cz' && lector.aboutBadgeCz) ||
-    (language === 'en' && lector.aboutBadgeEn) ||
-    (language === 'de' && lector.aboutBadgeDe) ||
-    (language === 'ua' && lector.aboutBadgeUa)
+    getLocalizedValue(language, {
+      cz: lector.aboutBadgeCz,
+      en: lector.aboutBadgeEn,
+      de: lector.aboutBadgeDe,
+      ua: lector.aboutBadgeUa,
+    })
 
   const getRole = (lector: any) =>
-    (language === 'cz' && lector.roleCz) ||
-    (language === 'en' && lector.roleEn) ||
-    (language === 'de' && lector.roleDe) ||
-    (language === 'ua' && lector.roleUa)
+    getLocalizedValue(language, {
+      cz: lector.roleCz,
+      en: lector.roleEn,
+      de: lector.roleDe,
+      ua: lector.roleUa,
+    })
+
+  const lectorCtaLabel = getLocalizedValue(language, {
+    cz: 'Poznej lektora*ku',
+    en: 'Meet the lecturer',
+    de: 'Lerne den*die Lektor*in kennen',
+    ua: 'Познайомся з викладачем*кою',
+  })
+
+  const featuredLectorCtaLabel = getLocalizedValue(language, {
+    cz: 'napsat zprávu',
+    en: 'write a message',
+    de: 'schreiben',
+    ua: 'написати',
+  })
 
   const renderTeamCard = (lector: any, imageSizes: string) => (
     <Link
@@ -85,10 +115,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
         />
         <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
           <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
-            {language === 'cz' && 'Poznej lektora*ku'}
-            {language === 'en' && 'Meet the lecturer'}
-            {language === 'de' && 'Lerne den*die Lektor*in kennen'}
-            {language === 'ua' && 'Познайомся з викладачем*кою'}
+            {lectorCtaLabel}
           </div>
         </div>
       </div>
@@ -174,10 +201,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
 
                     <div className='mt-5 pt-1 sm:mt-8'>
                       <div className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'>
-                        {language === 'cz' && 'napsat zprávu'}
-                        {language === 'en' && 'write a message'}
-                        {language === 'de' && 'schreiben'}
-                        {language === 'ua' && 'написати'}
+                        {featuredLectorCtaLabel}
                       </div>
                     </div>
                   </div>
