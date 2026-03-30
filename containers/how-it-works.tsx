@@ -13,7 +13,7 @@ interface Props {
 export const HowItWorks = ({ data }: Props) => {
   const { language } = useLanguage()
   const ctaClassName =
-    'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+    'mt-8 inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
   const steps = [data?.card1, data?.card2, data?.card3].filter(Boolean)
   const renderCard = (step: any, index: number) => (
     <div
@@ -22,11 +22,7 @@ export const HowItWorks = ({ data }: Props) => {
       className='h-full rounded-2xl'
     >
       <div className='flex h-full min-h-52 flex-col px-6 py-8'>
-        <div className='font-labil text-sm font-bold uppercase tracking-[0.16em]'>
-          {index + 1 < 10 ? `0${index + 1}` : index + 1}
-        </div>
-
-        <h3 className='mt-5 text-left text-2xl font-black'>
+        <h3 className='text-left text-2xl font-black'>
           {language === 'cz' && step.titleCz}
           {language === 'en' && step.titleEn}
           {language === 'de' && step.titleDe}

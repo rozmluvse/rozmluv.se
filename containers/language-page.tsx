@@ -23,7 +23,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const [showAllLectors, setShowAllLectors] = useState(false)
   const lectorsPerPage = 4
   const ctaClassName =
-    'mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+    'mt-8 inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
   const languageSlug = languageItem.slug?.current
 
   const title =
@@ -397,7 +397,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
       <section className='scroll-mt-28'>
         <Container>
           <div className='rounded-lg bg-[#FFC900] px-6 py-8 sm:px-10 lg:px-14'>
-            <div className='flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between'>
+            <div className='flex flex-col gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left'>
               <h2 className='font-labil text-3xl font-bold leading-tight text-black md:text-4xl xl:text-[40px] xl:leading-[1.3]'>
                 {language === 'cz' && 'Zajímají tě i jiné jazyky?'}
                 {language === 'en' &&
@@ -409,7 +409,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
               <Link
                 href='/#languages'
-                className='inline-flex h-11 items-center justify-center rounded-xl bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+                className='inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl bg-white px-6 text-center font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white sm:w-auto'
               >
                 {language === 'cz' && 'Výběr jazyka'}
                 {language === 'en' && 'Select language'}

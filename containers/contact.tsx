@@ -10,6 +10,8 @@ import Image from 'next/image'
 export const Contact = () => {
   const { language } = useLanguage()
   const { openNewsletter } = useNewsletter()
+  const emailClassName =
+    'transition-all hover:font-bold active:font-bold'
 
   return (
     <section id='contact' className='scroll-mt-28'>
@@ -35,7 +37,9 @@ export const Contact = () => {
 
                 <div className='flex items-start gap-4'>
                   {/*<Mail className='mt-1 h-6 w-6 shrink-0 text-[#00A8CC] xl:h-7 xl:w-7' />*/}
-                  <a href='mailto:ciao@rozmluv.se'>ciao@rozmluv.se</a>
+                  <a href='mailto:ciao@rozmluv.se' className={emailClassName}>
+                    ciao@rozmluv.se
+                  </a>
                 </div>
 
                 <div className='flex items-start gap-4'>
@@ -142,7 +146,9 @@ export const Contact = () => {
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  <a href='mailto:ciao@rozmluv.se'>ciao@rozmluv.se</a>
+                  <a href='mailto:ciao@rozmluv.se' className={emailClassName}>
+                    ciao@rozmluv.se
+                  </a>
                 </div>
 
                 <div className='flex items-start gap-4'>

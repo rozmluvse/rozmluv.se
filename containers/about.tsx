@@ -28,7 +28,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
     .sort(
       (a, b) =>
         (a.aboutFeaturedOrder ?? Number.MAX_SAFE_INTEGER) -
-        (b.aboutFeaturedOrder ?? Number.MAX_SAFE_INTEGER)
+        (b.aboutFeaturedOrder ?? Number.MAX_SAFE_INTEGER),
     )
     .slice(0, 2)
 
@@ -37,22 +37,24 @@ export const About = ({ lectors }: { lectors: any[] }) => {
     .sort(
       (a, b) =>
         (a.aboutOrder ?? a.order ?? Number.MAX_SAFE_INTEGER) -
-        (b.aboutOrder ?? b.order ?? Number.MAX_SAFE_INTEGER)
+        (b.aboutOrder ?? b.order ?? Number.MAX_SAFE_INTEGER),
     )
 
-  const desktopTeamPagesCount = Math.ceil(teamLectors.length / desktopTeamPageSize)
+  const desktopTeamPagesCount = Math.ceil(
+    teamLectors.length / desktopTeamPageSize,
+  )
   const desktopTeamPagesWidth = Math.max(desktopTeamPagesCount, 1)
   const activeDesktopTeamPage = Math.min(
     desktopTeamPage,
-    Math.max(desktopTeamPagesCount - 1, 0)
+    Math.max(desktopTeamPagesCount - 1, 0),
   )
   const desktopTeamPages = Array.from(
     { length: desktopTeamPagesCount },
     (_, pageIndex) =>
       teamLectors.slice(
         pageIndex * desktopTeamPageSize,
-        (pageIndex + 1) * desktopTeamPageSize
-      )
+        (pageIndex + 1) * desktopTeamPageSize,
+      ),
   )
 
   const getBadge = (lector: any) =>
@@ -123,7 +125,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
             <div className='mt-8'>
               <Link
                 href='/story'
-                className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+                className='inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
               >
                 {language === 'cz' && 'Jak vzniklo naše studio?'}
                 {language === 'en' && 'How was our studio founded?'}
@@ -135,43 +137,45 @@ export const About = ({ lectors }: { lectors: any[] }) => {
         </Cols>
 
         {featuredLectors.length > 0 && (
-          <div className='mt-14 grid grid-cols-2 gap-4 sm:gap-6'>
+          <div className='mt-14 grid auto-rows-fr grid-cols-2 gap-4 sm:gap-6'>
             {featuredLectors.map((lector) => (
               <Link
                 key={lector.slug?.current || lector.name}
-                href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
-                className='group rounded-3xl bg-[#F6F0F8] p-4 sm:p-5'
+                href={
+                  lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
+                }
+                className='group h-full rounded-3xl bg-[#F6F0F8] p-4 sm:p-5'
               >
-                <div className='grid gap-4 xl:grid-cols-[220px_1fr] xl:items-start xl:gap-5'>
+                <div className='grid h-full gap-4 lg:grid-cols-[220px_1fr] lg:items-start lg:gap-5'>
                   <div className='relative aspect-[0.9] overflow-hidden rounded-[28px] bg-white/60'>
                     <Image
                       src={urlForImage(lector.image)}
                       alt={lector.name}
                       fill
-                      sizes='(min-width: 1280px) 25vw, 100vw'
+                      sizes='(min-width: 1024px) 25vw, 100vw'
                       className='object-cover transition-opacity duration-200 group-hover:opacity-85'
                     />
                   </div>
 
-                  <div className='flex h-full min-w-0 flex-col justify-between'>
-                    <div>
+                  <div className='flex h-full min-w-0 flex-col'>
+                    <div className='flex-1'>
                       {getBadge(lector) && (
-                        <div className='mb-3 inline-flex rounded-full bg-[#F7CC46] px-3 py-1 font-stabil text-xs font-bold sm:mb-4 sm:px-4 sm:text-sm'>
+                        <div className='mb-3 inline-flex max-w-full items-center self-start rounded-full bg-[#F7CC46] px-3 py-1 text-center font-stabil text-xs font-bold leading-tight sm:mb-4 sm:px-4 sm:text-sm'>
                           {getBadge(lector)}
                         </div>
                       )}
-                      <h3 className='break-words text-xl font-black leading-none sm:text-2xl xl:text-3xl'>
+                      <h3 className='break-words text-xl font-black leading-none sm:text-2xl lg:text-3xl'>
                         {lector.name}
                       </h3>
-                      <p className='mt-2 font-stabil text-sm leading-tight sm:mt-3 sm:text-base xl:text-xl'>
+                      <p className='mt-2 font-stabil text-sm leading-tight sm:mt-3 sm:text-base lg:text-xl'>
                         {getRole(lector)}
                       </p>
                     </div>
 
-                    <div className='mt-5 sm:mt-8'>
+                    <div className='mt-5 pt-1 sm:mt-8'>
                       <div className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'>
-                        {language === 'cz' && 'napsat'}
-                        {language === 'en' && 'write'}
+                        {language === 'cz' && 'napsat zprávu'}
+                        {language === 'en' && 'write a message'}
                         {language === 'de' && 'schreiben'}
                         {language === 'ua' && 'написати'}
                       </div>
@@ -245,7 +249,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
                       style={{ width: `${100 / desktopTeamPagesWidth}%` }}
                     >
                       {pageLectors.map((lector) =>
-                        renderTeamCard(lector, '25vw')
+                        renderTeamCard(lector, '25vw'),
                       )}
                     </div>
                   ))}
@@ -278,7 +282,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
                   type='button'
                   onClick={() =>
                     setDesktopTeamPage((page) =>
-                      Math.min(page + 1, desktopTeamPagesCount - 1)
+                      Math.min(page + 1, desktopTeamPagesCount - 1),
                     )
                   }
                   className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
@@ -301,7 +305,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
         </div>
 
         <div className='mt-10 rounded-2xl bg-[#ED8996] px-6 py-5'>
-          <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+          <div className='flex flex-col gap-4 text-center md:flex-row md:items-center md:justify-between md:text-left'>
             <h3 className='font-labil text-xl font-bold leading-tight text-black sm:text-2xl'>
               {language === 'cz' && 'Chceš se stát součástí lektorského týmu?'}
               {language === 'en' &&
@@ -313,7 +317,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
 
             <Link
               href='/for-lectors'
-              className='inline-flex h-11 w-full items-center justify-center rounded-full bg-white px-6 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:text-base'
+              className='inline-flex h-11 w-full items-center justify-center rounded-full bg-white px-6 text-center font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:text-base'
             >
               {language === 'cz' && 'To teda'}
               {language === 'en' && 'Hell yeah'}
