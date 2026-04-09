@@ -9,7 +9,7 @@ import { useLanguage } from '@/store/use-language'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Dispatch, SetStateAction, useMemo, useState } from 'react'
+import { useState } from 'react'
 
 interface Props {
   languageItem: any
@@ -98,18 +98,13 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           ? `Warum ${languageItem.titleDe}`
           : `Чому ${languageItem.titleUa}`
 
-  const lectors = useMemo(
-    () =>
-      (languageItem.lectors || [])
-        .map((item: any) => item.lector)
-        .filter(Boolean),
-    [languageItem.lectors],
-  )
-
+  const lectors = (languageItem.lectors || [])
+    .map((item: any) => item.lector)
+    .filter(Boolean)
   const whyCards = languageItem.whyCards || []
   const languageDetailHref = languageSlug ? `/languages/${languageSlug}` : '/#languages'
-  const mobileLectorPages = useMemo(() => paginate(lectors, 2), [lectors])
-  const desktopLectorPages = useMemo(() => paginate(lectors, 4), [lectors])
+  const mobileLectorPages = paginate(lectors, 2)
+  const desktopLectorPages = paginate(lectors, 4)
 
   const renderWhyCard = (card: any, index: number, keySuffix = '') => (
     <div
@@ -186,23 +181,27 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const renderLectorsCarousel = (
     pages: any[][],
     currentPage: number,
-    setCurrentPage: Dispatch<SetStateAction<number>>,
+    onPrev: () => void,
+    onNext: () => void,
     className: string,
     imageSizes: string,
-  ) => (
-    <div className='overflow-hidden'>
-      <div
-        className='flex transition-transform duration-300 ease-out'
-        style={{
-          width: `${Math.max(pages.length, 1) * 100}%`,
-          transform: `translateX(-${currentPage * (100 / Math.max(pages.length, 1))}%)`,
-        }}
-      >
+  ) => {
+    const pageCount = Math.max(pages.length, 1)
+
+    return (
+      <div className='overflow-hidden'>
+        <div
+          className='flex transition-transform duration-300 ease-out'
+          style={{
+            width: `${pageCount * 100}%`,
+            transform: `translateX(-${currentPage * (100 / pageCount)}%)`,
+          }}
+        >
         {pages.map((pageLectors, pageIndex) => (
           <div
             key={`language-lectors-page-${pageIndex}`}
             className={className}
-            style={{ width: `${100 / Math.max(pages.length, 1)}%` }}
+            style={{ width: `${100 / pageCount}%` }}
           >
             {pageLectors.map((lector: any) =>
               renderLectorCard(lector, `-page-${pageIndex}`, imageSizes),
@@ -220,7 +219,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           <div className='flex items-center justify-end gap-2'>
             <button
               type='button'
-              onClick={() => setCurrentPage((page) => Math.max(page - 1, 0))}
+              onClick={onPrev}
               className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
               aria-label={getCarouselAriaLabel(language, 'prev')}
               disabled={currentPage === 0}
@@ -229,9 +228,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
             </button>
             <button
               type='button'
-              onClick={() =>
-                setCurrentPage((page) => Math.min(page + 1, pages.length - 1))
-              }
+              onClick={onNext}
               className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
               aria-label={getCarouselAriaLabel(language, 'next')}
               disabled={currentPage === pages.length - 1}
@@ -242,7 +239,8 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
         )}
       </div>
     </div>
-  )
+    )
+  }
 
   return (
     <main className='mb-8 mt-32 space-y-16 xl:mt-24 xl:space-y-24'>
@@ -375,7 +373,11 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
                 {renderLectorsCarousel(
                   desktopLectorPages,
                   Math.min(desktopLectorsPage, Math.max(desktopLectorPages.length - 1, 0)),
-                  setDesktopLectorsPage,
+                  () => setDesktopLectorsPage((page) => Math.max(page - 1, 0)),
+                  () =>
+                    setDesktopLectorsPage((page) =>
+                      Math.min(page + 1, desktopLectorPages.length - 1),
+                    ),
                   'grid w-full shrink-0 grid-cols-4 gap-2',
                   '25vw',
                 )}
@@ -386,7 +388,11 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               {renderLectorsCarousel(
                 mobileLectorPages,
                 Math.min(mobileLectorsPage, Math.max(mobileLectorPages.length - 1, 0)),
-                setMobileLectorsPage,
+                () => setMobileLectorsPage((page) => Math.max(page - 1, 0)),
+                () =>
+                  setMobileLectorsPage((page) =>
+                    Math.min(page + 1, mobileLectorPages.length - 1),
+                  ),
                 'mx-auto grid w-full max-w-3xl shrink-0 grid-cols-2 gap-4',
                 '(min-width: 640px) 25vw, 50vw',
               )}

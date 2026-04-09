@@ -10,8 +10,7 @@ import Image from 'next/image'
 export const Contact = () => {
   const { language } = useLanguage()
   const { openNewsletter } = useNewsletter()
-  const emailClassName =
-    'transition-all hover:font-bold active:font-bold'
+  const emailClassName = 'transition-all hover:font-bold active:font-bold'
 
   return (
     <section id='contact' className='scroll-mt-28'>
@@ -28,7 +27,6 @@ export const Contact = () => {
             <div className='grid gap-12 xl:grid-cols-[1.05fr_1fr] xl:gap-20'>
               <div className='space-y-8 font-stabil text-lg xl:text-2xl'>
                 <div className='flex items-start gap-4'>
-                  {/*<MapPin className='mt-1 h-6 w-6 shrink-0 text-[#FFC900] xl:h-7 xl:w-7' />*/}
                   <div>
                     <p>Pavlíkova 7, Klatovy</p>
                     <p>Křížová 162, Klatovy</p>
@@ -36,14 +34,12 @@ export const Contact = () => {
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  {/*<Mail className='mt-1 h-6 w-6 shrink-0 text-[#00A8CC] xl:h-7 xl:w-7' />*/}
                   <a href='mailto:ciao@rozmluv.se' className={emailClassName}>
                     ciao@rozmluv.se
                   </a>
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  {/*<Phone className='mt-1 h-6 w-6 shrink-0 text-[#ED8996] xl:h-7 xl:w-7' />*/}
                   <div className='space-y-3'>
                     <div>
                       <p>Adriana Černá</p>
@@ -56,17 +52,6 @@ export const Contact = () => {
                   </div>
                 </div>
 
-                {/*
-                <button
-                  className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black shadow-[4px_4px_0_0_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
-                  onClick={() => openNewsletter()}
-                >
-                  {language === 'cz' && 'Odběr newsletteru →'}
-                  {language === 'en' && 'Newsletter subscription →'}
-                  {language === 'de' && 'Newsletter abonnieren →'}
-                  {language === 'ua' && 'Слідкувати za novinami →'}
-                </button>
-                */}
                 <button
                   className='inline-flex min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:py-2 sm:text-xl sm:leading-6'
                   onClick={() => openNewsletter()}
@@ -98,12 +83,12 @@ export const Contact = () => {
                 </p>
 
                 <div className='mt-8 border-t border-black/20 pt-5 text-base uppercase tracking-[0.08em] text-black/45 xl:text-lg'>
-                  {/*<p>
+                  <p>
                     {language === 'cz' && 'Fakturační údaje:'}
                     {language === 'en' && 'Billing details:'}
                     {language === 'de' && 'Rechnungsdaten:'}
                     {language === 'ua' && 'Платіжні дані:'}
-                  </p>*/}
+                  </p>
                 </div>
 
                 <div className='mt-4 font-stabil text-lg xl:text-2xl'>
@@ -195,12 +180,12 @@ export const Contact = () => {
                 </p>
 
                 <div className='mt-8 border-t border-black/20 pt-5 text-base uppercase tracking-[0.08em] text-black/45'>
-                  {/*<p>
+                  <p>
                     {language === 'cz' && 'Fakturační údaje:'}
                     {language === 'en' && 'Billing details:'}
                     {language === 'de' && 'Rechnungsdaten:'}
                     {language === 'ua' && 'Платіжні дані:'}
-                  </p>*/}
+                  </p>
                 </div>
 
                 <div className='mt-4 font-stabil text-lg'>

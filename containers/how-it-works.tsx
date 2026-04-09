@@ -14,7 +14,9 @@ export const HowItWorks = ({ data }: Props) => {
   const { language } = useLanguage()
   const ctaClassName =
     'mt-8 inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
-  const steps = [data?.card1, data?.card2, data?.card3].filter(Boolean)
+  const steps = [data?.card1, data?.card2, data?.card3, data?.card4].filter(
+    Boolean,
+  )
   const renderCard = (step: any, index: number) => (
     <div
       key={step.titleCz + index}
@@ -68,7 +70,7 @@ export const HowItWorks = ({ data }: Props) => {
               {language === 'ua' && 'Хочу почати говорити →'}
             </Link>
 
-            <div className='mt-14 hidden auto-rows-fr gap-6 lg:grid lg:grid-cols-3'>
+            <div className='mt-14 hidden auto-rows-fr gap-6 lg:grid lg:grid-cols-2 2xl:grid-cols-4'>
               {steps.map((step, index) => renderCard(step, index))}
             </div>
           </div>

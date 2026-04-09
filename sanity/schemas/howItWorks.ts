@@ -99,6 +99,12 @@ export default defineType({
       type: 'object',
       fields: cardFields,
     }),
+    defineField({
+      name: 'card4',
+      title: 'Karta 4',
+      type: 'object',
+      fields: cardFields,
+    }),
   ],
   preview: {
     prepare() {

@@ -64,7 +64,7 @@ export const Companies = ({ companies }: Props) => {
               textUa='Ми вміємо залучати до корпоративної роботи. Міжнародних працівників навчимо німецької, іноземців чеської та будь-кого англійської або китайської. Ми можемо зустрітись у класі Klatovy, у вашій компанії або онлайн з будь-якої точки світу.'
             />
 
-            <div className='mt-14 hidden gap-6 md:auto-rows-fr md:grid-cols-2 xl:grid xl:grid-cols-3'>
+            <div className='mt-14 hidden auto-rows-fr gap-6 xl:grid xl:grid-cols-3'>
               {companies.map((company) => renderCard(company))}
             </div>
 

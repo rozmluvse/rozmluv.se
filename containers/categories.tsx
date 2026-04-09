@@ -63,6 +63,8 @@ export const Categories = ({ categories }: Props) => {
               <Image
                 src={urlForImage(item.image)}
                 alt={item.title}
+                width={40}
+                height={40}
                 className='size-10'
               />
               {item.title}

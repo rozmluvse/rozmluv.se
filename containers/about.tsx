@@ -9,12 +9,12 @@ import { useLanguage } from '@/store/use-language'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 const getMobileTeamVisibility = (index: number, showAllTeam: boolean) => {
   if (showAllTeam) return ''
   if (index < 4) return ''
-  return 'hidden'
+  return 'hidden sm:block'
 }
 
 const getLocalizedValue = (
@@ -56,20 +56,14 @@ export const About = ({ lectors }: { lectors: any[] }) => {
   const [desktopTeamPage, setDesktopTeamPage] = useState(0)
   const desktopTeamPageSize = 4
 
-  const featuredLectors = useMemo(() => selectFeaturedLectors(lectors), [lectors])
-  const teamLectors = useMemo(() => selectTeamLectors(lectors), [lectors])
-
-  const desktopTeamPagesCount = Math.ceil(
-    teamLectors.length / desktopTeamPageSize,
-  )
+  const featuredLectors = selectFeaturedLectors(lectors)
+  const teamLectors = selectTeamLectors(lectors)
+  const desktopTeamPages = paginate(teamLectors, desktopTeamPageSize)
+  const desktopTeamPagesCount = desktopTeamPages.length
   const desktopTeamPagesWidth = Math.max(desktopTeamPagesCount, 1)
   const activeDesktopTeamPage = Math.min(
     desktopTeamPage,
     Math.max(desktopTeamPagesCount - 1, 0),
-  )
-  const desktopTeamPages = useMemo(
-    () => paginate(teamLectors, desktopTeamPageSize),
-    [teamLectors, desktopTeamPageSize],
   )
 
   const getBadge = (lector: any) =>
@@ -108,6 +102,20 @@ export const About = ({ lectors }: { lectors: any[] }) => {
     de: 'Lektor*in poznat',
     ua: 'пізнати викладача',
   })
+
+  const renderFeaturedCta = (lector: any, className: string) =>
+    lector.featuredEmail ? (
+      <a href={`mailto:${lector.featuredEmail}`} className={className}>
+        {featuredLectorCtaLabel}
+      </a>
+    ) : (
+      <Link
+        href={lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'}
+        className={className}
+      >
+        {featuredLectorFallbackCtaLabel}
+      </Link>
+    )
 
   const renderTeamCard = (lector: any, imageSizes: string) => (
     <Link
@@ -160,10 +168,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
             </div>
 
             <div className='mt-8'>
-              <Link
-                href='/story'
-                className={ctaButtonClassName}
-              >
+              <Link href='/story' className={ctaButtonClassName}>
                 {language === 'cz' && 'Jak vzniklo naše studio?'}
                 {language === 'en' && 'How was our studio founded?'}
                 {language === 'de' && 'Wie ist unser Studio entstanden?'}
@@ -174,16 +179,67 @@ export const About = ({ lectors }: { lectors: any[] }) => {
         </Cols>
 
         {featuredLectors.length > 0 && (
-          <div className='mt-14 grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6'>
+          <div className='mt-14 grid auto-rows-fr grid-cols-2 gap-4 sm:gap-6'>
             {featuredLectors.map((lector) => (
               <div
                 key={lector.slug?.current || lector.name}
                 className='group h-full rounded-3xl bg-[#F6F0F8] p-4 sm:p-5'
               >
-                <div className='grid h-full gap-4 lg:grid-cols-[220px_1fr] lg:items-start lg:gap-5'>
+                <div className='flex h-full flex-col gap-4 lg:hidden'>
                   <Link
                     href={
-                      lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
+                      lector.slug?.current
+                        ? `/lectors/${lector.slug.current}`
+                        : '#'
+                    }
+                    className='block'
+                  >
+                    <div className='relative aspect-[0.88] overflow-hidden rounded-[24px] bg-white/60'>
+                      <Image
+                        src={urlForImage(lector.image)}
+                        alt={lector.name}
+                        fill
+                        sizes='50vw'
+                        className='object-cover transition-opacity duration-200 group-hover:opacity-85'
+                      />
+                    </div>
+                  </Link>
+                  <div className='flex h-full min-w-0 flex-col'>
+                    {getBadge(lector) && (
+                      <div className='inline-flex max-w-full items-center self-start rounded-full bg-[#F7CC46] px-3 py-1 text-center font-stabil text-[11px] font-bold leading-tight'>
+                        {getBadge(lector)}
+                      </div>
+                    )}
+                    <Link
+                      href={
+                        lector.slug?.current
+                          ? `/lectors/${lector.slug.current}`
+                          : '#'
+                      }
+                      className='mt-3 block flex-1'
+                    >
+                      <h3 className='break-words text-lg font-black leading-none sm:text-xl'>
+                        {lector.name}
+                      </h3>
+                      <p className='mt-2 font-stabil text-xs leading-tight sm:text-sm'>
+                        {getRole(lector)}
+                      </p>
+                    </Link>
+                    <div className='mt-4 pt-1'>
+                      {renderFeaturedCta(
+                        lector,
+                        'inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-xs font-bold text-black transition-colors hover:bg-black hover:text-white sm:text-sm',
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className='hidden h-full lg:grid lg:grid-cols-[220px_1fr] lg:items-start lg:gap-5'>
+                  <Link
+                    href={
+                      lector.slug?.current
+                        ? `/lectors/${lector.slug.current}`
+                        : '#'
                     }
                     className='block'
                   >
@@ -201,7 +257,9 @@ export const About = ({ lectors }: { lectors: any[] }) => {
                   <div className='flex h-full min-w-0 flex-col'>
                     <Link
                       href={
-                        lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
+                        lector.slug?.current
+                          ? `/lectors/${lector.slug.current}`
+                          : '#'
                       }
                       className='block flex-1'
                     >
@@ -221,22 +279,9 @@ export const About = ({ lectors }: { lectors: any[] }) => {
                     </Link>
 
                     <div className='mt-5 pt-1 sm:mt-8'>
-                      {lector.featuredEmail ? (
-                        <a
-                          href={`mailto:${lector.featuredEmail}`}
-                          className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'
-                        >
-                          {featuredLectorCtaLabel}
-                        </a>
-                      ) : (
-                        <Link
-                          href={
-                            lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
-                          }
-                          className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'
-                        >
-                          {featuredLectorFallbackCtaLabel}
-                        </Link>
+                      {renderFeaturedCta(
+                        lector,
+                        'inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base',
                       )}
                     </div>
                   </div>
@@ -254,7 +299,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
             {language === 'ua' && 'Наша команда викладачів'}
           </h3>
 
-          <div className='mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4 lg:hidden'>
+          <div className='mt-8 grid grid-cols-2 gap-6 sm:hidden'>
             {teamLectors.map((lector, index) => (
               <div
                 key={lector.slug?.current || lector.name}
@@ -266,7 +311,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
           </div>
 
           {teamLectors.length > 4 && (
-            <div className='mt-8 lg:hidden'>
+            <div className='mt-8 sm:hidden'>
               <button
                 type='button'
                 onClick={() => setShowAllTeam((value) => !value)}
@@ -291,7 +336,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
             </div>
           )}
 
-          <div className='hidden lg:block'>
+          <div className='hidden sm:block'>
             {desktopTeamPagesCount > 0 && (
               <div className='mt-8 overflow-hidden'>
                 <div
@@ -376,7 +421,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
 
             <Link
               href='/for-lectors'
-              className='inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-6 py-3 text-center font-labil text-sm font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:py-2 sm:text-base'
+              className='inline-flex min-h-11 items-center justify-center self-center rounded-full bg-white px-6 py-3 text-center font-labil text-sm font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white md:w-auto md:self-auto md:py-2 md:text-base'
             >
               {language === 'cz' && 'To teda'}
               {language === 'en' && 'Hell yeah'}

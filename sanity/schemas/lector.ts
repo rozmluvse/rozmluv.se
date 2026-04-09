@@ -1,6 +1,12 @@
-import { defineField, defineType } from 'sanity'
+import {
+  ConditionalPropertyCallbackContext,
+  defineField,
+  defineType,
+} from 'sanity'
 
-const isNotFeaturedOnAbout = ({ document }: { document?: { featuredOnAbout?: boolean } }) =>
+const isNotFeaturedOnAbout = ({
+  document,
+}: ConditionalPropertyCallbackContext) =>
   !document?.featuredOnAbout
 
 export default defineType({

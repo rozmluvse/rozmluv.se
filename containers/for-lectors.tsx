@@ -67,13 +67,6 @@ export const ForLectors = ({
     }),
   )
 
-  const extraSectionTitle = getLocalizedValue(language, {
-    cz: page?.extraSectionTitleCz,
-    en: page?.extraSectionTitleEn,
-    de: page?.extraSectionTitleDe,
-    ua: page?.extraSectionTitleUa,
-  })
-
   const extraSectionDescription = getLocalizedValue(language, {
     cz: page?.extraSectionDescriptionCz,
     en: page?.extraSectionDescriptionEn,
