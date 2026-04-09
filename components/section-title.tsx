@@ -1,10 +1,11 @@
+import { ReactNode } from 'react'
 import { useLanguage } from '@/store/use-language'
 
 interface Props {
-  titleCz: string
-  titleEn: string
-  titleDe: string
-  titleUa: string
+  titleCz: ReactNode
+  titleEn: ReactNode
+  titleDe: ReactNode
+  titleUa: ReactNode
 }
 
 export const SectionTitle = ({ titleCz, titleEn, titleDe, titleUa }: Props) => {

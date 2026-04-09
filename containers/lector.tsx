@@ -5,17 +5,20 @@ import { Container } from '@/components/container'
 import { urlForImage } from '@/sanity/lib/image'
 import { useLanguage } from '@/store/use-language'
 import { ArrowLeft } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export const Lector = ({ lector }: { lector: any }) => {
   const { language } = useLanguage()
+  const searchParams = useSearchParams()
+  const backHref = searchParams.get('from') || '/#about'
 
   return (
     <main className='mt-32 lg:mt-0'>
       <Container className='min-h-screen grid place-content-center'>
         <Cols>
           <Link
-            href='/#about'
+            href={backHref}
             className='flex gap-1 items-center font-stabil text-lg'
           >
             Zpět <ArrowLeft size={18} />

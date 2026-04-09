@@ -21,6 +21,12 @@ export const LectorQuery = groq`
 export const LookingForQuery = groq`
     *[_type=='lookingFor'] {
         ...,
+    } | order(order asc)
+`
+
+export const ForLectorsPageQuery = groq`
+    *[_type=='forLectorsPage'][0]{
+        ...
     }
 `
 
@@ -57,6 +63,21 @@ export const LanguagesQuery = groq`
     } | order(order asc)
 `
 
+export const LanguagesPathsQuery = groq`
+    *[_type == "language" && defined(slug.current)][]{
+        "slug": slug.current
+    }
+`
+
+export const LanguageQuery = groq`
+    *[_type == "language" && slug.current == $slug][0]{
+        ...,
+        lectors[]{
+            lector->
+        }
+    }
+`
+
 export const CompaniesQuery = groq`
     *[_type=='company'] {
         ...,
@@ -79,6 +100,12 @@ export const PricelistQuery = groq`
     *[_type=='pricelist'] {
         ...,
     } | order(order asc)
+`
+
+export const HowItWorksQuery = groq`
+    *[_type=='howItWorks'][0]{
+        ...
+    }
 `
 
 export const RedirectsQuery = groq`

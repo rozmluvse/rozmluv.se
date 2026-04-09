@@ -6,12 +6,6 @@ import { useLanguage } from '@/store/use-language'
 import Link from 'next/link'
 import { Cols } from '@/components/cols'
 import { SectionTitle } from '@/components/section-title'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 
 interface Props {
   companies: any[]
@@ -19,9 +13,37 @@ interface Props {
 
 export const Companies = ({ companies }: Props) => {
   const { language } = useLanguage()
+  const ctaClassName =
+    'mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:py-2 sm:text-xl sm:leading-6'
 
-  const totalItems = companies.length
-  const itemsPerColumn = Math.ceil(totalItems / 2)
+  const renderCard = (company: any) => (
+    <div
+      key={company.link}
+      style={{ backgroundColor: `#${company.color}` }}
+      className='group h-full rounded-2xl'
+    >
+      <div className='flex h-full min-h-52 flex-col px-6 py-8'>
+        <p className='font-stabil text-lg'>
+          {language === 'cz' && company.textCz}
+          {language === 'en' && company.textEn}
+          {language === 'de' && company.textDe}
+          {language === 'ua' && company.textUa}
+        </p>
+
+        <div className='mt-auto flex flex-col gap-2 pt-6 sm:flex-row sm:items-end sm:justify-between'>
+          <h3 className="text-left text-2xl font-black [font-feature-settings:'normal'] group-hover:[font-feature-settings:'ss01','ss02']">
+            {company.title}
+          </h3>
+          <Link
+            href={company.link}
+            className="font-stabil text-sm underline underline-offset-2 [font-feature-settings:'normal'] group-hover:[font-feature-settings:'ss01','ss02']"
+          >
+            {company.linkPreview}
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <section id='companies' className='scroll-mt-28'>
@@ -42,105 +64,35 @@ export const Companies = ({ companies }: Props) => {
               textUa='Ми вміємо залучати до корпоративної роботи. Міжнародних працівників навчимо німецької, іноземців чеської та будь-кого англійської або китайської. Ми можемо зустрітись у класі Klatovy, у вашій компанії або онлайн з будь-якої точки світу.'
             />
 
-            <div className='grid-cols-2 gap-8 mt-14 hidden lg:grid'>
-              <Accordion type='multiple' className='flex flex-col gap-8'>
-                {companies.slice(0, itemsPerColumn).map(company => (
-                  <AccordionItem
-                    key={company.link}
-                    value={company.textCz}
-                    style={{ backgroundColor: `#${company.color}` }}
-                    className='rounded-2xl h-min'
-                  >
-                    <AccordionTrigger>{company.title}</AccordionTrigger>
-                    <AccordionContent>
-                      {language === 'cz' && company.textCz}
-                      {language === 'en' && company.textEn}
-                      {language === 'de' && company.textDe}
-                      {language === 'ua' && company.textUa}
-
-                      <br />
-                      <div className='flex justify-between mt-4 text-xs'>
-                        <Link href={company.link}>{company.linkPreview}</Link>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-              <Accordion type='multiple' className='flex flex-col gap-8'>
-                {companies.slice(itemsPerColumn).map(company => (
-                  <AccordionItem
-                    key={company.link}
-                    value={company.textCz}
-                    style={{ backgroundColor: `#${company.color}` }}
-                    className='rounded-2xl h-min'
-                  >
-                    <AccordionTrigger>{company.title}</AccordionTrigger>
-                    <AccordionContent>
-                      {language === 'cz' && company.textCz}
-                      {language === 'en' && company.textEn}
-                      {language === 'de' && company.textDe}
-                      {language === 'ua' && company.textUa}
-
-                      <br />
-                      <div className='flex justify-between mt-4 text-xs'>
-                        <Link href={company.link}>{company.linkPreview}</Link>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+            <div className='mt-14 hidden auto-rows-fr gap-6 xl:grid xl:grid-cols-3'>
+              {companies.map((company) => renderCard(company))}
             </div>
+
+            <Link
+              href='/#contact'
+              className={`${ctaClassName} hidden xl:inline-flex`}
+            >
+              {language === 'cz' && 'Chci zapojit firmu →'}
+              {language === 'en' && 'I want to involve my company →'}
+              {language === 'de' && 'Ich will meine Firma einbeziehen →'}
+              {language === 'ua' && 'Хочу залучити компанію →'}
+            </Link>
           </div>
         </Cols>
 
-        <div className='grid sm:grid-cols-2 gap-4 mt-14 lg:hidden'>
-          <Accordion type='multiple' className='flex flex-col gap-4'>
-            {companies.slice(0, itemsPerColumn).map(company => (
-              <AccordionItem
-                key={company.link}
-                value={company.textCz}
-                style={{ backgroundColor: `#${company.color}` }}
-                className='rounded-2xl h-min'
-              >
-                <AccordionTrigger>{company.title}</AccordionTrigger>
-                <AccordionContent>
-                  {language === 'cz' && company.textCz}
-                  {language === 'en' && company.textEn}
-                  {language === 'de' && company.textDe}
-                  {language === 'ua' && company.textUa}
-
-                  <br />
-                  <div className='flex justify-between mt-4 text-xs'>
-                    <Link href={company.link}>{company.linkPreview}</Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-          <Accordion type='multiple' className='flex flex-col gap-4'>
-            {companies.slice(itemsPerColumn).map(company => (
-              <AccordionItem
-                key={company.link}
-                value={company.textCz}
-                style={{ backgroundColor: `#${company.color}` }}
-                className='rounded-2xl h-min'
-              >
-                <AccordionTrigger>{company.title}</AccordionTrigger>
-                <AccordionContent>
-                  {language === 'cz' && company.textCz}
-                  {language === 'en' && company.textEn}
-                  {language === 'de' && company.textDe}
-                  {language === 'ua' && company.textUa}
-
-                  <br />
-                  <div className='flex justify-between mt-4 text-xs'>
-                    <Link href={company.link}>{company.linkPreview}</Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <div className='mt-14 grid gap-6 sm:auto-rows-fr sm:grid-cols-2 xl:hidden'>
+          {companies.map((company) => renderCard(company))}
         </div>
+
+        <Link
+          href='/#contact'
+          className={`${ctaClassName} xl:hidden`}
+        >
+          {language === 'cz' && 'Chci zapojit firmu →'}
+          {language === 'en' && 'I want to involve my company →'}
+          {language === 'de' && 'Ich will meine Firma einbeziehen →'}
+          {language === 'ua' && 'Хочу залучити компанію →'}
+        </Link>
       </Container>
     </section>
   )

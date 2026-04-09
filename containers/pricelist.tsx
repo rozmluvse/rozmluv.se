@@ -1,16 +1,10 @@
 'use client'
 
 import { Container } from '@/components/container'
-import { InfoText } from '@/components/info-text'
 import { useLanguage } from '@/store/use-language'
 import { Cols } from '@/components/cols'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 import { SectionTitle } from '@/components/section-title'
+import Link from 'next/link'
 
 interface Props {
   data: any
@@ -18,6 +12,51 @@ interface Props {
 
 export const Pricelist = ({ data }: Props) => {
   const { language } = useLanguage()
+  const ctaClassName =
+    'mt-6 inline-flex min-h-11 w-auto items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:whitespace-nowrap sm:py-2 sm:text-xl sm:leading-6'
+
+  const renderCard = (item: any, compact = false) => (
+    <div
+      key={item.labelCz + item.row1Cz}
+      style={{ backgroundColor: `#${item.color}` }}
+      className='h-full rounded-2xl'
+    >
+      <div
+        className={
+          compact
+            ? 'flex h-full flex-col px-6 pb-6 pt-8'
+            : 'flex h-full flex-col px-6 py-8'
+        }
+      >
+        <div className='text-left text-2xl font-black'>
+          {language === 'cz' && item.labelCz}
+          {language === 'en' && item.labelEn}
+          {language === 'de' && item.labelDe}
+          {language === 'ua' && item.labelUa}
+        </div>
+
+        <div className='pt-4 font-stabil text-sm'>
+          {item.row1Cz && (
+            <>
+              {language === 'cz' && item.row1Cz}
+              {language === 'en' && item.row1En}
+              {language === 'de' && item.row1De}
+              {language === 'ua' && item.row1Ua}
+            </>
+          )}
+          {item.row2Cz && (
+            <>
+              <br />
+              {language === 'cz' && item.row2Cz}
+              {language === 'en' && item.row2En}
+              {language === 'de' && item.row2De}
+              {language === 'ua' && item.row2Ua}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <section id='pricelist' className='scroll-mt-28'>
@@ -31,19 +70,31 @@ export const Pricelist = ({ data }: Props) => {
           />
 
           <div>
-            <InfoText
-              textCz='Online i offline lekce stojí stejně. Uvedené ceny jsou včetně DPH. Jak se přihlásíš, zaplatíš a vystornuješ, najdeš'
-              textEn='Both online and offline lessons cost the same. The prices include VAT. To log in, to pay or to cancel your lesson, please click'
-              textDe='Online- und Offline-Unterricht kosten das Gleiche. Die Preise enthalten die Mehrwertsteuer. Um herauszufinden, wie du dich anmeldest, bezahlst und stornierst, klicke'
-              textUa='Вартість онлайн та офлайн занять однакова. Ціни вказані з ПДВ. Як зареєструватися, оплатити та забронювати заняття, можна дізнатися за посиланням'
-              href='/payment'
-              linkCz='tadydle ←'
-              linkEn='here ←'
-              linkDe='hier ←'
-              linkUa='це ←'
-            />
+            <div>
+              <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
+                {language === 'cz' &&
+                  'Online i offline lekce stojí stejně. Uvedené ceny jsou včetně DPH. Jak se přihlásíš, zaplatíš a vystornuješ, najdeš zde:'}
+                {language === 'en' &&
+                  'Both online and offline lessons cost the same. The prices include VAT. To log in, to pay or to cancel your lesson, please click here:'}
+                {language === 'de' &&
+                  'Online- und Offline-Unterricht kosten das Gleiche. Die Preise enthalten die Mehrwertsteuer. Um herauszufinden, wie du dich anmeldest, bezahlst und stornierst, klicke hier:'}
+                {language === 'ua' &&
+                  'Вартість онлайн та офлайн занять однакова. Ціни вказані з ПДВ. Як зареєструватися, оплатити та забронювати заняття, можна дізнатися за посиланням'}
+              </p>
 
-            <div className='mt-14 hidden grid-cols-2 gap-8 lg:grid'>
+              <Link
+                href='/payment'
+                className={ctaClassName}
+              >
+                {language === 'cz' && 'Jak to funguje?'}
+                {language === 'en' && 'How does it work?'}
+                {language === 'de' && 'Wie funktioniert das?'}
+                {language === 'ua' && 'Як це працює?'}
+              </Link>
+            </div>
+
+            <div className='mt-14 hidden auto-rows-fr grid-cols-2 gap-8 lg:grid'>
+              {/*
               <Accordion type='multiple' className='flex flex-col gap-8'>
                 {data.slice(0, 2).map((item: any) => (
                   <AccordionItem
@@ -120,11 +171,19 @@ export const Pricelist = ({ data }: Props) => {
                   </AccordionItem>
                 ))}
               </Accordion>
+              */}
+              <div className='grid auto-rows-fr gap-8'>
+                {data.slice(0, 2).map((item: any) => renderCard(item))}
+              </div>
+              <div className='grid auto-rows-fr gap-8'>
+                {data.slice(2, 4).map((item: any) => renderCard(item))}
+              </div>
             </div>
           </div>
         </Cols>
 
-        <div className='mt-14 grid gap-4 sm:grid-cols-2 lg:hidden'>
+        <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 lg:hidden'>
+          {/*
           <Accordion type='multiple' className='flex flex-col gap-4'>
             {data.slice(0, 2).map((item: any) => (
               <AccordionItem
@@ -201,6 +260,13 @@ export const Pricelist = ({ data }: Props) => {
               </AccordionItem>
             ))}
           </Accordion>
+          */}
+          <div className='grid auto-rows-fr gap-4'>
+            {data.slice(0, 2).map((item: any) => renderCard(item, true))}
+          </div>
+          <div className='grid auto-rows-fr gap-4'>
+            {data.slice(2, 4).map((item: any) => renderCard(item, true))}
+          </div>
         </div>
       </Container>
     </section>

@@ -1,4 +1,13 @@
-import { defineField, defineType } from 'sanity'
+import {
+  ConditionalPropertyCallbackContext,
+  defineField,
+  defineType,
+} from 'sanity'
+
+const isNotFeaturedOnAbout = ({
+  document,
+}: ConditionalPropertyCallbackContext) =>
+  !document?.featuredOnAbout
 
 export default defineType({
   name: 'lector',
@@ -79,6 +88,70 @@ export default defineType({
       name: 'bioUa',
       title: 'Bio 🇺🇦',
       type: 'string',
+    }),
+    defineField({
+      name: 'featuredOnAbout',
+      title: 'Zvýraznit v sekci O nás',
+      type: 'boolean',
+    }),
+    defineField({
+      name: 'aboutFeaturedOrder',
+      title: 'Pořadí ve featured kartách',
+      type: 'number',
+      hidden: isNotFeaturedOnAbout,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.featuredOnAbout && typeof value !== 'number') {
+            return 'Vyplň pořadí ve featured kartách.'
+          }
+
+          return true
+        }),
+    }),
+    defineField({
+      name: 'aboutOrder',
+      title: 'Pořadí v gridu O nás',
+      type: 'number',
+    }),
+    defineField({
+      name: 'aboutBadgeCz',
+      title: 'Badge O nás 🇨🇿',
+      type: 'string',
+      hidden: isNotFeaturedOnAbout,
+    }),
+    defineField({
+      name: 'aboutBadgeEn',
+      title: 'Badge O nás 🇬🇧',
+      type: 'string',
+      hidden: isNotFeaturedOnAbout,
+    }),
+    defineField({
+      name: 'aboutBadgeDe',
+      title: 'Badge O nás 🇩🇪',
+      type: 'string',
+      hidden: isNotFeaturedOnAbout,
+    }),
+    defineField({
+      name: 'aboutBadgeUa',
+      title: 'Badge O nás 🇺🇦',
+      type: 'string',
+      hidden: isNotFeaturedOnAbout,
+    }),
+    defineField({
+      name: 'featuredEmail',
+      title: 'E-mail pro featured CTA',
+      description:
+        'Použije se pro tlačítko "napsat zprávu" ve featured kartě v sekci O nás.',
+      type: 'email',
+      hidden: isNotFeaturedOnAbout,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.featuredOnAbout && !value) {
+            return 'Featured lektor*ka musí mít vyplněný e-mail.'
+          }
+
+          return true
+        }),
     }),
   ],
   preview: {

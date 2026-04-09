@@ -1,13 +1,19 @@
 import { ForLectors } from '@/containers/for-lectors'
 import { cachedClient } from '@/sanity/lib/client'
-import { LookingForQuery } from '@/sanity/lib/queries'
+import { ForLectorsPageQuery, LookingForQuery } from '@/sanity/lib/queries'
+import { notFound } from 'next/navigation'
 
 export default async function Page() {
+  const page = await cachedClient(ForLectorsPageQuery)
   const lookingFor = await cachedClient(LookingForQuery)
+
+  if (!page) {
+    notFound()
+  }
 
   return (
     <main className='mt-28 md:mt-32 min-h-screen mb-8'>
-      <ForLectors lookingFor={lookingFor} />
+      <ForLectors page={page} lookingFor={lookingFor} />
     </main>
   )
 }
