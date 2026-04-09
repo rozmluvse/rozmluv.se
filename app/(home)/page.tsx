@@ -29,7 +29,7 @@ export default async function Page() {
       <Hero />
       <Languages languages={languages} />
       <Pricelist data={pricelist} />
-      <HowItWorks data={howItWorks} />
+      {howItWorks && <HowItWorks data={howItWorks} />}
       <Reviews reviews={reviews} />
       <About lectors={lectors} />
       <Companies companies={companies} />

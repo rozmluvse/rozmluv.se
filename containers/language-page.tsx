@@ -9,7 +9,7 @@ import { useLanguage } from '@/store/use-language'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useMemo, useState } from 'react'
 
 interface Props {
   languageItem: any
@@ -61,12 +61,17 @@ const getReserveCtaLabel = (language: string) =>
     ua: 'Забронювати',
   })
 
+const paginate = (items: any[], pageSize: number) =>
+  Array.from({ length: Math.ceil(items.length / pageSize) }, (_, pageIndex) =>
+    items.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
+  )
+
 export const LanguagePage = ({ languageItem, pricelist }: Props) => {
   const { language } = useLanguage()
-  const [viewportWidth, setViewportWidth] = useState(0)
-  const [lectorsPage, setLectorsPage] = useState(0)
+  const [mobileLectorsPage, setMobileLectorsPage] = useState(0)
+  const [desktopLectorsPage, setDesktopLectorsPage] = useState(0)
   const ctaBaseClassName =
-    'inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
+    'inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:text-xl sm:leading-6'
   const ctaClassName = `mt-8 ${ctaBaseClassName}`
   const languageSlug = languageItem.slug?.current
 
@@ -103,41 +108,8 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
   const whyCards = languageItem.whyCards || []
   const languageDetailHref = languageSlug ? `/languages/${languageSlug}` : '/#languages'
-  const lectorsPerPage = viewportWidth >= 1280 ? 4 : 2
-  const lectorsPages = useMemo(
-    () =>
-      Array.from(
-        { length: Math.ceil(lectors.length / lectorsPerPage) },
-        (_, pageIndex) =>
-          lectors.slice(
-            pageIndex * lectorsPerPage,
-            (pageIndex + 1) * lectorsPerPage,
-          ),
-      ),
-    [lectors, lectorsPerPage],
-  )
-  const lectorsPagesCount = lectorsPages.length
-
-  useEffect(() => {
-    const updateLectorsLayout = () => {
-      setViewportWidth(window.innerWidth)
-    }
-
-    updateLectorsLayout()
-    window.addEventListener('resize', updateLectorsLayout)
-
-    return () => window.removeEventListener('resize', updateLectorsLayout)
-  }, [])
-
-  useEffect(() => {
-    setLectorsPage(0)
-  }, [languageSlug, lectorsPerPage])
-
-  useEffect(() => {
-    if (lectorsPagesCount === 0) return
-
-    setLectorsPage((page) => Math.min(page, lectorsPagesCount - 1))
-  }, [lectorsPagesCount])
+  const mobileLectorPages = useMemo(() => paginate(lectors, 2), [lectors])
+  const desktopLectorPages = useMemo(() => paginate(lectors, 4), [lectors])
 
   const renderWhyCard = (card: any, index: number, keySuffix = '') => (
     <div
@@ -211,23 +183,29 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
     </Link>
   )
 
-  const renderLectorsCarousel = () => (
+  const renderLectorsCarousel = (
+    pages: any[][],
+    currentPage: number,
+    setCurrentPage: Dispatch<SetStateAction<number>>,
+    className: string,
+    imageSizes: string,
+  ) => (
     <div className='overflow-hidden'>
       <div
         className='flex transition-transform duration-300 ease-out'
         style={{
-          width: `${lectorsPagesCount * 100}%`,
-          transform: `translateX(-${lectorsPage * (100 / lectorsPagesCount)}%)`,
+          width: `${Math.max(pages.length, 1) * 100}%`,
+          transform: `translateX(-${currentPage * (100 / Math.max(pages.length, 1))}%)`,
         }}
       >
-        {lectorsPages.map((pageLectors, pageIndex) => (
+        {pages.map((pageLectors, pageIndex) => (
           <div
             key={`language-lectors-page-${pageIndex}`}
-            className='mx-auto grid w-full max-w-3xl shrink-0 grid-cols-2 gap-4 xl:max-w-none xl:gap-2 xl:grid-cols-4'
-            style={{ width: `${100 / lectorsPagesCount}%` }}
+            className={className}
+            style={{ width: `${100 / Math.max(pages.length, 1)}%` }}
           >
             {pageLectors.map((lector: any) =>
-              renderLectorCard(lector, `-page-${pageIndex}`),
+              renderLectorCard(lector, `-page-${pageIndex}`, imageSizes),
             )}
           </div>
         ))}
@@ -238,25 +216,25 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           {getReserveCtaLabel(language)}
         </Link>
 
-        {lectorsPagesCount > 1 && (
+        {pages.length > 1 && (
           <div className='flex items-center justify-end gap-2'>
             <button
               type='button'
-              onClick={() => setLectorsPage((page) => Math.max(page - 1, 0))}
+              onClick={() => setCurrentPage((page) => Math.max(page - 1, 0))}
               className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
               aria-label={getCarouselAriaLabel(language, 'prev')}
-              disabled={lectorsPage === 0}
+              disabled={currentPage === 0}
             >
               <ArrowLeft size={18} />
             </button>
             <button
               type='button'
               onClick={() =>
-                setLectorsPage((page) => Math.min(page + 1, lectorsPagesCount - 1))
+                setCurrentPage((page) => Math.min(page + 1, pages.length - 1))
               }
               className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
               aria-label={getCarouselAriaLabel(language, 'next')}
-              disabled={lectorsPage === lectorsPagesCount - 1}
+              disabled={currentPage === pages.length - 1}
             >
               <ArrowRight size={18} />
             </button>
@@ -393,10 +371,26 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
             <div className='mt-14 hidden gap-4 xl:grid xl:grid-cols-[1fr_4.1fr]'>
               <div />
-              <div>{renderLectorsCarousel()}</div>
+              <div>
+                {renderLectorsCarousel(
+                  desktopLectorPages,
+                  Math.min(desktopLectorsPage, Math.max(desktopLectorPages.length - 1, 0)),
+                  setDesktopLectorsPage,
+                  'grid w-full shrink-0 grid-cols-4 gap-2',
+                  '25vw',
+                )}
+              </div>
             </div>
 
-            <div className='mt-14 xl:hidden'>{renderLectorsCarousel()}</div>
+            <div className='mt-14 xl:hidden'>
+              {renderLectorsCarousel(
+                mobileLectorPages,
+                Math.min(mobileLectorsPage, Math.max(mobileLectorPages.length - 1, 0)),
+                setMobileLectorsPage,
+                'mx-auto grid w-full max-w-3xl shrink-0 grid-cols-2 gap-4',
+                '(min-width: 640px) 25vw, 50vw',
+              )}
+            </div>
           </Container>
         </section>
       )}
@@ -418,7 +412,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
               <Link
                 href='/#languages'
-                className='inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl bg-white px-6 text-center font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white sm:w-auto'
+                className='inline-flex min-h-11 w-full shrink-0 items-center justify-center rounded-xl bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:py-2 sm:text-xl sm:leading-6'
               >
                 {language === 'cz' && 'Výběr jazyka'}
                 {language === 'en' && 'Select language'}

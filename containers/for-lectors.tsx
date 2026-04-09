@@ -183,7 +183,7 @@ export const ForLectors = ({
               )}
               <Link
                 href='#open-positions'
-                className='mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-[#FFC900] px-6 text-center font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+                className='mt-8 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#FFC900] px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:py-2 sm:text-xl sm:leading-6'
               >
                 {getLocalizedValue(language, {
                   cz: 'zobrazit pozice',
@@ -317,7 +317,7 @@ export const ForLectors = ({
 
               <Link
                 href='mailto:ciao@rozmluv.se'
-                className='inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl bg-white px-6 text-center font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white sm:w-auto'
+                className='inline-flex min-h-11 w-full shrink-0 items-center justify-center rounded-xl bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:py-2 sm:text-xl sm:leading-6'
               >
                 {getLocalizedValue(language, {
                   cz: 'napsat nám',

@@ -72,7 +72,7 @@ export const Reviews = ({ reviews }: Props) => {
 
             <Link
               href='/feedback'
-              className='mt-8 inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+              className='mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:py-2 sm:text-xl sm:leading-6'
             >
               {language === 'cz' && 'Poslat referenci'}
               {language === 'en' && 'Send a reference'}

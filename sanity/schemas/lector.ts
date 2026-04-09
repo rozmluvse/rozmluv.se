@@ -1,5 +1,8 @@
 import { defineField, defineType } from 'sanity'
 
+const isNotFeaturedOnAbout = ({ document }: { document?: { featuredOnAbout?: boolean } }) =>
+  !document?.featuredOnAbout
+
 export default defineType({
   name: 'lector',
   title: 'Lektor*ka',
@@ -89,6 +92,15 @@ export default defineType({
       name: 'aboutFeaturedOrder',
       title: 'Pořadí ve featured kartách',
       type: 'number',
+      hidden: isNotFeaturedOnAbout,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.featuredOnAbout && typeof value !== 'number') {
+            return 'Vyplň pořadí ve featured kartách.'
+          }
+
+          return true
+        }),
     }),
     defineField({
       name: 'aboutOrder',
@@ -99,21 +111,41 @@ export default defineType({
       name: 'aboutBadgeCz',
       title: 'Badge O nás 🇨🇿',
       type: 'string',
+      hidden: isNotFeaturedOnAbout,
     }),
     defineField({
       name: 'aboutBadgeEn',
       title: 'Badge O nás 🇬🇧',
       type: 'string',
+      hidden: isNotFeaturedOnAbout,
     }),
     defineField({
       name: 'aboutBadgeDe',
       title: 'Badge O nás 🇩🇪',
       type: 'string',
+      hidden: isNotFeaturedOnAbout,
     }),
     defineField({
       name: 'aboutBadgeUa',
       title: 'Badge O nás 🇺🇦',
       type: 'string',
+      hidden: isNotFeaturedOnAbout,
+    }),
+    defineField({
+      name: 'featuredEmail',
+      title: 'E-mail pro featured CTA',
+      description:
+        'Použije se pro tlačítko "napsat zprávu" ve featured kartě v sekci O nás.',
+      type: 'email',
+      hidden: isNotFeaturedOnAbout,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.featuredOnAbout && !value) {
+            return 'Featured lektor*ka musí mít vyplněný e-mail.'
+          }
+
+          return true
+        }),
     }),
   ],
   preview: {

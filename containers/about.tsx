@@ -47,6 +47,9 @@ const paginate = (items: any[], pageSize: number) =>
     items.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
   )
 
+const ctaButtonClassName =
+  'inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-lg font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:text-xl sm:leading-6'
+
 export const About = ({ lectors }: { lectors: any[] }) => {
   const { language } = useLanguage()
   const [showAllTeam, setShowAllTeam] = useState(false)
@@ -97,6 +100,13 @@ export const About = ({ lectors }: { lectors: any[] }) => {
     en: 'write a message',
     de: 'schreiben',
     ua: 'написати',
+  })
+
+  const featuredLectorFallbackCtaLabel = getLocalizedValue(language, {
+    cz: 'poznej lektora*ku',
+    en: 'meet the lecturer',
+    de: 'Lektor*in poznat',
+    ua: 'пізнати викладача',
   })
 
   const renderTeamCard = (lector: any, imageSizes: string) => (
@@ -152,7 +162,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
             <div className='mt-8'>
               <Link
                 href='/story'
-                className='inline-flex h-auto min-h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 py-3 text-center font-labil text-xl font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:py-0 sm:leading-6'
+                className={ctaButtonClassName}
               >
                 {language === 'cz' && 'Jak vzniklo naše studio?'}
                 {language === 'en' && 'How was our studio founded?'}
@@ -164,49 +174,74 @@ export const About = ({ lectors }: { lectors: any[] }) => {
         </Cols>
 
         {featuredLectors.length > 0 && (
-          <div className='mt-14 grid auto-rows-fr grid-cols-2 gap-4 sm:gap-6'>
+          <div className='mt-14 grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6'>
             {featuredLectors.map((lector) => (
-              <Link
+              <div
                 key={lector.slug?.current || lector.name}
-                href={
-                  lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
-                }
                 className='group h-full rounded-3xl bg-[#F6F0F8] p-4 sm:p-5'
               >
                 <div className='grid h-full gap-4 lg:grid-cols-[220px_1fr] lg:items-start lg:gap-5'>
-                  <div className='relative aspect-[0.9] overflow-hidden rounded-[28px] bg-white/60'>
-                    <Image
-                      src={urlForImage(lector.image)}
-                      alt={lector.name}
-                      fill
-                      sizes='(min-width: 1024px) 25vw, 100vw'
-                      className='object-cover transition-opacity duration-200 group-hover:opacity-85'
-                    />
-                  </div>
+                  <Link
+                    href={
+                      lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
+                    }
+                    className='block'
+                  >
+                    <div className='relative aspect-[0.9] overflow-hidden rounded-[28px] bg-white/60'>
+                      <Image
+                        src={urlForImage(lector.image)}
+                        alt={lector.name}
+                        fill
+                        sizes='(min-width: 1024px) 25vw, 100vw'
+                        className='object-cover transition-opacity duration-200 group-hover:opacity-85'
+                      />
+                    </div>
+                  </Link>
 
                   <div className='flex h-full min-w-0 flex-col'>
-                    <div className='flex-1'>
-                      {getBadge(lector) && (
-                        <div className='mb-3 inline-flex max-w-full items-center self-start rounded-full bg-[#F7CC46] px-3 py-1 text-center font-stabil text-xs font-bold leading-tight sm:mb-4 sm:px-4 sm:text-sm'>
-                          {getBadge(lector)}
-                        </div>
-                      )}
-                      <h3 className='break-words text-xl font-black leading-none sm:text-2xl lg:text-3xl'>
-                        {lector.name}
-                      </h3>
-                      <p className='mt-2 font-stabil text-sm leading-tight sm:mt-3 sm:text-base lg:text-xl'>
-                        {getRole(lector)}
-                      </p>
-                    </div>
+                    <Link
+                      href={
+                        lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
+                      }
+                      className='block flex-1'
+                    >
+                      <div className='flex-1'>
+                        {getBadge(lector) && (
+                          <div className='mb-3 inline-flex max-w-full items-center self-start rounded-full bg-[#F7CC46] px-3 py-1 text-center font-stabil text-xs font-bold leading-tight sm:mb-4 sm:px-4 sm:text-sm'>
+                            {getBadge(lector)}
+                          </div>
+                        )}
+                        <h3 className='break-words text-xl font-black leading-none sm:text-2xl lg:text-3xl'>
+                          {lector.name}
+                        </h3>
+                        <p className='mt-2 font-stabil text-sm leading-tight sm:mt-3 sm:text-base lg:text-xl'>
+                          {getRole(lector)}
+                        </p>
+                      </div>
+                    </Link>
 
                     <div className='mt-5 pt-1 sm:mt-8'>
-                      <div className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'>
-                        {featuredLectorCtaLabel}
-                      </div>
+                      {lector.featuredEmail ? (
+                        <a
+                          href={`mailto:${lector.featuredEmail}`}
+                          className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'
+                        >
+                          {featuredLectorCtaLabel}
+                        </a>
+                      ) : (
+                        <Link
+                          href={
+                            lector.slug?.current ? `/lectors/${lector.slug.current}` : '#'
+                          }
+                          className='inline-flex h-10 items-center justify-center rounded-xl border-2 border-black bg-white px-4 font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:h-11 sm:px-5 sm:text-base'
+                        >
+                          {featuredLectorFallbackCtaLabel}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
@@ -235,7 +270,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
               <button
                 type='button'
                 onClick={() => setShowAllTeam((value) => !value)}
-                className='inline-flex h-11 items-center justify-center rounded-xl border-2 border-black bg-white px-6 font-labil text-xl font-bold leading-6 text-black transition-colors hover:bg-black hover:text-white'
+                className={ctaButtonClassName}
               >
                 {showAllTeam
                   ? language === 'cz'
@@ -341,7 +376,7 @@ export const About = ({ lectors }: { lectors: any[] }) => {
 
             <Link
               href='/for-lectors'
-              className='inline-flex h-11 w-full items-center justify-center rounded-full bg-white px-6 text-center font-labil text-sm font-bold text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:text-base'
+              className='inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-6 py-3 text-center font-labil text-sm font-bold leading-tight text-black transition-colors hover:bg-black hover:text-white sm:w-auto sm:py-2 sm:text-base'
             >
               {language === 'cz' && 'To teda'}
               {language === 'en' && 'Hell yeah'}
