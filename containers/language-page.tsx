@@ -97,6 +97,16 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
         : language === 'de'
           ? `Warum ${languageItem.titleDe}`
           : `Чому ${languageItem.titleUa}`
+  const whyDescription = getLocalizedValue(
+    language,
+    {
+      cz: languageItem.whyDescriptionCz,
+      en: languageItem.whyDescriptionEn,
+      de: languageItem.whyDescriptionDe,
+      ua: languageItem.whyDescriptionUa,
+    },
+    whyTitle,
+  )
 
   const lectors = (languageItem.lectors || [])
     .map((item: any) => item.lector)
@@ -307,7 +317,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
             <div>
               <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
-                {whyTitle}
+                {whyDescription}
               </p>
             </div>
           </Cols>

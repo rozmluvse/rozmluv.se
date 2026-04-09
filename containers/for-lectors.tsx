@@ -82,12 +82,8 @@ export const ForLectors = ({
       style={{ backgroundColor: `#${card.color || fallbackColor}` }}
       className='h-full rounded-2xl'
     >
-      <div className='flex h-full min-h-52 flex-col px-6 py-8'>
-        <div className='font-labil text-sm font-bold uppercase tracking-[0.16em]'>
-          {index + 1 < 10 ? `0${index + 1}` : index + 1}
-        </div>
-
-        <h3 className='mt-5 text-left text-2xl font-black'>
+      <div className='flex h-full min-h-48 flex-col px-6 py-7'>
+        <h3 className='text-left text-2xl font-black'>
           {getLocalizedValue(language, {
             cz: card.titleCz,
             en: card.titleEn,
@@ -96,7 +92,7 @@ export const ForLectors = ({
           })}
         </h3>
 
-        <p className='pt-4 font-stabil text-sm'>
+        <p className='pt-4 font-stabil text-lg'>
           {getLocalizedValue(language, {
             cz: card.descriptionCz,
             en: card.descriptionEn,
@@ -191,7 +187,7 @@ export const ForLectors = ({
       </section>
 
       {whyCards.length > 0 && (
-        <section className='scroll-mt-28 mt-16 xl:mt-24'>
+        <section className='mt-16 scroll-mt-28 xl:mt-24'>
           <Container>
             <Cols>
               <SectionTitle
@@ -207,7 +203,7 @@ export const ForLectors = ({
                     {whyDescription}
                   </p>
                 )}
-                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-3 xl:gap-6'>
+                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-2 xl:gap-6'>
                   {renderCards(whyCards, 'F6E5A0')}
                 </div>
               </div>
@@ -220,7 +216,7 @@ export const ForLectors = ({
         </section>
       )}
 
-      <section id='open-positions' className='scroll-mt-28 mt-16 xl:mt-24'>
+      <section id='open-positions' className='mt-16 scroll-mt-28 xl:mt-24'>
         <Container>
           <Cols>
             <SectionTitle
@@ -236,7 +232,10 @@ export const ForLectors = ({
               </p>
 
               <div className='mt-14 hidden xl:block'>
-                <Accordion type='multiple' className='flex flex-col gap-4 xl:gap-6'>
+                <Accordion
+                  type='multiple'
+                  className='flex flex-col gap-4 xl:gap-6'
+                >
                   {lookingFor.map((item: any, index: number) =>
                     renderAccordionEntry(item, index),
                   )}
@@ -256,7 +255,7 @@ export const ForLectors = ({
       </section>
 
       {extraCards.length > 0 && (
-        <section className='scroll-mt-28 mt-16 xl:mt-24'>
+        <section className='mt-16 scroll-mt-28 xl:mt-24'>
           <Container>
             <Cols>
               <SectionTitle
@@ -272,7 +271,7 @@ export const ForLectors = ({
                     {extraSectionDescription}
                   </p>
                 )}
-                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-3 xl:gap-6'>
+                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-4 xl:gap-6'>
                   {renderCards(extraCards, 'C8E6C9')}
                 </div>
               </div>
@@ -285,7 +284,7 @@ export const ForLectors = ({
         </section>
       )}
 
-      <section className='scroll-mt-28 mt-16 xl:mt-24'>
+      <section className='mt-16 scroll-mt-28 xl:mt-24'>
         <Container>
           <div className='rounded-lg bg-[#FFC900] px-6 py-8 sm:px-10 lg:px-14'>
             <div className='flex flex-col gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left'>

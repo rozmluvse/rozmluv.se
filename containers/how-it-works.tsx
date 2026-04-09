@@ -60,24 +60,36 @@ export const HowItWorks = ({ data }: Props) => {
               {language === 'ua' && data?.descriptionUa}
             </p>
 
+            <div className='mt-14 hidden auto-rows-fr gap-6 lg:grid lg:grid-cols-2 2xl:grid-cols-4'>
+              {steps.map((step, index) => renderCard(step, index))}
+            </div>
+
             <Link
               href='/lesson'
-              className={ctaClassName}
+              className={`${ctaClassName} hidden lg:inline-flex`}
             >
               {language === 'cz' && 'Chci se rozmluvit →'}
               {language === 'en' && 'I want to start speaking →'}
               {language === 'de' && 'Ich will sprechen lernen →'}
               {language === 'ua' && 'Хочу почати говорити →'}
             </Link>
-
-            <div className='mt-14 hidden auto-rows-fr gap-6 lg:grid lg:grid-cols-2 2xl:grid-cols-4'>
-              {steps.map((step, index) => renderCard(step, index))}
-            </div>
           </div>
         </Cols>
 
         <div className='mt-14 grid gap-6 sm:auto-rows-fr sm:grid-cols-2 lg:hidden'>
           {steps.map((step, index) => renderCard(step, index))}
+        </div>
+
+        <div className='mt-8 lg:hidden'>
+          <Link
+            href='/lesson'
+            className={ctaClassName}
+          >
+            {language === 'cz' && 'Chci se rozmluvit →'}
+            {language === 'en' && 'I want to start speaking →'}
+            {language === 'de' && 'Ich will sprechen lernen →'}
+            {language === 'ua' && 'Хочу почати говорити →'}
+          </Link>
         </div>
       </Container>
     </section>

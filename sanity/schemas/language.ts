@@ -59,6 +59,30 @@ export default defineType({
       rows: 3,
     }),
     defineField({
+      name: 'whyDescriptionCz',
+      title: 'Proč tento jazyk - popis 🇨🇿',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'whyDescriptionEn',
+      title: 'Proč tento jazyk - popis 🇬🇧',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'whyDescriptionDe',
+      title: 'Proč tento jazyk - popis 🇩🇪',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'whyDescriptionUa',
+      title: 'Proč tento jazyk - popis 🇺🇦',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
       name: 'order',
       title: 'Pořadí',
       type: 'number',
