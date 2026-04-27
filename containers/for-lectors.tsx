@@ -92,7 +92,7 @@ export const ForLectors = ({
           })}
         </h3>
 
-        <p className='pt-4 font-stabil text-lg'>
+        <p className='pt-4 font-stabil text-base'>
           {getLocalizedValue(language, {
             cz: card.descriptionCz,
             en: card.descriptionEn,
@@ -271,13 +271,14 @@ export const ForLectors = ({
                     {extraSectionDescription}
                   </p>
                 )}
-                <div className='mt-14 hidden xl:grid xl:auto-rows-fr xl:grid-cols-4 xl:gap-6'>
-                  {renderCards(extraCards, 'C8E6C9')}
-                </div>
               </div>
             </Cols>
 
-            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 xl:hidden'>
+            <div className='mt-14 hidden auto-rows-fr grid-cols-4 gap-2 lg:grid'>
+              {renderCards(extraCards, 'C8E6C9')}
+            </div>
+
+            <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 lg:hidden'>
               {renderCards(extraCards, 'C8E6C9')}
             </div>
           </Container>
@@ -286,7 +287,7 @@ export const ForLectors = ({
 
       <section className='mt-16 scroll-mt-28 xl:mt-24'>
         <Container>
-          <div className='rounded-lg bg-[#FFC900] px-6 py-8 sm:px-10 lg:px-14'>
+          <div className='rounded-2xl bg-[#FFC900] px-6 py-8 sm:px-10 lg:px-14'>
             <div className='flex flex-col gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left'>
               <div>
                 <h2 className='font-labil text-3xl font-bold leading-tight text-black md:text-4xl xl:text-[40px] xl:leading-[1.3]'>

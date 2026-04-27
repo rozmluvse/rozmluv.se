@@ -23,7 +23,7 @@ export const HowItWorks = ({ data }: Props) => {
       style={{ backgroundColor: `#${step.color}` }}
       className='h-full rounded-2xl'
     >
-      <div className='flex h-full min-h-52 flex-col px-6 py-8'>
+      <div className='flex h-full flex-col px-6 py-8'>
         <h3 className='text-left text-2xl font-black'>
           {language === 'cz' && step.titleCz}
           {language === 'en' && step.titleEn}
@@ -31,7 +31,7 @@ export const HowItWorks = ({ data }: Props) => {
           {language === 'ua' && step.titleUa}
         </h3>
 
-        <p className='pt-4 font-stabil text-sm'>
+        <p className='pt-4 font-stabil text-base'>
           {language === 'cz' && step.descriptionCz}
           {language === 'en' && step.descriptionEn}
           {language === 'de' && step.descriptionDe}
@@ -81,10 +81,7 @@ export const HowItWorks = ({ data }: Props) => {
         </div>
 
         <div className='mt-8 lg:hidden'>
-          <Link
-            href='/lesson'
-            className={ctaClassName}
-          >
+          <Link href='/lesson' className={ctaClassName}>
             {language === 'cz' && 'Chci se rozmluvit →'}
             {language === 'en' && 'I want to start speaking →'}
             {language === 'de' && 'Ich will sprechen lernen →'}

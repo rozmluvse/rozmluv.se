@@ -112,7 +112,9 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
     .map((item: any) => item.lector)
     .filter(Boolean)
   const whyCards = languageItem.whyCards || []
-  const languageDetailHref = languageSlug ? `/languages/${languageSlug}` : '/#languages'
+  const languageDetailHref = languageSlug
+    ? `/languages/${languageSlug}`
+    : '/#languages'
   const mobileLectorPages = paginate(lectors, 2)
   const desktopLectorPages = paginate(lectors, 4)
 
@@ -124,7 +126,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
       }}
       className='h-full rounded-2xl'
     >
-      <div className='flex h-full min-h-44 flex-col px-6 py-6 sm:min-h-52 sm:py-8'>
+      <div className='flex h-full flex-col px-6 py-6 sm:py-8'>
         <h3 className='text-left text-2xl font-black'>
           {getLocalizedValue(language, {
             cz: card.titleCz,
@@ -134,7 +136,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           })}
         </h3>
 
-        <p className='pt-4 font-stabil text-sm'>
+        <p className='pt-4 font-stabil text-base'>
           {getLocalizedValue(language, {
             cz: card.descriptionCz,
             en: card.descriptionEn,
@@ -168,8 +170,8 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           sizes={imageSizes}
           className='rounded-3xl object-cover transition-opacity duration-200 group-hover:opacity-70'
         />
-        <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
-          <div className='rounded-xl border-2 border-black bg-white px-5 py-2 font-labil text-lg font-bold text-black'>
+        <div className='pointer-events-none absolute inset-x-0 bottom-5 flex justify-center px-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+          <div className='rounded-xl border-2 border-black bg-white px-5 py-2 text-center font-labil text-lg font-bold leading-tight text-black'>
             {getLectorCtaLabel(language)}
           </div>
         </div>
@@ -207,48 +209,48 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
             transform: `translateX(-${currentPage * (100 / pageCount)}%)`,
           }}
         >
-        {pages.map((pageLectors, pageIndex) => (
-          <div
-            key={`language-lectors-page-${pageIndex}`}
-            className={className}
-            style={{ width: `${100 / pageCount}%` }}
-          >
-            {pageLectors.map((lector: any) =>
-              renderLectorCard(lector, `-page-${pageIndex}`, imageSizes),
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className='mt-8 flex items-center justify-between gap-4'>
-        <Link href='/lesson' className={ctaBaseClassName}>
-          {getReserveCtaLabel(language)}
-        </Link>
-
-        {pages.length > 1 && (
-          <div className='flex items-center justify-end gap-2'>
-            <button
-              type='button'
-              onClick={onPrev}
-              className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
-              aria-label={getCarouselAriaLabel(language, 'prev')}
-              disabled={currentPage === 0}
+          {pages.map((pageLectors, pageIndex) => (
+            <div
+              key={`language-lectors-page-${pageIndex}`}
+              className={className}
+              style={{ width: `${100 / pageCount}%` }}
             >
-              <ArrowLeft size={18} />
-            </button>
-            <button
-              type='button'
-              onClick={onNext}
-              className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
-              aria-label={getCarouselAriaLabel(language, 'next')}
-              disabled={currentPage === pages.length - 1}
-            >
-              <ArrowRight size={18} />
-            </button>
-          </div>
-        )}
+              {pageLectors.map((lector: any) =>
+                renderLectorCard(lector, `-page-${pageIndex}`, imageSizes),
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className='mt-8 flex items-center justify-between gap-4'>
+          <Link href='/lesson' className={ctaBaseClassName}>
+            {getReserveCtaLabel(language)}
+          </Link>
+
+          {pages.length > 1 && (
+            <div className='flex items-center justify-end gap-2'>
+              <button
+                type='button'
+                onClick={onPrev}
+                className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
+                aria-label={getCarouselAriaLabel(language, 'prev')}
+                disabled={currentPage === 0}
+              >
+                <ArrowLeft size={18} />
+              </button>
+              <button
+                type='button'
+                onClick={onNext}
+                className='inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40'
+                aria-label={getCarouselAriaLabel(language, 'next')}
+                disabled={currentPage === pages.length - 1}
+              >
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     )
   }
 
@@ -322,23 +324,18 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
             </div>
           </Cols>
 
-          <Cols>
-            <div />
-            <div>
-              <div className='mt-14 hidden auto-rows-fr grid-cols-4 gap-2 lg:grid'>
-                {whyCards.map((card: any, index: number) =>
-                  renderWhyCard(card, index, '-desktop'),
-                )}
-              </div>
+          <div className='mt-14 hidden auto-rows-fr grid-cols-4 gap-2 lg:grid'>
+            {whyCards.map((card: any, index: number) =>
+              renderWhyCard(card, index, '-desktop'),
+            )}
+          </div>
 
-              <Link
-                href='/lesson'
-                className={`${ctaClassName} hidden lg:inline-flex`}
-              >
-                {getLessonCtaLabel(language)}
-              </Link>
-            </div>
-          </Cols>
+          <Link
+            href='/lesson'
+            className={`${ctaClassName} hidden lg:inline-flex`}
+          >
+            {getLessonCtaLabel(language)}
+          </Link>
 
           <div className='mt-14 grid gap-4 sm:auto-rows-fr sm:grid-cols-2 lg:hidden'>
             {whyCards.map((card: any, index: number) =>
@@ -377,12 +374,15 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </div>
             </Cols>
 
-            <div className='mt-14 hidden gap-4 xl:grid xl:grid-cols-[1fr_4.1fr]'>
+            <div className='mt-14 hidden xl:grid xl:grid-cols-[1fr_4.1fr] xl:gap-4'>
               <div />
               <div>
                 {renderLectorsCarousel(
                   desktopLectorPages,
-                  Math.min(desktopLectorsPage, Math.max(desktopLectorPages.length - 1, 0)),
+                  Math.min(
+                    desktopLectorsPage,
+                    Math.max(desktopLectorPages.length - 1, 0),
+                  ),
                   () => setDesktopLectorsPage((page) => Math.max(page - 1, 0)),
                   () =>
                     setDesktopLectorsPage((page) =>
@@ -394,10 +394,30 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
               </div>
             </div>
 
-            <div className='mt-14 xl:hidden'>
+            <div className='mt-14 hidden sm:block xl:hidden'>
+              {renderLectorsCarousel(
+                desktopLectorPages,
+                Math.min(
+                  desktopLectorsPage,
+                  Math.max(desktopLectorPages.length - 1, 0),
+                ),
+                () => setDesktopLectorsPage((page) => Math.max(page - 1, 0)),
+                () =>
+                  setDesktopLectorsPage((page) =>
+                    Math.min(page + 1, desktopLectorPages.length - 1),
+                  ),
+                'grid w-full shrink-0 grid-cols-4 gap-4',
+                '25vw',
+              )}
+            </div>
+
+            <div className='mt-14 sm:hidden'>
               {renderLectorsCarousel(
                 mobileLectorPages,
-                Math.min(mobileLectorsPage, Math.max(mobileLectorPages.length - 1, 0)),
+                Math.min(
+                  mobileLectorsPage,
+                  Math.max(mobileLectorPages.length - 1, 0),
+                ),
                 () => setMobileLectorsPage((page) => Math.max(page - 1, 0)),
                 () =>
                   setMobileLectorsPage((page) =>
@@ -415,7 +435,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
 
       <section className='scroll-mt-28'>
         <Container>
-          <div className='rounded-lg bg-[#FFC900] px-6 py-8 sm:px-10 lg:px-14'>
+          <div className='rounded-2xl bg-[#FFC900] px-6 py-8 sm:px-10 lg:px-14'>
             <div className='flex flex-col gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left'>
               <h2 className='font-labil text-3xl font-bold leading-tight text-black md:text-4xl xl:text-[40px] xl:leading-[1.3]'>
                 {language === 'cz' && 'Zajímají tě i jiné jazyky?'}
