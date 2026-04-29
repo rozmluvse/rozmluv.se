@@ -142,10 +142,10 @@ export const Contact = () => {
                       <p>Adriana Černá</p>
                       <a href='tel:+420733557502'>+420 733 557 502</a>
                     </div>
-                    <div>
+                    {/*<div>
                       <p>Kateřina Hulecová</p>
                       <a href='tel:+420734675810'>+420 734 675 810</a>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
 
