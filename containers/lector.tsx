@@ -12,6 +12,7 @@ export const Lector = ({ lector }: { lector: any }) => {
   const { language } = useLanguage()
   const searchParams = useSearchParams()
   const backHref = searchParams.get('from') || '/#about'
+  const image = lector.altImage || lector.image
 
   return (
     <main className='mt-32 lg:mt-0'>
@@ -41,10 +42,9 @@ export const Lector = ({ lector }: { lector: any }) => {
               </p>
             </div>
 
-            <img
-              src={urlForImage(lector.altImage)}
-              className='rounded-3xl mb-2'
-            />
+            {image && (
+              <img src={urlForImage(image)} className='rounded-3xl mb-2' />
+            )}
           </div>
 
           <div className='flex flex-col lg:hidden'>
@@ -55,10 +55,9 @@ export const Lector = ({ lector }: { lector: any }) => {
               {language === 'de' && lector.roleDe}
               {language === 'ua' && lector.roleUa}
             </p>
-            <img
-              src={urlForImage(lector.altImage)}
-              className='rounded-3xl mb-2'
-            />
+            {image && (
+              <img src={urlForImage(image)} className='rounded-3xl mb-2' />
+            )}
             <p className='font-stabil text-lg'>
               {language === 'cz' && lector.bioCz}
               {language === 'en' && lector.bioEn}

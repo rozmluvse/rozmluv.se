@@ -8,7 +8,7 @@ export const LectorsQuery = groq`
 
 export const LectorsPathsQuery = groq`
     *[_type == "lector" && defined(slug.current)][]{
-        "params": { "slug": slug.current }
+        "slug": slug.current
     }
 `
 
@@ -39,7 +39,7 @@ export const PostsQuery = groq`
 
 export const PostsPathsQuery = groq`
     *[_type == "post" && defined(slug.current)][]{
-        "params": { "slug": slug.current }
+        "slug": slug.current
     }
 `
 
