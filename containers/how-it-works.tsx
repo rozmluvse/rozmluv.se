@@ -65,7 +65,7 @@ export const HowItWorks = ({ data }: Props) => {
             </div>
 
             <Link
-              href='/lesson'
+              href='/form'
               className={`${ctaClassName} hidden lg:inline-flex`}
             >
               {language === 'cz' && 'Chci se rozmluvit →'}
@@ -81,7 +81,7 @@ export const HowItWorks = ({ data }: Props) => {
         </div>
 
         <div className='mt-8 lg:hidden'>
-          <Link href='/lesson' className={ctaClassName}>
+          <Link href='/form' className={ctaClassName}>
             {language === 'cz' && 'Chci se rozmluvit →'}
             {language === 'en' && 'I want to start speaking →'}
             {language === 'de' && 'Ich will sprechen lernen →'}

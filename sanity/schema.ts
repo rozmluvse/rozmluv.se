@@ -14,6 +14,8 @@ import pricelist from './schemas/pricelist'
 import redirect from './schemas/redirect'
 import howItWorks from './schemas/howItWorks'
 import forLectorsPage from './schemas/forLectorsPage'
+import contactSettings from './schemas/contactSettings'
+import feedbackSettings from './schemas/feedbackSettings'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -29,6 +31,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     pricelist,
     howItWorks,
     forLectorsPage,
+    contactSettings,
+    feedbackSettings,
     blockContent,
     redirect,
   ],
