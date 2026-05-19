@@ -108,6 +108,22 @@ export const HowItWorksQuery = groq`
     }
 `
 
+export const ContactSettingsQuery = groq`
+    *[_type=='contactSettings'][0]{
+        enabled,
+        formUrl,
+        iframeTitle
+    }
+`
+
+export const FeedbackSettingsQuery = groq`
+    *[_type=='feedbackSettings'][0]{
+        enabled,
+        formUrl,
+        iframeTitle
+    }
+`
+
 export const RedirectsQuery = groq`
     *[_type=='redirect'] {
         source,

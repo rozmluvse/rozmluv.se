@@ -223,7 +223,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
         </div>
 
         <div className='mt-8 flex items-center justify-between gap-4'>
-          <Link href='/lesson' className={ctaBaseClassName}>
+          <Link href='/form' className={ctaBaseClassName}>
             {getReserveCtaLabel(language)}
           </Link>
 
@@ -331,7 +331,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
           </div>
 
           <Link
-            href='/lesson'
+            href='/form'
             className={`${ctaClassName} hidden lg:inline-flex`}
           >
             {getLessonCtaLabel(language)}
@@ -343,7 +343,7 @@ export const LanguagePage = ({ languageItem, pricelist }: Props) => {
             )}
           </div>
 
-          <Link href='/lesson' className={`${ctaClassName} lg:hidden`}>
+          <Link href='/form' className={`${ctaClassName} lg:hidden`}>
             {getLessonCtaLabel(language)}
           </Link>
         </Container>
