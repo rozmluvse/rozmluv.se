@@ -1,4 +1,5 @@
 import { Container } from '@/components/container'
+import { FormLegalNotice } from '@/components/form-legal-notice'
 import { getGoogleFormsEmbedUrl } from '@/lib/google-forms'
 import { cachedClient } from '@/sanity/lib/client'
 import { FeedbackSettingsQuery } from '@/sanity/lib/queries'
@@ -23,12 +24,15 @@ export default async function Page() {
     <main className='mt-20 min-h-[60vh] overflow-hidden bg-white mb-32 lg:mt-32 lg:mb-40 xl:mt-24'>
       <Container>
         {formUrl && (
-          <iframe
-            src={formUrl}
-            title={iframeTitle}
-            loading='lazy'
-            className='min-h-[720px] w-full border-0'
-          />
+          <>
+            <iframe
+              src={formUrl}
+              title={iframeTitle}
+              loading='lazy'
+              className='min-h-[720px] w-full border-0'
+            />
+            <FormLegalNotice className='mx-auto text-center' />
+          </>
         )}
       </Container>
     </main>
