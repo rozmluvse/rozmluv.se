@@ -26,9 +26,9 @@ export default function Page() {
           </p>
           <p className='mt-3'>
             {language === 'cz' &&
-              'Správcem Vašich údajů je Barbora Špádová, IČO 08509727 se sídlem Plánická 795, 339 01 Klatovy. Vaše osobní údaje zpracovává jako správce, to znamená, že určuje, jak budou osobní údaje zpracovávány a za jakým účelem, po jak dlouhou dobu, a vybírá případné další zpracovatele, kteří jí se zpracováním budou pomáhat.'}
+              'Správcem Vašich údajů je Rozmluv se, s. r. o., IČO 19647964 se sídlem Pavlíkova 7, 339 01 Klatovy. Vaše osobní údaje zpracovává jako správce, to znamená, že určuje, jak budou osobní údaje zpracovávány a za jakým účelem, po jak dlouhou dobu, a vybírá případné další zpracovatele, kteří jí se zpracováním budou pomáhat.'}
             {language === 'en' &&
-              'The administrator of your data is Barbora Špádová, IČO 08509727, registered office Planická 795, 339 01 Klatovy. She processes your personal data as an administrator, that is, she determines how personal data will be processed and for what purpose, for how long, and she selects any other administrators who will help her with the processing.'}
+              'The administrator of your data is Rozmluv se, s. r. o., IČO 19647964, registered office Pavlíkova 7, 339 01 Klatovy. She processes your personal data as an administrator, that is, she determines how personal data will be processed and for what purpose, for how long, and she selects any other administrators who will help her with the processing.'}
             {language === 'de' && ''}
             {language === 'ua' && ''}
           </p>
@@ -351,9 +351,9 @@ export default function Page() {
           </p>
           <p className='mt-3'>
             {language === 'cz' &&
-              'Tyto zásady zpracování osobních údajů platí od 1. 9. 2022'}
+              'Tyto zásady zpracování osobních údajů platí od 1. 9. 2023'}
             {language === 'en' &&
-              'This personal data processing policy has applied since September 9, 2022.'}
+              'This personal data processing policy has applied since September 9, 2023.'}
             {language === 'de' && ''}
             {language === 'ua' && ''}
           </p>

@@ -51,13 +51,6 @@ export const Navbar = ({ posts }: Props) => {
             ) : (
               <>
                 <Link
-                  href='https://eshop.rozmluv.se/p/prvn-3-d-ly-kurzu-zdarma-pendler-tina-pro-nov-ky-rozmluv-se-n-mecky-rowm9qp1m'
-                  target='_blank'
-                  className='font-stabil'
-                >
-                  ZDARMA
-                </Link>
-                <Link
                   href='https://linktr.ee/rozmluv.se'
                   target='_blank'
                   className='font-stabil'

@@ -29,7 +29,6 @@ export const Contact = () => {
                 <div className='flex items-start gap-4'>
                   <div>
                     <p>Pavlíkova 7, Klatovy</p>
-                    <p>Křížová 162, Klatovy</p>
                   </div>
                 </div>
 
@@ -64,7 +63,7 @@ export const Contact = () => {
               </div>
 
               <div className='font-stabil text-lg xl:text-2xl'>
-                <h3 className='mb-4 font-labil text-3xl font-bold leading-tight xl:text-4xl'>
+                {/* <h3 className='mb-4 font-labil text-3xl font-bold leading-tight xl:text-4xl'>
                   {language === 'cz' && 'Jak se k nám dostanete?'}
                   {language === 'en' && 'How to find us?'}
                   {language === 'de' && 'Wie findest du uns?'}
@@ -80,9 +79,9 @@ export const Contact = () => {
                     'Die Lehrräume im 1. Stock sind entweder von der Pavlíkova Straße oder durch den Hintereingang vom Hostašovy-Park aus zugänglich. Wenn du etwas Glück hast, kannst du dein Auto in den Straßen Jiráskova und Dobrovského oder im Notfall direkt am Náměstí Míru (Hauptplatz) abstellen.'}
                   {language === 'ua' &&
                     'Ти можеш потрапити до класу на 1-му поверсі або з вулиці Pavlíkova, або через чорний вхід з Hostašové sady. Якщо пощастить, ви можете залишити машину на вулицях Jiráskova та Dobrovského, або в екстреному випадку прямо на Náměstí Míru.'}
-                </p>
+                </p> */}
 
-                <div className='mt-8 border-t border-black/20 pt-5 text-base uppercase tracking-[0.08em] text-black/45 xl:text-lg'>
+                <div className='mt-8 pt-5 text-base uppercase tracking-[0.08em] text-black/45 xl:text-lg'>
                   <p>
                     {language === 'cz' && 'Fakturační údaje:'}
                     {language === 'en' && 'Billing details:'}
@@ -126,7 +125,6 @@ export const Contact = () => {
                 <div className='flex items-start gap-4'>
                   <div>
                     <p>Pavlíkova 7, Klatovy</p>
-                    <p>Křížová 162, Klatovy</p>
                   </div>
                 </div>
 

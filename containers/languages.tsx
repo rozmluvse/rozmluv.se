@@ -28,22 +28,16 @@ export const Languages = ({ languages }: Props) => {
           <div>
             <div>
               <InfoText
-                textCz='Užij si svoje hodiny individuálně, ve dvojici nebo v malé skupince
-                  s max. 4 dalšími studenty. Nemusíš se nám upisovat na celé
-                  pololetí, rezervuj si klidně jenom 10 lekcí. Na osobní schůzce,
-                  online callu nebo telefonátu před zahájením kurzu spolu doladíme
+                textCz='Užij si svoje hodiny individuálně nebo ve dvojici. Nemusíš se nám upisovat na celé
+                  pololetí, rezervuj si klidně jenom 10 lekcí. Zavoláme si před zahájením kurzu a doladíme spolu
                   detaily.'
-                textEn="Enjoy your classes either individually, in pairs or in small
-                  groups of no more than 5 students. You don't have to sign up for
+                textEn="Enjoy your classes either individually or in pairs. You don't have to sign up for
                   the whole semester immediately, but to start off you may book just
-                  10 lessons. We work out the details at a face-to-face meeting or
-                  during an online call or a phone call before the course begins."
-                textDe='Gestalte dir deine Stunden entweder individuell, zu zweit oder
-                  auch in der Kleingruppe mit nicht mehr als vier Lernenden. Du
+                  10 lessons. We work out the details during a call before the course begins."
+                textDe='Gestalte dir deine Stunden entweder individuell oder zu zweit. Du
                   musst dich bei uns nicht gleich für ein ganzes Semester
                   einschreiben, buche ruhig erst einmal nur zehn Lektionen. Die
-                  Details können wir persönlich vor Kursbeginn besprechen, gerne
-                  auch per Videoanruf oder telefonisch.'
+                  Details können wir vor Kursbeginn telefonisch besprechen.'
                 textUa='Насолоджуйся своїми уроками індивідуально, в парах або в невеликій
                   групі, котра складається з максимально з 4 учасників. Тобі не
                   потрібно записуватись до нас на весь семестр, просто забронюй 10

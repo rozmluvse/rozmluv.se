@@ -58,10 +58,10 @@ export const Companies = ({ companies }: Props) => {
 
           <div>
             <InfoText
-              textCz='Firemní výuku máme v malíčku. Pendlery rozmluvíme německy, cizince česky a kohokoli anglicky nebo čínsky. Sejít se můžeme v klatovské učebně, u vás ve firmě i online odkudkoli na světě.'
-              textEn='A corporate education? To us a piece of cake. We help people who commute to work to Germany with their spoken German, we help foreigners to start speaking Czech and we help anyone with their spoken English or Chinese. We can meet you in the Klatovy classroom, at your company or even online from anywhere in the world.'
-              textDe='Weiterbildung für Unternehmen ist unsere Kernkompetenz! Pendlerinnen und Pendler machen sich bei uns fit in Deutsch, Ausländerinnen und Ausländer lernen Tschechisch und für jeden haben wir Englisch oder Chinesisch im Angebot. Wir können die Schulungsräume in Klattau nutzen, zu Ihnen in die Firma kommen oder uns irgendwo auf der Welt online zusammenschalten.'
-              textUa='Ми вміємо залучати до корпоративної роботи. Міжнародних працівників навчимо німецької, іноземців чеської та будь-кого англійської або китайської. Ми можемо зустрітись у класі Klatovy, у вашій компанії або онлайн з будь-якої точки світу.'
+              textCz='Učíme naživo ve firmách nebo i online. Pendlery rozmluvíme německy, cizince česky a kohokoli anglicky. Sejít se můžeme u vás ve firmě i online odkudkoli na světě.'
+              textEn='We teach in companies face-to-face or online. We help people who commute to work to Germany with their spoken German, we help foreigners to start speaking Czech and we help anyone with their spoken English. We can meet at your company or even online from anywhere in the world.'
+              textDe='Wir unterrichten in Unternehmen – vor Ort oder online. Wir bringen Berufspendlerinnen und Berufspendler auf den Punkt, wo sie die Kommunikation in der Arbeitssprache Deutsch noch verbessert brauchen, bauen die Sprachkenntnisse von Ausländerinnen und Ausländern, die auf Deutsch arbeiten, auf und schulen alle, die ihr Englisch verbessern wollen. Wir können zu Ihnen ins Unternehmen kommen oder uns online aus der ganzen Welt mit Ihnen verbinden.'
+              textUa='Ми вміємо залучати до корпоративної роботи. Міжнародних працівників навчимо німецької, іноземців чеської та будь-кого англійської. Ми можемо зустрітись у вашій компанії або онлайн з будь-якої точки світу.'
             />
 
             <div className='mt-14 hidden auto-rows-fr gap-6 xl:grid xl:grid-cols-3'>

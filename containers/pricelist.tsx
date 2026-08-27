@@ -73,13 +73,13 @@ export const Pricelist = ({ data }: Props) => {
             <div>
               <p className='font-stabil text-lg !leading-tight xl:text-2xl xl:!leading-8'>
                 {language === 'cz' &&
-                  'Online i offline lekce stojí stejně. Uvedené ceny jsou včetně DPH. Jak se přihlásíš, zaplatíš a vystornuješ, najdeš zde:'}
+                  'Uvedené ceny jsou včetně DPH. Jak se přihlásíš, zaplatíš a vystornuješ, najdeš zde:'}
                 {language === 'en' &&
-                  'Both online and offline lessons cost the same. The prices include VAT. To log in, to pay or to cancel your lesson, please click here:'}
+                  'The prices include VAT. To log in, to pay or to cancel your lesson, please click here:'}
                 {language === 'de' &&
-                  'Online- und Offline-Unterricht kosten das Gleiche. Die Preise enthalten die Mehrwertsteuer. Um herauszufinden, wie du dich anmeldest, bezahlst und stornierst, klicke hier:'}
+                  'Die Preise enthalten die Mehrwertsteuer. Um herauszufinden, wie du dich anmeldest, bezahlst und stornierst, klicke hier:'}
                 {language === 'ua' &&
-                  'Вартість онлайн та офлайн занять однакова. Ціни вказані з ПДВ. Як зареєструватися, оплатити та забронювати заняття, можна дізнатися за посиланням'}
+                  'Ціни вказані з ПДВ. Як зареєструватися, оплатити та забронювати заняття, можна дізнатися за посиланням'}
               </p>
 
               <Link
