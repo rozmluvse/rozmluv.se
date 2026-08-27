@@ -172,12 +172,7 @@ export const Pricelist = ({ data }: Props) => {
                 ))}
               </Accordion>
               */}
-              <div className='grid auto-rows-fr gap-8'>
-                {data.slice(0, 2).map((item: any) => renderCard(item))}
-              </div>
-              <div className='grid auto-rows-fr gap-8'>
-                {data.slice(2, 4).map((item: any) => renderCard(item))}
-              </div>
+              {data.map((item: any) => renderCard(item))}
             </div>
           </div>
         </Cols>
@@ -261,12 +256,7 @@ export const Pricelist = ({ data }: Props) => {
             ))}
           </Accordion>
           */}
-          <div className='grid auto-rows-fr gap-4'>
-            {data.slice(0, 2).map((item: any) => renderCard(item, true))}
-          </div>
-          <div className='grid auto-rows-fr gap-4'>
-            {data.slice(2, 4).map((item: any) => renderCard(item, true))}
-          </div>
+          {data.map((item: any) => renderCard(item, true))}
         </div>
       </Container>
     </section>
