@@ -1,7 +1,24 @@
+import { Metadata } from 'next'
 import { Container } from '@/components/container'
 import { Payment } from '@/containers/payment'
 import { cachedClient } from '@/sanity/lib/client'
 import { PaymentQuery } from '@/sanity/lib/queries'
+
+export const metadata: Metadata = {
+  title: 'Platební podmínky a pravidla lekcí',
+  description:
+    'Informace o platbě za jazykové kurzy, pravidla rušení a nahrazování lekcí v jazykovém studiu rozmluv se.',
+  alternates: {
+    canonical: '/payment',
+  },
+  openGraph: {
+    title: 'Platební podmínky a pravidla lekcí | rozmluv se',
+    description:
+      'Informace o platbě za jazykové kurzy, pravidla rušení a nahrazování lekcí v jazykovém studiu rozmluv se.',
+    url: 'https://rozmluv.se/payment',
+  },
+}
+
 
 export default async function Page() {
   const data = await cachedClient(PaymentQuery)

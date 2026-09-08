@@ -22,10 +22,25 @@ const labil = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rozmluv.se'),
-  title: 'Jazykové studio | rozmluv se',
+  title: {
+    default: 'Jazykové studio | rozmluv se',
+    template: '%s | rozmluv se',
+  },
   description:
     'Jazykovka, kde se rozmluvíš nejen anglicky a německy, ale třeba i španělsky. Online odkudkoli nebo naživo v Klatovech. Individuálně, ve dvojicích nebo v malé skupince.',
   authors: [{ name: 'Daniel Anthony Baudyš', url: 'https://baudys.dev' }],
+  alternates: {
+    canonical: './',
+  },
+  openGraph: {
+    title: 'Jazykové studio | rozmluv se',
+    description:
+      'Jazykovka, kde se rozmluvíš nejen anglicky a německy, ale třeba i španělsky. Online odkudkoli nebo naživo v Klatovech.',
+    url: 'https://rozmluv.se',
+    siteName: 'rozmluv se',
+    locale: 'cs_CZ',
+    type: 'website',
+  },
 }
 
 export default async function Layout({
@@ -34,7 +49,7 @@ export default async function Layout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='cs' suppressHydrationWarning>
       <GoogleAnalyticsProvider />
       <FacebookProvider />
 

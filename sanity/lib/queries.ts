@@ -131,3 +131,24 @@ export const RedirectsQuery = groq`
         permanent
     }
 `
+
+export const SitemapLanguagesQuery = groq`
+    *[_type == "language" && defined(slug.current) && disabled != true]{
+        "slug": slug.current,
+        _updatedAt
+    }
+`
+
+export const SitemapLectorsQuery = groq`
+    *[_type == "lector" && defined(slug.current)]{
+        "slug": slug.current,
+        _updatedAt
+    }
+`
+
+export const SitemapPostsQuery = groq`
+    *[_type == "post" && defined(slug.current)]{
+        "slug": slug.current,
+        _updatedAt
+    }
+`

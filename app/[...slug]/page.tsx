@@ -1,4 +1,4 @@
-import { redirect, notFound } from 'next/navigation'
+import { redirect, permanentRedirect, notFound } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
 import { RedirectsQuery } from '@/sanity/lib/queries'
 
@@ -25,7 +25,11 @@ export default async function CatchAllPage({
   )
 
   if (match) {
-    redirect(match.destination)
+    if (match.permanent) {
+      permanentRedirect(match.destination)
+    } else {
+      redirect(match.destination)
+    }
   }
 
   notFound()
